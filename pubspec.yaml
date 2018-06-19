@@ -1,0 +1,23 @@
+name: contacts
+description: A new Flutter application.
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_launcher_icons: ^0.3.3
+  cupertino_icons: ^0.1.2
+  sqflite: ^0.10.0
+
+flutter_icons:
+  image_path: "assets/images/app_icon.png"
+  android: true
+  ios: true
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+flutter:
+  uses-material-design: true
