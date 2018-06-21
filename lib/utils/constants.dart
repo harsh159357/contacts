@@ -15,16 +15,68 @@
  *
  */
 
-///////////////////////////////////////////////////////////////////////////////
-class EventConstants {}
+//------------------------------------------------------------------------------
+class APIConstants {
+  static const String _CONTACT_API_BASE_URL = "http://hafinse.pe.hu/contact/";
 
-///////////////////////////////////////////////////////////////////////////////
-class ProgressDialogTitles {}
+  static const String READ_CONTACTS =
+      _CONTACT_API_BASE_URL + "ReadContacts.php";
 
-///////////////////////////////////////////////////////////////////////////////
-class SnackBarText {}
+  static const String READ_ONE_CONTACT =
+      _CONTACT_API_BASE_URL + "ReadOneContact.php?_id=";
 
-///////////////////////////////////////////////////////////////////////////////
+  static const String SEARCH_CONTACT =
+      _CONTACT_API_BASE_URL + "SearchContact.php?s=";
+
+  static const String CREATE_CONTACT =
+      _CONTACT_API_BASE_URL + "CreateContact.php";
+
+  static const String DELETE_CONTACT =
+      _CONTACT_API_BASE_URL + "DeleteContact.php";
+
+  static const String UPDATE_CONTACT =
+      _CONTACT_API_BASE_URL + "UpdateContact.php";
+
+  static const String READ_DELETED_CONTACTS =
+      _CONTACT_API_BASE_URL + "ReadDeletedContacts.php";
+
+  static const String READ_LOGS = _CONTACT_API_BASE_URL + "ReadLogs.php";
+}
+
+//------------------------------------------------------------------------------
+class EventConstants {
+  static const int NO_INTERNET_CONNECTION = 0;
+
+  static const int READ_CONTACT_SUCCESSFUL = 500;
+  static const int NO_CONTACT_FOUND = 501;
+  static const int READ_CONTACT_UN_SUCCESSFUL = 502;
+}
+
+//------------------------------------------------------------------------------
+class APIResponseCode {
+  static const int SC_OK = 200;
+  static const int SC_CREATED = 201;
+  static const int SC_BAD_REQUEST = 400;
+  static const int SC_NOT_FOUND = 404;
+  static const int SC_INTERNAL_SERVER_ERROR = 500;
+}
+//------------------------------------------------------------------------------
+
+class SharedPreferenceKeys {}
+
+//------------------------------------------------------------------------------
+class ProgressDialogTitles {
+  static const String LOADING_CONTACTS = "Contacts...";
+}
+
+//------------------------------------------------------------------------------
+class SnackBarText {
+  static const String TAPPED_ON_API_HEADER =
+      "Contacts App Implemented Using Rest APIS";
+  static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
+}
+
+//------------------------------------------------------------------------------
 class Texts {
   static const String APP_NAME = "Contacts";
   static const String WAYS = "Ways";
@@ -32,5 +84,21 @@ class Texts {
   static const String CUSTOM = "Custom";
   static const String PREFERENCES = "Preferences";
   static const String SQFLITE = "Sqflite";
+  static const String NO_CONTACTS = "No Contacts";
 }
-///////////////////////////////////////////////////////////////////////////////
+
+//------------------------------------------------------------------------------
+class DrawerTitles {
+  static const String CONTACTS = "Contacts";
+  static const String DELETED_CONTACTS = "Deleted Contacts";
+  static const String LOGS = "Logs";
+}
+
+//------------------------------------------------------------------------------
+class Actions {
+  static const String VIEW_CONTACT = "View";
+  static const String CREATE_CONTACT = "View";
+  static const String DELETE_CONTACT = "Delete";
+  static const String EDIT_OR_UPDATE_CONTACT = "Edit";
+}
+//------------------------------------------------------------------------------

@@ -56,7 +56,7 @@ class ProgressDialog extends StatefulWidget {
     return new ProgressDialog(
       backgroundColor: Colors.black12,
       color: Colors.white,
-      containerColor: Colors.blue,
+      containerColor: Colors.blueGrey,
       borderRadius: 5.0,
       text: title,
     );
@@ -69,7 +69,7 @@ class ProgressDialogState extends State<ProgressDialog> {
   Color containerColor;
   double borderRadius;
   String text;
-  bool _opacity = false;
+  bool _opacity = true;
 
   ProgressDialogState(
       {this.backgroundColor = Colors.black54,

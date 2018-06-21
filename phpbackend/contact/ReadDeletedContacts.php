@@ -42,7 +42,7 @@ if($num>0){
             "address" => $address,
             "latitude" => $latitude,
             "longitude" => $longitude,
-            "contact_image" => base64_encode($deletedContacts_image),
+            "contact_image" => $deletedContacts_image,
         );
 
         array_push($deletedContacts_arr, $deletedContacts_item);

@@ -1,25 +1,24 @@
--- phpMyAdmin SQL Dump
--- version 4.7.9
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Jun 18, 2018 at 01:05 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.3
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
+-- phpMyAdmin SQL Dump
+-- version 3.5.2.2
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jun 20, 2018 at 04:11 PM
+-- Server version: 10.1.24-MariaDB
+-- PHP Version: 5.2.17
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `contacts`
+-- Database: `u347259493_test`
 --
 
 -- --------------------------------------------------------
@@ -28,33 +27,34 @@ SET time_zone = "+00:00";
 -- Table structure for table `contact`
 --
 
-CREATE TABLE `contact` (
-  `_id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `address` varchar(50) NOT NULL,
-  `latitude` varchar(50) NOT NULL,
-  `longitude` varchar(50) NOT NULL,
-  `contact_image` longblob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `contact` (
+  `_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  `phone` text NOT NULL,
+  `email` text NOT NULL,
+  `address` text NOT NULL,
+  `latitude` text NOT NULL,
+  `longitude` text NOT NULL,
+  `contact_image` longblob NOT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `deletedcontacts`
 --
 
-CREATE TABLE `deletedcontacts` (
+CREATE TABLE IF NOT EXISTS `deletedcontacts` (
   `_id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `phone` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `address` varchar(50) NOT NULL,
-  `latitude` varchar(50) NOT NULL,
-  `longitude` varchar(50) NOT NULL,
-  `contact_image` longblob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `name` text NOT NULL,
+  `phone` text NOT NULL,
+  `email` text NOT NULL,
+  `address` text NOT NULL,
+  `latitude` text NOT NULL,
+  `longitude` text NOT NULL,
+  `contact_image` longblob NOT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -62,44 +62,12 @@ CREATE TABLE `deletedcontacts` (
 -- Table structure for table `log`
 --
 
-CREATE TABLE `log` (
+CREATE TABLE IF NOT EXISTS `log` (
   `column_timestamp` text NOT NULL,
   `column_transaction` text NOT NULL,
-  `column_date` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `contact`
---
-ALTER TABLE `contact`
-  ADD PRIMARY KEY (`_id`);
-
---
--- Indexes for table `deletedcontacts`
---
-ALTER TABLE `deletedcontacts`
-  ADD PRIMARY KEY (`_id`);
-
---
--- Indexes for table `log`
---
-ALTER TABLE `log`
-  ADD PRIMARY KEY (`column_timestamp`(20));
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `contact`
---
-ALTER TABLE `contact`
-  MODIFY `_id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
+  `column_date` text NOT NULL,
+  PRIMARY KEY (`column_timestamp`(20))
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

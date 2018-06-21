@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import 'dart:async';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'deleted_contact.g.dart';
@@ -38,6 +39,23 @@ class DeletedContact extends Object with _$DeletedContactSerializerMixin {
         this.latitude,
         this.longitude,
         this.contactImage});
+
+  static Future<List<DeletedContact>> fromDeletedContactJson(List<dynamic> json) async{
+    List<DeletedContact> deletedContactList = new List<DeletedContact>();
+    for (var contact in json) {
+      deletedContactList.add(new DeletedContact(
+        id: contact['_id'],
+        name: contact['name'],
+        phone: contact['phone'],
+        email: contact['email'],
+        address: contact['address'],
+        latitude: contact['latitude'],
+        longitude: contact['longitude'],
+        contactImage: contact['contact_image'],
+      ));
+    }
+    return deletedContactList;
+  }
 
   factory DeletedContact.fromJson(Map<String, dynamic> json) =>
       _$DeletedContactFromJson(json);

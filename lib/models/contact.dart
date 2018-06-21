@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-
+import 'dart:async';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'contact.g.dart';
@@ -39,6 +39,24 @@ class Contact extends Object with _$ContactSerializerMixin {
         this.latitude,
         this.longitude,
         this.contactImage});
+
+  static Future<List<Contact>> fromContactJson(List<dynamic> json) async{
+    List<Contact> contactList = new List<Contact>();
+    for (var contact in json) {
+      contactList.add(new Contact(
+        id: contact['_id'],
+        name: contact['name'],
+        phone: contact['phone'],
+        email: contact['email'],
+        address: contact['address'],
+        latitude: contact['latitude'],
+        longitude: contact['longitude'],
+        contactImage: contact['contact_image'],
+      ));
+    }
+    return contactList;
+  }
+
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);

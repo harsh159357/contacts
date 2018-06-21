@@ -15,7 +15,7 @@ DeletedContact _$DeletedContactFromJson(Map<String, dynamic> json) =>
         address: json['address'] as String,
         latitude: json['latitude'] as String,
         longitude: json['longitude'] as String,
-        contactImage: json['contactImage'] as String);
+        contactImage: json['contact_image'] as String);
 
 abstract class _$DeletedContactSerializerMixin {
   String get id;
@@ -34,6 +34,6 @@ abstract class _$DeletedContactSerializerMixin {
         'address': address,
         'latitude': latitude,
         'longitude': longitude,
-        'contactImage': contactImage
+        'contact_image': contactImage
       };
 }

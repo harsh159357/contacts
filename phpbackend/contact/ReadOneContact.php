@@ -43,7 +43,7 @@ $contact_arr = array(
   "address" => $contact->address,
   "latitude" => $contact->latitude,
   "longitude" => $contact->longitude,
-  "contact_image" => base64_encode($contact->contact_image),
+  "contact_image" => $contact->contact_image,
 );
 
 header('HTTP/1.1 200 Contact Found');

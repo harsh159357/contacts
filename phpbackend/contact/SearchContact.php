@@ -46,7 +46,7 @@ if($num>0){
           "address" => $address,
           "latitude" => $latitude,
           "longitude" => $longitude,
-          "contact_image" => base64_encode($contact_image),
+          "contact_image" => $contact_image,
       );
 
       array_push($contacts_arr, $contact_item);
@@ -62,6 +62,6 @@ else{
   header("HTTP/1.1 404 No Contacts Found for your search query ".$keywords."");
 }
 } else {
-  header("HTTP/1.1 400 Please provide search query parameter s");  
+  header("HTTP/1.1 400 Please provide search query parameter s");
 }
 ?>

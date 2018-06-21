@@ -61,7 +61,6 @@ class SplashPageState extends State<SplashPage>
 
   final globalKey = new GlobalKey<ScaffoldState>();
 
-//------------------------------------------------------------------------------
   @override
   Widget build(BuildContext context) {
     new Future.delayed(const Duration(seconds: 3), _handleTapEvent);
@@ -71,7 +70,6 @@ class SplashPageState extends State<SplashPage>
     );
   }
 
-//------------------------------------------------------------------------------
   Widget _splashContainer() {
     return GestureDetector(
         onTap: _handleTapEvent,
@@ -102,7 +100,6 @@ class SplashPageState extends State<SplashPage>
             )));
   }
 
-//------------------------------------------------------------------------------
   void _handleTapEvent() async {
     if (this.mounted) {
       setState(() {
@@ -114,7 +111,6 @@ class SplashPageState extends State<SplashPage>
     }
   }
 
-//------------------------------------------------------------------------------
   @override
   dispose() {
     logoAnimationController.dispose();
