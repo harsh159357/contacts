@@ -34,11 +34,35 @@ Future<EventObject> getContacts() async {
         final responseJson = json.decode(response.body);
         List<Contact> contactList = await Contact.fromContactJson(responseJson);
         return new EventObject(
-            id: EventConstants.READ_CONTACT_SUCCESSFUL, object: contactList);
+            id: EventConstants.READ_CONTACTS_SUCCESSFUL, object: contactList);
       } else if (response.statusCode == APIResponseCode.SC_NOT_FOUND) {
-        return new EventObject(id: EventConstants.NO_CONTACT_FOUND);
+        return new EventObject(id: EventConstants.NO_CONTACTS_FOUND);
       } else {
-        return new EventObject(id: EventConstants.READ_CONTACT_UN_SUCCESSFUL);
+        return new EventObject(id: EventConstants.READ_CONTACTS_UN_SUCCESSFUL);
+      }
+    } else {
+      return new EventObject();
+    }
+  } catch (e) {
+    print(e.toString());
+    return new EventObject();
+  }
+}
+
+//------------------------------------------------------------------------------
+Future<EventObject> getDeletedContacts() async {
+  try {
+    final response = await http.get(APIConstants.READ_DELETED_CONTACTS);
+    if (response != null) {
+      if (response.statusCode == APIResponseCode.SC_OK) {
+        final responseJson = json.decode(response.body);
+        List<DeletedContact> deletedContacts = await DeletedContact.fromDeletedContactJson(responseJson);
+        return new EventObject(
+            id: EventConstants.READ_DELETED_CONTACTS_SUCCESSFUL, object: deletedContacts);
+      } else if (response.statusCode == APIResponseCode.SC_NOT_FOUND) {
+        return new EventObject(id: EventConstants.NO_DELETED_CONTACTS_FOUND);
+      } else {
+        return new EventObject(id: EventConstants.READ_DELETED_CONTACTS_UN_SUCCESSFUL);
       }
     } else {
       return new EventObject();

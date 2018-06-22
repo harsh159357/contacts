@@ -16,22 +16,23 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:contacts/models/contact.dart';
+import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/utils/constants.dart';
 
-class ContactPage extends StatefulWidget {
-  final List<Contact> contactList;
+class DeletedContactsPage extends StatefulWidget {
+  final List<DeletedContact> deletedContacts;
 
-  ContactPage({this.contactList});
+  DeletedContactsPage({this.deletedContacts});
 
   @override
-  createState() => new ContactPageState(contactList: contactList);
+  createState() =>
+      new DeletedContactsPageState(deletedContacts: deletedContacts);
 }
 
-class ContactPageState extends State<ContactPage> {
-  List<Contact> contactList;
+class DeletedContactsPageState extends State<DeletedContactsPage> {
+  List<DeletedContact> deletedContacts;
 
-  ContactPageState({this.contactList});
+  DeletedContactsPageState({this.deletedContacts});
 
   @override
   void initState() {
@@ -41,12 +42,12 @@ class ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: loadList(contactList),
+      body: loadList(deletedContacts),
       backgroundColor: Colors.grey[150],
     );
   }
 
-  Widget loadList(List<Contact> list) {
+  Widget loadList(List<DeletedContact> list) {
     if (list != null) {
       return _buildContactList(list);
     } else {
@@ -76,19 +77,19 @@ class ContactPageState extends State<ContactPage> {
     }
   }
 
-  Widget _buildContactList(List<Contact> contacts) {
+  Widget _buildContactList(List<DeletedContact> deletedContacts) {
     return new ListView.builder(
 //      padding: const EdgeInsets.only(
 //          top: 16.0, left: 16.0, right: 16.0, bottom: 16.0),
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
-        return _buildContactRow(contacts[i]);
+        return _buildContactRow(deletedContacts[i]);
       },
-      itemCount: contacts.length,
+      itemCount: deletedContacts.length,
     );
   }
 
-  Widget _buildContactRow(Contact contact) {
+  Widget _buildContactRow(DeletedContact deletedContact) {
     return new Card(
       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: new Container(
@@ -96,24 +97,10 @@ class ContactPageState extends State<ContactPage> {
           children: <Widget>[
             new Row(
               children: <Widget>[
-                contactImage(contact),
-                contactDetails(contact)
+                contactImage(deletedContact),
+                contactDetails(deletedContact)
               ],
             ),
-            new Container(
-              margin: EdgeInsets.only(top: 10.0),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  actionContainer(
-                      Icons.visibility, Colors.blue[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.edit, Colors.blueGrey[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.delete, Colors.black, Actions.VIEW_CONTACT),
-                ],
-              ),
-            )
           ],
         ),
         margin: EdgeInsets.all(10.0),
@@ -121,25 +108,25 @@ class ContactPageState extends State<ContactPage> {
     );
   }
 
-  Widget contactImage(Contact contact) {
+  Widget contactImage(DeletedContact deletedContact) {
     return new Image.memory(
-      base64.decode(contact.contactImage),
+      base64.decode(deletedContact.contactImage),
       height: 100.0,
       width: 100.0,
       fit: BoxFit.fill,
     );
   }
 
-  Widget contactDetails(Contact contact) {
+  Widget contactDetails(DeletedContact deletedContact) {
     return new Flexible(
         child: new Container(
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          textContainer(contact.name, Colors.blue[400]),
-          textContainer(contact.phone, Colors.blueGrey[400]),
-          textContainer(contact.email, Colors.black),
+          textContainer(deletedContact.name, Colors.blue[400]),
+          textContainer(deletedContact.phone, Colors.blueGrey[400]),
+          textContainer(deletedContact.email, Colors.black),
         ],
       ),
       margin: EdgeInsets.only(left: 20.0),
@@ -158,29 +145,5 @@ class ContactPageState extends State<ContactPage> {
       ),
       margin: EdgeInsets.only(bottom: 10.0),
     );
-  }
-
-  Widget actionContainer(IconData icon, Color color, String action) {
-    return new Flexible(
-        flex: 1,
-        child: new GestureDetector(
-          child: new Icon(
-            icon,
-            size: 30.0,
-            color: color,
-          ),
-          onTap: () {
-            setState(() {
-              switch (action) {
-                case Actions.VIEW_CONTACT:
-                  break;
-                case Actions.EDIT_OR_UPDATE_CONTACT:
-                  break;
-                case Actions.DELETE_CONTACT:
-                  break;
-              }
-            });
-          },
-        ));
   }
 }

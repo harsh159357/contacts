@@ -24,6 +24,7 @@ import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/ways/api/pages/contacts_page.dart';
+import 'package:contacts/ways/api/pages/deleted_contacts.dart';
 
 class APIHomePage extends StatefulWidget {
   @override
@@ -45,24 +46,8 @@ class APIHomePageState extends State<APIHomePage> {
   }
 
   Future<void> initContacts() async {
-    EventObject eventObject = await getContacts();
-    setState(() {
-      progressDialog.hideProgress();
-      switch (eventObject.id) {
-        case EventConstants.READ_CONTACT_SUCCESSFUL:
-          apiHomeWidget = new ContactPage(contactList: eventObject.object);
-          break;
-        case EventConstants.READ_CONTACT_UN_SUCCESSFUL:
-          apiHomeWidget = new ContactPage();
-          break;
-        case EventConstants.NO_CONTACT_FOUND:
-          apiHomeWidget = new ContactPage();
-          break;
-        case EventConstants.NO_INTERNET_CONNECTION:
-          showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
-          break;
-      }
-    });
+    EventObject eventObjectInitContacts = await getContacts();
+    eventsCapturing(eventObjectInitContacts);
   }
 
   @override
@@ -195,6 +180,9 @@ class APIHomePageState extends State<APIHomePage> {
             loadContacts();
             break;
           case DrawerTitles.DELETED_CONTACTS:
+            progressDialog.showProgressWithText(
+                ProgressDialogTitles.LOADING_DELETED_CONTACTS);
+            loadDeletedContacts();
             break;
           case DrawerTitles.LOGS:
             break;
@@ -206,23 +194,47 @@ class APIHomePageState extends State<APIHomePage> {
   }
 
   void loadContacts() async {
-    EventObject eventObject = await getContacts();
+    EventObject eventObjectContacts = await getContacts();
+    eventsCapturing(eventObjectContacts);
+  }
+
+  void loadDeletedContacts() async {
+    EventObject eventObjectDeleteContacts = await getDeletedContacts();
+    eventsCapturing(eventObjectDeleteContacts);
+  }
+
+  void eventsCapturing(EventObject eventObject) {
     if (this.mounted) {
       setState(() {
         progressDialog.hideProgress();
         switch (eventObject.id) {
-          case EventConstants.READ_CONTACT_SUCCESSFUL:
+          case EventConstants.READ_CONTACTS_SUCCESSFUL:
             apiHomeWidget = new ContactPage(contactList: eventObject.object);
+            showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_CONTACT_UN_SUCCESSFUL:
+          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
             apiHomeWidget = new ContactPage();
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_CONTACTS);
             break;
-          case EventConstants.NO_CONTACT_FOUND:
+          case EventConstants.NO_CONTACTS_FOUND:
             apiHomeWidget = new ContactPage();
+            showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
+            break;
+          case EventConstants.READ_DELETED_CONTACTS_SUCCESSFUL:
+            apiHomeWidget =
+                new DeletedContactsPage(deletedContacts: eventObject.object);
+            showSnackBar(SnackBarText.DELETED_CONTACTS_LOADED_SUCCESSFULLY);
+            break;
+          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
+            apiHomeWidget = new DeletedContactsPage();
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_DELETED_CONTACTS);
+            break;
+          case EventConstants.NO_DELETED_CONTACTS_FOUND:
+            apiHomeWidget = new DeletedContactsPage();
+            showSnackBar(SnackBarText.NO_DELETED_CONTACTS_FOUND);
             break;
           case EventConstants.NO_INTERNET_CONNECTION:
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
-            break;
         }
       });
     }

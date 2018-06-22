@@ -46,10 +46,17 @@ class APIConstants {
 //------------------------------------------------------------------------------
 class EventConstants {
   static const int NO_INTERNET_CONNECTION = 0;
+//------------------------------------------------------------------------------
 
-  static const int READ_CONTACT_SUCCESSFUL = 500;
-  static const int NO_CONTACT_FOUND = 501;
-  static const int READ_CONTACT_UN_SUCCESSFUL = 502;
+  static const int READ_CONTACTS_SUCCESSFUL = 500;
+  static const int NO_CONTACTS_FOUND = 501;
+  static const int READ_CONTACTS_UN_SUCCESSFUL = 502;
+//------------------------------------------------------------------------------
+
+  static const int READ_DELETED_CONTACTS_SUCCESSFUL = 503;
+  static const int NO_DELETED_CONTACTS_FOUND = 504;
+  static const int READ_DELETED_CONTACTS_UN_SUCCESSFUL = 505;
+//------------------------------------------------------------------------------
 }
 
 //------------------------------------------------------------------------------
@@ -67,12 +74,31 @@ class SharedPreferenceKeys {}
 //------------------------------------------------------------------------------
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
+  static const String LOADING_DELETED_CONTACTS = "Contacts...";
 }
 
 //------------------------------------------------------------------------------
 class SnackBarText {
   static const String TAPPED_ON_API_HEADER =
       "Contacts App Implemented Using Rest APIS";
+
+//------------------------------------------------------------------------------
+
+  static const String CONTACTS_LOADED_SUCCESSFULLY =
+      "Contacts Loaded Successfully";
+  static const String UNABLE_TO_LOAD_CONTACTS = "Unable to Load Contacts";
+  static const String NO_CONTACTS_FOUND = "No Contacts Found";
+
+//------------------------------------------------------------------------------
+
+  static const String DELETED_CONTACTS_LOADED_SUCCESSFULLY =
+      "Deleted Contacts Loaded Successfully";
+  static const String NO_DELETED_CONTACTS_FOUND = "No Delted Contacts Found";
+  static const String UNABLE_TO_LOAD_DELETED_CONTACTS =
+      "Unable to Load Deleted Contacts";
+
+//------------------------------------------------------------------------------
+
   static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
 }
 
