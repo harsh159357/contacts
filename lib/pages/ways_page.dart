@@ -113,47 +113,28 @@ class WaysPageState extends State<WaysPage> {
   void navigateTo(String title) {
     switch (title) {
       case Texts.API:
-        if (this.mounted) {
-          setState(() {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new APIHomePage()),
-            );
-          });
-        }
+        navigateToPage(new APIHomePage());
         break;
       case Texts.CUSTOM:
-        if (this.mounted) {
-          setState(() {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new CustomHomePage()),
-            );
-          });
-        }
+        navigateToPage(new CustomHomePage());
         break;
       case Texts.PREFERENCES:
-        if (this.mounted) {
-          setState(() {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new PreferencesHomePage()),
-            );
-          });
-        }
+        navigateToPage(new PreferencesHomePage());
         break;
       case Texts.SQFLITE:
-        if (this.mounted) {
-          setState(() {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(
-                  builder: (context) => new SqfliteHomePage()),
-            );
-          });
-        }
+        navigateToPage(new SqfliteHomePage());
         break;
+    }
+  }
+
+  void navigateToPage(StatefulWidget statefulWidget) {
+    if (this.mounted) {
+      setState(() {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => statefulWidget),
+        );
+      });
     }
   }
 }

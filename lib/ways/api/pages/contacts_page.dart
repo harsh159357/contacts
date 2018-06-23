@@ -18,6 +18,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:contacts/customviews/no_content_found.dart';
 
 class ContactPage extends StatefulWidget {
   final List<Contact> contactList;
@@ -50,36 +51,12 @@ class ContactPageState extends State<ContactPage> {
     if (list != null) {
       return _buildContactList(list);
     } else {
-      return new Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Icon(
-              Icons.account_circle,
-              color: Colors.blue[400],
-              size: 150.0,
-            ),
-            new Container(
-              child: new Text(
-                Texts.NO_CONTACTS,
-                style:
-                    new TextStyle(fontSize: 26.0, color: Colors.blueGrey[400]),
-              ),
-              margin: EdgeInsets.only(top: 5.0),
-            )
-          ],
-        ),
-      );
+      return NoContentFound(Texts.NO_CONTACTS,Icons.account_circle);
     }
   }
 
   Widget _buildContactList(List<Contact> contacts) {
     return new ListView.builder(
-//      padding: const EdgeInsets.only(
-//          top: 16.0, left: 16.0, right: 16.0, bottom: 16.0),
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
         return _buildContactRow(contacts[i]);

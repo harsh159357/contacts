@@ -46,16 +46,24 @@ class APIConstants {
 //------------------------------------------------------------------------------
 class EventConstants {
   static const int NO_INTERNET_CONNECTION = 0;
+
 //------------------------------------------------------------------------------
 
   static const int READ_CONTACTS_SUCCESSFUL = 500;
   static const int NO_CONTACTS_FOUND = 501;
   static const int READ_CONTACTS_UN_SUCCESSFUL = 502;
+
 //------------------------------------------------------------------------------
 
   static const int READ_DELETED_CONTACTS_SUCCESSFUL = 503;
   static const int NO_DELETED_CONTACTS_FOUND = 504;
   static const int READ_DELETED_CONTACTS_UN_SUCCESSFUL = 505;
+
+//------------------------------------------------------------------------------
+
+  static const int READ_LOGS_SUCCESSFUL = 506;
+  static const int NO_LOGS_FOUND = 507;
+  static const int READ_LOGS_UN_SUCCESSFUL = 508;
 //------------------------------------------------------------------------------
 }
 
@@ -75,6 +83,7 @@ class SharedPreferenceKeys {}
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
   static const String LOADING_DELETED_CONTACTS = "Contacts...";
+  static const String LOADING_LOGS = "Logs...";
 }
 
 //------------------------------------------------------------------------------
@@ -99,6 +108,12 @@ class SnackBarText {
 
 //------------------------------------------------------------------------------
 
+  static const String LOGS_LOADED_SUCCESSFULLY = "Logs Loaded Successfully";
+  static const String NO_LOGS_FOUND = "No Logs Found";
+  static const String UNABLE_TO_LOAD_LOGS = "Unable to Load Logs";
+
+//------------------------------------------------------------------------------
+
   static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
 }
 
@@ -111,12 +126,15 @@ class Texts {
   static const String PREFERENCES = "Preferences";
   static const String SQFLITE = "Sqflite";
   static const String NO_CONTACTS = "No Contacts";
+  static const String NO_DELETED_CONTACTS = "No Deleted Contacts";
+  static const String NO_LOGS = "No Logs";
 }
 
 //------------------------------------------------------------------------------
 class DrawerTitles {
   static const String CONTACTS = "Contacts";
   static const String DELETED_CONTACTS = "Deleted Contacts";
+  static const String SEARCH_CONTACTS = "Search Contacts";
   static const String LOGS = "Logs";
 }
 

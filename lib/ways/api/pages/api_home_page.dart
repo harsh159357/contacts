@@ -19,12 +19,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/customviews/progress_dialog.dart';
-import 'package:contacts/models/contact.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/models/base/event_object.dart';
-import 'package:contacts/models/contact.dart';
 import 'package:contacts/ways/api/pages/contacts_page.dart';
-import 'package:contacts/ways/api/pages/deleted_contacts.dart';
+import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
+import 'package:contacts/ways/api/pages/logs_page.dart';
+import 'package:contacts/customviews/no_content_found.dart';
 
 class APIHomePage extends StatefulWidget {
   @override
@@ -85,6 +85,8 @@ class APIHomePageState extends State<APIHomePage> {
     );
   }
 
+//------------------------------------------------------------------------------
+
   List<NavigationItem> navigationData;
 
   Widget _navigationDrawer() {
@@ -98,6 +100,8 @@ class APIHomePageState extends State<APIHomePage> {
           leadingIconData: Icons.account_circle, title: DrawerTitles.CONTACTS),
       new SimpleItem(
           leadingIconData: Icons.delete, title: DrawerTitles.DELETED_CONTACTS),
+      new SimpleItem(
+          leadingIconData: Icons.search, title: DrawerTitles.SEARCH_CONTACTS),
       new SimpleItem(leadingIconData: Icons.list, title: DrawerTitles.LOGS),
     ];
     return new ListView.builder(
@@ -185,6 +189,9 @@ class APIHomePageState extends State<APIHomePage> {
             loadDeletedContacts();
             break;
           case DrawerTitles.LOGS:
+            progressDialog
+                .showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
+            loadLogs();
             break;
         }
       } else {
@@ -193,6 +200,7 @@ class APIHomePageState extends State<APIHomePage> {
     });
   }
 
+//------------------------------------------------------------------------------
   void loadContacts() async {
     EventObject eventObjectContacts = await getContacts();
     eventsCapturing(eventObjectContacts);
@@ -203,11 +211,19 @@ class APIHomePageState extends State<APIHomePage> {
     eventsCapturing(eventObjectDeleteContacts);
   }
 
+  void loadLogs() async {
+    EventObject eventObjectLogs = await getLogs();
+    eventsCapturing(eventObjectLogs);
+  }
+
+//------------------------------------------------------------------------------
+
   void eventsCapturing(EventObject eventObject) {
     if (this.mounted) {
       setState(() {
         progressDialog.hideProgress();
         switch (eventObject.id) {
+//------------------------------------------------------------------------------
           case EventConstants.READ_CONTACTS_SUCCESSFUL:
             apiHomeWidget = new ContactPage(contactList: eventObject.object);
             showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
@@ -220,6 +236,7 @@ class APIHomePageState extends State<APIHomePage> {
             apiHomeWidget = new ContactPage();
             showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
             break;
+//------------------------------------------------------------------------------
           case EventConstants.READ_DELETED_CONTACTS_SUCCESSFUL:
             apiHomeWidget =
                 new DeletedContactsPage(deletedContacts: eventObject.object);
@@ -233,7 +250,23 @@ class APIHomePageState extends State<APIHomePage> {
             apiHomeWidget = new DeletedContactsPage();
             showSnackBar(SnackBarText.NO_DELETED_CONTACTS_FOUND);
             break;
+//------------------------------------------------------------------------------
+          case EventConstants.READ_LOGS_SUCCESSFUL:
+            apiHomeWidget = new LogsPage(logs: eventObject.object);
+            showSnackBar(SnackBarText.LOGS_LOADED_SUCCESSFULLY);
+            break;
+          case EventConstants.READ_LOGS_SUCCESSFUL:
+            apiHomeWidget = new LogsPage();
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_LOGS);
+            break;
+          case EventConstants.NO_LOGS_FOUND:
+            apiHomeWidget = new LogsPage();
+            showSnackBar(SnackBarText.NO_LOGS_FOUND);
+            break;
+//------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
+            apiHomeWidget = new NoContentFound(
+                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
         }
       });
