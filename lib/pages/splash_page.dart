@@ -32,8 +32,8 @@ class SplashPageState extends State<SplashPage>
   Animation<double> logoAnimation, appNameAnimation;
   AnimationController logoAnimationController, appNameAnimationController;
 
-  static final sizeTweenLogo = new Tween(begin: 0.0, end: 200.0);
-  static final sizeTweenAppName = new Tween(begin: 0.0, end: 50.0);
+  static final tweenLogo = new Tween(begin: 0.0, end: 200.0);
+  static final tweenAppName = new Tween(begin: 0.0, end: 50.0);
 
   @override
   initState() {
@@ -43,13 +43,13 @@ class SplashPageState extends State<SplashPage>
       vsync: this,
     );
     appNameAnimationController = logoAnimationController;
-    logoAnimation = sizeTweenLogo.animate(logoAnimationController)
+    logoAnimation = tweenLogo.animate(logoAnimationController)
       ..addListener(() {
         setState(() {
           // the state that has changed here is the animation object’s value
         });
       });
-    appNameAnimation = sizeTweenAppName.animate(logoAnimationController)
+    appNameAnimation = tweenAppName.animate(logoAnimationController)
       ..addListener(() {
         setState(() {
           // the state that has changed here is the animation object’s value

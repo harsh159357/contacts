@@ -18,7 +18,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/ways/deleted_contact_avatar.dart';
+import 'package:contacts/ways/deleted_contact_details.dart';
 
 class DeletedContactsPage extends StatefulWidget {
   final List<DeletedContact> deletedContacts;
@@ -31,6 +34,13 @@ class DeletedContactsPage extends StatefulWidget {
 }
 
 class DeletedContactsPageState extends State<DeletedContactsPage> {
+  RectTween _createRectTween(Rect begin, Rect end) {
+    return new MaterialRectCenterArcTween(begin: begin, end: end);
+  }
+
+  static const opacityCurve =
+      const Interval(0.0, 0.75, curve: Curves.fastOutSlowIn);
+
   List<DeletedContact> deletedContacts;
 
   DeletedContactsPageState({this.deletedContacts});
@@ -42,6 +52,7 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 3.0;
     return new Scaffold(
       body: loadList(deletedContacts),
       backgroundColor: Colors.grey[150],
@@ -52,7 +63,7 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
     if (list != null) {
       return _buildDeletedContactsList(list);
     } else {
-      return NoContentFound(Texts.NO_DELETED_CONTACTS,Icons.account_circle);
+      return NoContentFound(Texts.NO_DELETED_CONTACTS, Icons.account_circle);
     }
   }
 
@@ -67,30 +78,36 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
   }
 
   Widget _buildDeletedContactsRow(DeletedContact deletedContact) {
-    return new Card(
-      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: new Container(
-        child: new Column(
-          children: <Widget>[
-            new Row(
-              children: <Widget>[
-                deletedContactImage(deletedContact),
-                deletedContactDetails(deletedContact)
-              ],
-            ),
-          ],
+    return new GestureDetector(
+      onTap: () {
+        _heroAnimation(deletedContact);
+      },
+      child: new Card(
+        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: new Container(
+          child: new Column(
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  deletedContactAvatar(deletedContact),
+                  deletedContactDetails(deletedContact)
+                ],
+              ),
+            ],
+          ),
+          margin: EdgeInsets.all(10.0),
         ),
-        margin: EdgeInsets.all(10.0),
       ),
     );
   }
 
-  Widget deletedContactImage(DeletedContact deletedContact) {
-    return new Image.memory(
-      base64.decode(deletedContact.contactImage),
-      height: 100.0,
-      width: 100.0,
-      fit: BoxFit.fill,
+  Widget deletedContactAvatar(DeletedContact deletedContact) {
+    return new Hero(
+      tag: deletedContact.id,
+      child: new DeletedContactAvatar(
+        deletedContact: deletedContact,
+      ),
+      createRectTween: _createRectTween,
     );
   }
 
@@ -121,6 +138,24 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
         overflow: TextOverflow.ellipsis,
       ),
       margin: EdgeInsets.only(bottom: 10.0),
+    );
+  }
+
+  void _heroAnimation(DeletedContact deletedContact) {
+    Navigator.of(context).push(
+      new PageRouteBuilder<Null>(
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return new AnimatedBuilder(
+              animation: animation,
+              builder: (BuildContext context, Widget child) {
+                return new Opacity(
+                  opacity: opacityCurve.transform(animation.value),
+                  child: DeletedContactDetails(deletedContact),
+                );
+              });
+        },
+      ),
     );
   }
 }

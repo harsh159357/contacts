@@ -18,6 +18,7 @@
 import 'package:flutter/material.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/ways/api/pages/api_home_page.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:contacts/ways/custom/pages/custom_home_page.dart';
 import 'package:contacts/ways/preferences/pages/preferences_home_page.dart';
 import 'package:contacts/ways/sqflite/pages/sqflite_home_page.dart';
@@ -32,6 +33,7 @@ class WaysPageState extends State<WaysPage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.0;
     return new Scaffold(
       key: globalKey,
       appBar: new AppBar(

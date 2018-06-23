@@ -17,6 +17,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class PreferencesHomePage extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class PreferencesHomePageState extends State<PreferencesHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.0;
     return new Scaffold(
       key: globalKey,
       appBar: new AppBar(
@@ -35,7 +37,7 @@ class PreferencesHomePageState extends State<PreferencesHomePage> {
         textTheme: new TextTheme(
             title: new TextStyle(
           color: Colors.white,
-          fontSize: 26.0,
+          fontSize: 22.0,
         )),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(Texts.PREFERENCES),

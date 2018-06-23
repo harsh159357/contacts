@@ -123,6 +123,7 @@ class Texts {
   static const String WAYS = "Ways";
   static const String API = "API";
   static const String CUSTOM = "Custom";
+  static const String CONTACT_DETAILS = "Contact Details";
   static const String PREFERENCES = "Preferences";
   static const String SQFLITE = "Sqflite";
   static const String NO_CONTACTS = "No Contacts";

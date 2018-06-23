@@ -22,6 +22,7 @@ import 'package:contacts/customviews/progress_dialog.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/ways/api/pages/contacts_page.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
 import 'package:contacts/ways/api/pages/logs_page.dart';
 import 'package:contacts/customviews/no_content_found.dart';
@@ -52,6 +53,7 @@ class APIHomePageState extends State<APIHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.0;
     return new Scaffold(
       key: globalKey,
       appBar: new AppBar(

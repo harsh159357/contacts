@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/ways/contact_avatar.dart';
+import 'package:contacts/ways/contact_details.dart';
 
 class ContactPage extends StatefulWidget {
   final List<Contact> contactList;
@@ -30,6 +32,13 @@ class ContactPage extends StatefulWidget {
 }
 
 class ContactPageState extends State<ContactPage> {
+  RectTween _createRectTween(Rect begin, Rect end) {
+    return new MaterialRectCenterArcTween(begin: begin, end: end);
+  }
+
+  static const opacityCurve =
+      const Interval(0.0, 0.75, curve: Curves.fastOutSlowIn);
+
   List<Contact> contactList;
 
   ContactPageState({this.contactList});
@@ -41,6 +50,7 @@ class ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 3.0;
     return new Scaffold(
       body: loadList(contactList),
       backgroundColor: Colors.grey[150],
@@ -51,7 +61,7 @@ class ContactPageState extends State<ContactPage> {
     if (list != null) {
       return _buildContactList(list);
     } else {
-      return NoContentFound(Texts.NO_CONTACTS,Icons.account_circle);
+      return NoContentFound(Texts.NO_CONTACTS, Icons.account_circle);
     }
   }
 
@@ -66,17 +76,22 @@ class ContactPageState extends State<ContactPage> {
   }
 
   Widget _buildContactRow(Contact contact) {
-    return new Card(
-      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: new Container(
-        child: new Column(
-          children: <Widget>[
-            new Row(
-              children: <Widget>[
-                contactImage(contact),
-                contactDetails(contact)
-              ],
-            ),
+    return new GestureDetector(
+      onTap: () {
+        _heroAnimation(contact);
+      },
+      child: new Card(
+        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+        child: new Container(
+          child: new Column(
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  contactAvatar(contact),
+                  contactDetails(contact)
+                ],
+              ),
+/*
             new Container(
               margin: EdgeInsets.only(top: 10.0),
               child: new Row(
@@ -91,19 +106,22 @@ class ContactPageState extends State<ContactPage> {
                 ],
               ),
             )
-          ],
+*/
+            ],
+          ),
+          margin: EdgeInsets.all(10.0),
         ),
-        margin: EdgeInsets.all(10.0),
       ),
     );
   }
 
-  Widget contactImage(Contact contact) {
-    return new Image.memory(
-      base64.decode(contact.contactImage),
-      height: 100.0,
-      width: 100.0,
-      fit: BoxFit.fill,
+  Widget contactAvatar(Contact contact) {
+    return new Hero(
+      tag: contact.id,
+      child: new ContactAvatar(
+        contact: contact,
+      ),
+      createRectTween: _createRectTween,
     );
   }
 
@@ -159,5 +177,23 @@ class ContactPageState extends State<ContactPage> {
             });
           },
         ));
+  }
+
+  void _heroAnimation(Contact contact) {
+    Navigator.of(context).push(
+      new PageRouteBuilder<Null>(
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return new AnimatedBuilder(
+              animation: animation,
+              builder: (BuildContext context, Widget child) {
+                return new Opacity(
+                  opacity: opacityCurve.transform(animation.value),
+                  child: ContactDetails(contact),
+                );
+              });
+        },
+      ),
+    );
   }
 }

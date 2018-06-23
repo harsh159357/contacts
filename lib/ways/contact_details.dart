@@ -12,24 +12,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 import 'package:flutter/material.dart';
+import 'package:contacts/models/contact.dart';
+import 'package:contacts/ways/contact_avatar.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 
-class SqfliteHomePage extends StatefulWidget {
+class ContactDetails extends StatefulWidget {
+  final Contact contact;
+
+  ContactDetails(this.contact);
+
   @override
-  createState() => new SqfliteHomePageState();
+  createState() => new ContactDetailsPageState(contact);
 }
 
-class SqfliteHomePageState extends State<SqfliteHomePage> {
+class ContactDetailsPageState extends State<ContactDetails> {
   final globalKey = new GlobalKey<ScaffoldState>();
+
+  RectTween _createRectTween(Rect begin, Rect end) {
+    return new MaterialRectCenterArcTween(begin: begin, end: end);
+  }
+
+  final Contact contact;
+
+  ContactDetailsPageState(this.contact);
 
   @override
   Widget build(BuildContext context) {
-    timeDilation = 1.0;
     return new Scaffold(
       key: globalKey,
       appBar: new AppBar(
@@ -40,17 +51,31 @@ class SqfliteHomePageState extends State<SqfliteHomePage> {
           fontSize: 22.0,
         )),
         iconTheme: new IconThemeData(color: Colors.white),
-        title: new Text(Texts.SQFLITE),
+        title: new Text(
+          contact.name,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
-      body: _sqfLiteHomePage(),
+      body: _contactDetails(),
     );
   }
 
-  Widget _sqfLiteHomePage() {
-    return Center(
-        child: new Text(
-      Texts.SQFLITE,
-      style: new TextStyle(fontSize: 26.0, color: Colors.blueGrey[400]),
-    ));
+  Widget _contactDetails() {
+    return new Center(
+      child: new SizedBox(
+        child: new Hero(
+          createRectTween: _createRectTween,
+          tag: contact.id,
+          child: new ContactAvatar(
+            contact: contact,
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        width: 150.0,
+        height: 150.0,
+      ),
+    );
   }
 }
