@@ -14,26 +14,38 @@
  * limitations under the License.
  */
 
-import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/ways/deleted_contact_avatar.dart';
 import 'package:contacts/ways/deleted_contact_details.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class DeletedContactsPage extends StatefulWidget {
-  final List<DeletedContact> deletedContacts;
+  List<DeletedContact> deletedContacts;
+  DeletedContactsPageState _deletedContactsPageState;
 
   DeletedContactsPage({this.deletedContacts});
 
   @override
-  createState() =>
+  createState() => _deletedContactsPageState =
       new DeletedContactsPageState(deletedContacts: deletedContacts);
+
+  void reloadDeletedContacts() {
+    _deletedContactsPageState.reloadDeletedContacts();
+  }
 }
 
 class DeletedContactsPageState extends State<DeletedContactsPage> {
+  static final globalKey = new GlobalKey<ScaffoldState>();
+
+  ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
+      ProgressDialogTitles.LOADING_DELETED_CONTACTS, false);
+
   RectTween _createRectTween(Rect begin, Rect end) {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
   }
@@ -45,6 +57,8 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
 
   DeletedContactsPageState({this.deletedContacts});
 
+  Widget deletedContactsWidget;
+
   @override
   void initState() {
     super.initState();
@@ -54,20 +68,25 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
   Widget build(BuildContext context) {
     timeDilation = 3.0;
     return new Scaffold(
-      body: loadList(deletedContacts),
+      key: globalKey,
+      body: loadList(),
       backgroundColor: Colors.grey[150],
     );
   }
 
-  Widget loadList(List<DeletedContact> list) {
-    if (list != null) {
-      return _buildDeletedContactsList(list);
+  Widget loadList() {
+    if (deletedContacts != null) {
+      deletedContactsWidget = _buildDeletedContactsList();
     } else {
-      return NoContentFound(Texts.NO_DELETED_CONTACTS, Icons.account_circle);
+      deletedContactsWidget =
+          NoContentFound(Texts.NO_DELETED_CONTACTS, Icons.account_circle);
     }
+    return new Stack(
+      children: <Widget>[deletedContactsWidget, progressDialog],
+    );
   }
 
-  Widget _buildDeletedContactsList(List<DeletedContact> deletedContacts) {
+  Widget _buildDeletedContactsList() {
     return new ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
@@ -157,5 +176,48 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
         },
       ),
     );
+  }
+
+  void reloadDeletedContacts() {
+    setState(() {
+      progressDialog
+          .showProgressWithText(ProgressDialogTitles.LOADING_DELETED_CONTACTS);
+      loadDeletedContacts();
+    });
+  }
+
+  void loadDeletedContacts() async {
+    EventObject eventObject = await getDeletedContacts();
+    if (this.mounted) {
+      setState(() {
+        progressDialog.hideProgress();
+        deletedContacts = eventObject.object;
+        switch (eventObject.id) {
+//------------------------------------------------------------------------------
+          case EventConstants.READ_DELETED_CONTACTS_SUCCESSFUL:
+            showSnackBar(SnackBarText.DELETED_CONTACTS_LOADED_SUCCESSFULLY);
+            break;
+          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_DELETED_CONTACTS);
+            break;
+          case EventConstants.NO_DELETED_CONTACTS_FOUND:
+            showSnackBar(SnackBarText.NO_DELETED_CONTACTS_FOUND);
+            break;
+//------------------------------------------------------------------------------
+          case EventConstants.NO_INTERNET_CONNECTION:
+            deletedContactsWidget = new NoContentFound(
+                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
+        }
+      });
+    }
+  }
+
+  void showSnackBar(String textToBeShown) {
+    globalKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(textToBeShown),
+    ));
   }
 }

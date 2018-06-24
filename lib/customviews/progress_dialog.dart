@@ -23,6 +23,7 @@ class ProgressDialog extends StatefulWidget {
   Color containerColor;
   double borderRadius;
   String text;
+  bool opacity;
   ProgressDialogState progressDialogState;
 
   ProgressDialog(
@@ -30,7 +31,8 @@ class ProgressDialog extends StatefulWidget {
       this.color = Colors.white,
       this.containerColor = Colors.transparent,
       this.borderRadius = 10.0,
-      this.text});
+      this.text,
+      this.opacity = false});
 
   @override
   createState() => progressDialogState = new ProgressDialogState(
@@ -38,7 +40,8 @@ class ProgressDialog extends StatefulWidget {
       color: this.color,
       containerColor: this.containerColor,
       borderRadius: this.borderRadius,
-      text: this.text);
+      text: this.text,
+      opacity: this.opacity);
 
   void hideProgress() {
     progressDialogState.hideProgress();
@@ -52,14 +55,14 @@ class ProgressDialog extends StatefulWidget {
     progressDialogState.showProgressWithText(title);
   }
 
-  static Widget getProgressDialog(String title) {
+  static Widget getProgressDialog(String title, bool opacity) {
     return new ProgressDialog(
-      backgroundColor: Colors.black12,
-      color: Colors.white,
-      containerColor: Colors.blueGrey,
-      borderRadius: 5.0,
-      text: title,
-    );
+        backgroundColor: Colors.black12,
+        color: Colors.white,
+        containerColor: Colors.blueGrey,
+        borderRadius: 5.0,
+        text: title,
+        opacity: opacity);
   }
 }
 
@@ -69,22 +72,23 @@ class ProgressDialogState extends State<ProgressDialog> {
   Color containerColor;
   double borderRadius;
   String text;
-  bool _opacity = true;
+  bool opacity = true;
 
   ProgressDialogState(
       {this.backgroundColor = Colors.black54,
       this.color = Colors.white,
       this.containerColor = Colors.transparent,
       this.borderRadius = 10.0,
-      this.text});
+      this.text,
+      this.opacity = false});
 
   @override
   Widget build(BuildContext context) {
     return new Container(
-        child: !_opacity
+        child: !opacity
             ? null
             : new Opacity(
-                opacity: _opacity ? 1.0 : 0.0,
+                opacity: opacity ? 1.0 : 0.0,
                 child: new Stack(
                   children: <Widget>[
                     new Center(
@@ -134,19 +138,19 @@ class ProgressDialogState extends State<ProgressDialog> {
 
   void hideProgress() {
     setState(() {
-      _opacity = false;
+      opacity = false;
     });
   }
 
   void showProgress() {
     setState(() {
-      _opacity = true;
+      opacity = true;
     });
   }
 
   void showProgressWithText(String title) {
     setState(() {
-      _opacity = true;
+      opacity = true;
       text = title;
     });
   }

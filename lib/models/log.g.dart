@@ -13,8 +13,11 @@ Log _$LogFromJson(Map<String, dynamic> json) => new Log(
 
 abstract class _$LogSerializerMixin {
   String get column_timestamp;
+
   String get column_transaction;
+
   String get column_date;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'column_timestamp': column_timestamp,
         'column_transaction': column_transaction,

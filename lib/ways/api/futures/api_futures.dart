@@ -17,13 +17,13 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:contacts/models/base/event_object.dart';
-import 'package:contacts/utils/constants.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/models/log.dart';
+import 'package:contacts/utils/constants.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 //------------------------------------------------------------------------------
 Future<EventObject> getContacts() async {

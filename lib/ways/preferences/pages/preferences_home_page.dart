@@ -15,8 +15,8 @@
  *
  */
 
-import 'package:flutter/material.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
 class PreferencesHomePage extends StatefulWidget {

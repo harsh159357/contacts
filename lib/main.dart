@@ -15,8 +15,8 @@
  *
  */
 
-import 'package:flutter/material.dart';
 import 'package:contacts/pages/splash_page.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(new ContactsApp());
 

@@ -15,6 +15,7 @@
  */
 
 import 'dart:async';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'contact.g.dart';
@@ -32,15 +33,15 @@ class Contact extends Object with _$ContactSerializerMixin {
 
   Contact(
       {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.contactImage});
+      this.name,
+      this.phone,
+      this.email,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.contactImage});
 
-  static Future<List<Contact>> fromContactJson(List<dynamic> json) async{
+  static Future<List<Contact>> fromContactJson(List<dynamic> json) async {
     List<Contact> contactList = new List<Contact>();
     for (var contact in json) {
       contactList.add(new Contact(
@@ -56,7 +57,6 @@ class Contact extends Object with _$ContactSerializerMixin {
     }
     return contactList;
   }
-
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);

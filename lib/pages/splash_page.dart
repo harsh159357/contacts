@@ -17,10 +17,10 @@
 
 import 'dart:async';
 
-import 'package:flutter/animation.dart';
-import 'package:flutter/material.dart';
 import 'package:contacts/pages/ways_page.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
   @override

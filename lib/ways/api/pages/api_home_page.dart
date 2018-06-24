@@ -16,16 +16,17 @@
  */
 
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:contacts/utils/constants.dart';
+
+import 'package:contacts/customviews/no_content_found.dart';
 import 'package:contacts/customviews/progress_dialog.dart';
-import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/models/base/event_object.dart';
+import 'package:contacts/utils/constants.dart';
+import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/ways/api/pages/contacts_page.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
 import 'package:contacts/ways/api/pages/logs_page.dart';
-import 'package:contacts/customviews/no_content_found.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class APIHomePage extends StatefulWidget {
   @override
@@ -34,8 +35,8 @@ class APIHomePage extends StatefulWidget {
 
 class APIHomePageState extends State<APIHomePage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
-  ProgressDialog progressDialog =
-      ProgressDialog.getProgressDialog(ProgressDialogTitles.LOADING_CONTACTS);
+  ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
+      ProgressDialogTitles.LOADING_CONTACTS, true);
   Widget apiHomeWidget = new Container();
   static const String TAPPED_ON_HEADER = "Tapped On Header";
   String title = DrawerTitles.CONTACTS;
@@ -178,23 +179,38 @@ class APIHomePageState extends State<APIHomePage> {
     setState(() {
       Navigator.pop(context);
       if (whatToDo != TAPPED_ON_HEADER) {
-        title = whatToDo;
-        switch (title) {
-          case DrawerTitles.CONTACTS:
-            progressDialog
-                .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
-            loadContacts();
-            break;
-          case DrawerTitles.DELETED_CONTACTS:
-            progressDialog.showProgressWithText(
-                ProgressDialogTitles.LOADING_DELETED_CONTACTS);
-            loadDeletedContacts();
-            break;
-          case DrawerTitles.LOGS:
-            progressDialog
-                .showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
-            loadLogs();
-            break;
+        Type type = apiHomeWidget.runtimeType;
+        if (title == whatToDo) {
+          if (type == ContactPage) {
+            ContactPage contactPage = apiHomeWidget as ContactPage;
+            contactPage.reloadContactList();
+          } else if (type == DeletedContactsPage) {
+            DeletedContactsPage deletedContactsPage =
+                apiHomeWidget as DeletedContactsPage;
+            deletedContactsPage.reloadDeletedContacts();
+          } else if (type == LogsPage) {
+            LogsPage logsPage = apiHomeWidget as LogsPage;
+            logsPage.reloadLogs();
+          }
+        } else {
+          title = whatToDo;
+          switch (title) {
+            case DrawerTitles.CONTACTS:
+              progressDialog
+                  .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
+              loadContacts();
+              break;
+            case DrawerTitles.DELETED_CONTACTS:
+              progressDialog.showProgressWithText(
+                  ProgressDialogTitles.LOADING_DELETED_CONTACTS);
+              loadDeletedContacts();
+              break;
+            case DrawerTitles.LOGS:
+              progressDialog
+                  .showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
+              loadLogs();
+              break;
+          }
         }
       } else {
         showSnackBar(SnackBarText.TAPPED_ON_API_HEADER);

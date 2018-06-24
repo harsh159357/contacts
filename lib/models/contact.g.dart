@@ -18,13 +18,21 @@ Contact _$ContactFromJson(Map<String, dynamic> json) => new Contact(
 
 abstract class _$ContactSerializerMixin {
   String get id;
+
   String get name;
+
   String get phone;
+
   String get email;
+
   String get address;
+
   String get latitude;
+
   String get longitude;
+
   String get contactImage;
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'name': name,

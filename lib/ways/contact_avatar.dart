@@ -15,8 +15,9 @@
  */
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:contacts/models/contact.dart';
+import 'package:flutter/material.dart';
 
 class ContactAvatar extends StatelessWidget {
   ContactAvatar({Key key, this.contact, this.color, this.onTap})

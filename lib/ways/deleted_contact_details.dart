@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
 import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/ways/deleted_contact_avatar.dart';
-import 'package:contacts/utils/constants.dart';
+import 'package:flutter/material.dart';
 
 class DeletedContactDetails extends StatefulWidget {
   final DeletedContact deletedContact;

@@ -14,24 +14,39 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/log.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/ways/api/futures/api_futures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class LogsPage extends StatefulWidget {
-  final List<Log> logs;
+  List<Log> logs;
+  LogsPageState _logsPageState;
 
   LogsPage({this.logs});
 
   @override
-  createState() => new LogsPageState(logs: logs);
+  createState() => _logsPageState = new LogsPageState(logs: logs);
+
+  void reloadLogs() {
+    _logsPageState.reloadLogs();
+  }
 }
 
 class LogsPageState extends State<LogsPage> {
+  static final globalKey = new GlobalKey<ScaffoldState>();
+  ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
+      ProgressDialogTitles.LOADING_LOGS, false);
+
   List<Log> logs;
 
   LogsPageState({this.logs});
+
+  Widget logsPageWidget;
 
   @override
   void initState() {
@@ -40,21 +55,26 @@ class LogsPageState extends State<LogsPage> {
 
   @override
   Widget build(BuildContext context) {
+    timeDilation = 1.0;
     return new Scaffold(
-      body: loadList(logs),
+      key: globalKey,
+      body: loadList(),
       backgroundColor: Colors.grey[150],
     );
   }
 
-  Widget loadList(List<Log> list) {
-    if (list != null) {
-      return _buildLogsList(list);
+  Widget loadList() {
+    if (logs != null) {
+      logsPageWidget = _buildLogsList();
     } else {
-      return NoContentFound(Texts.NO_LOGS, Icons.list);
+      logsPageWidget = NoContentFound(Texts.NO_LOGS, Icons.list);
     }
+    return new Stack(
+      children: <Widget>[logsPageWidget, progressDialog],
+    );
   }
 
-  Widget _buildLogsList(List<Log> logs) {
+  Widget _buildLogsList() {
     return new ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
@@ -107,5 +127,46 @@ class LogsPageState extends State<LogsPage> {
       ),
       margin: EdgeInsets.only(bottom: 10.0),
     );
+  }
+
+  void reloadLogs() {
+    setState(() {
+      progressDialog.showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
+      loadLogs();
+    });
+  }
+
+  void loadLogs() async {
+    EventObject eventObject = await getLogs();
+    if (this.mounted) {
+      setState(() {
+        progressDialog.hideProgress();
+        logs = eventObject.object;
+        switch (eventObject.id) {
+//------------------------------------------------------------------------------
+          case EventConstants.READ_LOGS_SUCCESSFUL:
+            showSnackBar(SnackBarText.LOGS_LOADED_SUCCESSFULLY);
+            break;
+          case EventConstants.READ_LOGS_SUCCESSFUL:
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_LOGS);
+            break;
+          case EventConstants.NO_LOGS_FOUND:
+            showSnackBar(SnackBarText.NO_LOGS_FOUND);
+            break;
+//------------------------------------------------------------------------------
+          case EventConstants.NO_INTERNET_CONNECTION:
+            logsPageWidget = new NoContentFound(
+                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
+        }
+      });
+    }
+  }
+
+  void showSnackBar(String textToBeShown) {
+    globalKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(textToBeShown),
+    ));
   }
 }

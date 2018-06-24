@@ -15,6 +15,7 @@
  */
 
 import 'dart:async';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'deleted_contact.g.dart';
@@ -32,15 +33,16 @@ class DeletedContact extends Object with _$DeletedContactSerializerMixin {
 
   DeletedContact(
       {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.contactImage});
+      this.name,
+      this.phone,
+      this.email,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.contactImage});
 
-  static Future<List<DeletedContact>> fromDeletedContactJson(List<dynamic> json) async{
+  static Future<List<DeletedContact>> fromDeletedContactJson(
+      List<dynamic> json) async {
     List<DeletedContact> deletedContactList = new List<DeletedContact>();
     for (var contact in json) {
       deletedContactList.add(new DeletedContact(

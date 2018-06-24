@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/ways/contact_avatar.dart';
-import 'package:contacts/utils/constants.dart';
+import 'package:flutter/material.dart';
 
 class ContactDetails extends StatefulWidget {
   final Contact contact;

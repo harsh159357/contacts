@@ -14,24 +14,38 @@
  * limitations under the License.
  */
 
-import 'package:flutter/material.dart';
+import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:contacts/customviews/no_content_found.dart';
+import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/ways/contact_avatar.dart';
 import 'package:contacts/ways/contact_details.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class ContactPage extends StatefulWidget {
-  final List<Contact> contactList;
+  List<Contact> contactList;
+  ContactPageState _contactPageState;
 
   ContactPage({this.contactList});
 
   @override
-  createState() => new ContactPageState(contactList: contactList);
+  createState() =>
+      _contactPageState = new ContactPageState(contactList: contactList);
+
+  void reloadContactList() {
+    _contactPageState.reloadContacts();
+  }
 }
 
 class ContactPageState extends State<ContactPage> {
+  static final globalKey = new GlobalKey<ScaffoldState>();
+
+  ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
+      ProgressDialogTitles.LOADING_CONTACTS, false);
+
   RectTween _createRectTween(Rect begin, Rect end) {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
   }
@@ -43,6 +57,8 @@ class ContactPageState extends State<ContactPage> {
 
   ContactPageState({this.contactList});
 
+  Widget contactListWidget;
+
   @override
   void initState() {
     super.initState();
@@ -52,26 +68,31 @@ class ContactPageState extends State<ContactPage> {
   Widget build(BuildContext context) {
     timeDilation = 3.0;
     return new Scaffold(
-      body: loadList(contactList),
+      key: globalKey,
+      body: loadList(),
       backgroundColor: Colors.grey[150],
     );
   }
 
-  Widget loadList(List<Contact> list) {
-    if (list != null) {
-      return _buildContactList(list);
+  Widget loadList() {
+    if (contactList != null) {
+      contactListWidget = _buildContactList();
     } else {
-      return NoContentFound(Texts.NO_CONTACTS, Icons.account_circle);
+      contactListWidget =
+          NoContentFound(Texts.NO_CONTACTS, Icons.account_circle);
     }
+    return new Stack(
+      children: <Widget>[contactListWidget, progressDialog],
+    );
   }
 
-  Widget _buildContactList(List<Contact> contacts) {
+  Widget _buildContactList() {
     return new ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
-        return _buildContactRow(contacts[i]);
+        return _buildContactRow(contactList[i]);
       },
-      itemCount: contacts.length,
+      itemCount: contactList.length,
     );
   }
 
@@ -195,5 +216,47 @@ class ContactPageState extends State<ContactPage> {
         },
       ),
     );
+  }
+
+  void reloadContacts() {
+    setState(() {
+      progressDialog
+          .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
+      loadContacts();
+    });
+  }
+
+  void loadContacts() async {
+    EventObject eventObject = await getContacts();
+    if (this.mounted) {
+      setState(() {
+        progressDialog.hideProgress();
+        contactList = eventObject.object;
+        switch (eventObject.id) {
+//------------------------------------------------------------------------------
+          case EventConstants.READ_CONTACTS_SUCCESSFUL:
+            showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
+            break;
+          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
+            showSnackBar(SnackBarText.UNABLE_TO_LOAD_CONTACTS);
+            break;
+          case EventConstants.NO_CONTACTS_FOUND:
+            showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
+            break;
+//------------------------------------------------------------------------------
+          case EventConstants.NO_INTERNET_CONNECTION:
+            contactListWidget = new NoContentFound(
+                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
+        }
+      });
+    }
+  }
+
+  void showSnackBar(String textToBeShown) {
+    globalKey.currentState.showSnackBar(new SnackBar(
+      content: new Text(textToBeShown),
+    ));
   }
 }

@@ -15,8 +15,9 @@
  */
 
 import 'dart:convert';
-import 'package:flutter/material.dart';
+
 import 'package:contacts/models/deleted_contact.dart';
+import 'package:flutter/material.dart';
 
 class DeletedContactAvatar extends StatelessWidget {
   DeletedContactAvatar({Key key, this.deletedContact, this.color, this.onTap})
