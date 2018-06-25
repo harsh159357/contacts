@@ -23,6 +23,7 @@ import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/ways/api/pages/contacts_page.dart';
+import 'package:contacts/ways/api/pages/create_contact_page.dart';
 import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
 import 'package:contacts/ways/api/pages/logs_page.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +82,9 @@ class APIHomePageState extends State<APIHomePage> {
 
   FloatingActionButton _floatingActionButton() {
     return new FloatingActionButton(
-      onPressed: null,
+      onPressed: () {
+        navigateToPage(new CreateContactPage());
+      },
       child: new Icon(
         Icons.add,
       ),
@@ -295,6 +298,17 @@ class APIHomePageState extends State<APIHomePage> {
     globalKey.currentState.showSnackBar(new SnackBar(
       content: new Text(textToBeShown),
     ));
+  }
+
+  void navigateToPage(StatefulWidget statefulWidget) {
+    if (this.mounted) {
+      setState(() {
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => statefulWidget),
+        );
+      });
+    }
   }
 }
 

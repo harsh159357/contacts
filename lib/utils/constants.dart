@@ -102,7 +102,7 @@ class SnackBarText {
 
   static const String DELETED_CONTACTS_LOADED_SUCCESSFULLY =
       "Deleted Contacts Loaded Successfully";
-  static const String NO_DELETED_CONTACTS_FOUND = "No Delted Contacts Found";
+  static const String NO_DELETED_CONTACTS_FOUND = "No Deleted Contacts Found";
   static const String UNABLE_TO_LOAD_DELETED_CONTACTS =
       "Unable to Load Deleted Contacts";
 
@@ -111,6 +111,25 @@ class SnackBarText {
   static const String LOGS_LOADED_SUCCESSFULLY = "Logs Loaded Successfully";
   static const String NO_LOGS_FOUND = "No Logs Found";
   static const String UNABLE_TO_LOAD_LOGS = "Unable to Load Logs";
+
+//------------------------------------------------------------------------------
+
+  static const String PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA =
+      "Please pick an image from Gallery/Camera";
+
+  static const String PLEASE_FILL_NAME =
+      "Please fill name within range of 4 to 15 Characters";
+
+  static const String PLEASE_FILL_PHONE_NO =
+      "Please fill phone no within range od 4 to 15 digits";
+
+  static const String PLEASE_FILL_VALID_PHONE_NO = "Please fill valid phone no";
+
+  static const String PLEASE_FILL_VALID_EMAIL_ADDRESS =
+      "Please fill valid email address";
+
+  static const String PLEASE_FILL_ADDRESS =
+      "Please fill address within range od 4 to 1000 Characters";
 
 //------------------------------------------------------------------------------
 
@@ -125,10 +144,21 @@ class Texts {
   static const String CUSTOM = "Custom";
   static const String CONTACT_DETAILS = "Contact Details";
   static const String PREFERENCES = "Preferences";
+  static const String CREATE_CONTACT = "Create Contact";
   static const String SQFLITE = "Sqflite";
   static const String NO_CONTACTS = "No Contacts";
   static const String NO_DELETED_CONTACTS = "No Deleted Contacts";
   static const String NO_LOGS = "No Logs";
+  static const String ERROR_PICKING_IMAGE = "Error picking image.";
+  static const String PICK_IMAGE_FROM_GALLERY = "Pick Image from gallery";
+  static const String TAKE_A_PHOTO = "Take a Photo";
+  static const String SAVE_CONTACT = "Save Contact";
+  static const String NAME = "Name";
+  static const String PHONE = "Phone";
+  static const String EMAIL = "Email";
+  static const String ADDRESS = "Address";
+  static const YOU_HAVE_NOT_YET_PICKED_AN_IMAGE =
+      "You have not yet picked an image.";
 }
 
 //------------------------------------------------------------------------------
