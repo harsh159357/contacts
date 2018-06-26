@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import 'package:contacts/models/deleted_contact.dart';
-import 'package:contacts/ways/deleted_contact_avatar.dart';
+import 'package:contacts/models/contact.dart';
+import 'package:contacts/ways/common_widgets/contact_avatar.dart';
 import 'package:flutter/material.dart';
 
-class DeletedContactDetails extends StatefulWidget {
-  final DeletedContact deletedContact;
+class ContactDetails extends StatefulWidget {
+  final Contact contact;
 
-  DeletedContactDetails(this.deletedContact);
+  ContactDetails(this.contact);
 
   @override
-  createState() => new DeletedContactDetailsPageState(deletedContact);
+  createState() => new ContactDetailsPageState(contact);
 }
 
-class DeletedContactDetailsPageState extends State<DeletedContactDetails> {
+class ContactDetailsPageState extends State<ContactDetails> {
   final globalKey = new GlobalKey<ScaffoldState>();
 
   RectTween _createRectTween(Rect begin, Rect end) {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
   }
 
-  final DeletedContact deletedContact;
+  final Contact contact;
 
-  DeletedContactDetailsPageState(this.deletedContact);
+  ContactDetailsPageState(this.contact);
 
   @override
   Widget build(BuildContext context) {
@@ -51,22 +51,22 @@ class DeletedContactDetailsPageState extends State<DeletedContactDetails> {
         )),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(
-          deletedContact.name,
+          contact.name,
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: _deletedContactDetails(),
+      body: _contactDetails(),
     );
   }
 
-  Widget _deletedContactDetails() {
+  Widget _contactDetails() {
     return new Center(
       child: new SizedBox(
         child: new Hero(
           createRectTween: _createRectTween,
-          tag: deletedContact.id,
-          child: new DeletedContactAvatar(
-            deletedContact: deletedContact,
+          tag: contact.id,
+          child: new ContactAvatar(
+            contact: contact,
             onTap: () {
               Navigator.of(context).pop();
             },

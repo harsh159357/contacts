@@ -20,8 +20,8 @@ import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
-import 'package:contacts/ways/contact_avatar.dart';
-import 'package:contacts/ways/contact_details.dart';
+import 'package:contacts/ways/common_widgets/contact_avatar.dart';
+import 'package:contacts/ways/common_widgets/contact_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 

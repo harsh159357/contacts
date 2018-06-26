@@ -83,12 +83,32 @@ class APIHomePageState extends State<APIHomePage> {
   FloatingActionButton _floatingActionButton() {
     return new FloatingActionButton(
       onPressed: () {
-        navigateToPage(new CreateContactPage());
+        _navigateToCreateContactPage(context);
       },
       child: new Icon(
         Icons.add,
       ),
     );
+  }
+
+  void _navigateToCreateContactPage(BuildContext context) async {
+    int contactCreationStatus = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => new CreateContactPage()),
+    );
+    setState(() {
+      switch (contactCreationStatus) {
+        case EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY:
+          showSnackBar(SnackBarText.CONTACT_WAS_CREATED_SUCCESSFULLY);
+          break;
+        case EventConstants.UNABLE_TO_CREATE_CONTACT:
+          showSnackBar(SnackBarText.UNABLE_TO_CREATE_CONTACT);
+          break;
+        case EventConstants.USER_HAS_NOT_PERFORMED_ANY_ACTION:
+          showSnackBar(SnackBarText.USER_HAS_NOT_PERFORMED_ANY_ACTION);
+          break;
+      }
+    });
   }
 
 //------------------------------------------------------------------------------

@@ -101,6 +101,34 @@ Future<EventObject> getLogs() async {
 }
 
 //------------------------------------------------------------------------------
+Future<EventObject> saveContact(Contact contact) async {
+  try {
+    final encoding = APIConstants.OCTET_STREAM_ENCODING;
+
+    final response = await http.post(APIConstants.CREATE_CONTACT,
+        body: json.encode(contact.toJson()),
+        encoding: Encoding.getByName(encoding));
+
+    if (response != null) {
+      if (response.statusCode == APIResponseCode.SC_CREATED) {
+        return new EventObject(
+            id: EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY);
+      } else if (response.statusCode ==
+          APIResponseCode.SC_INTERNAL_SERVER_ERROR) {
+        return new EventObject(id: EventConstants.UNABLE_TO_CREATE_CONTACT);
+      } else {
+        return new EventObject(id: EventConstants.UNABLE_TO_CREATE_CONTACT);
+      }
+    } else {
+      return new EventObject();
+    }
+  } catch (e) {
+    print(e.toString());
+    return new EventObject();
+  }
+}
+
+//------------------------------------------------------------------------------
 String convertDateFormat(
     String fromDateFormat, String toDateFormat, String toBeConverted) {
   DateFormat fdf = new DateFormat(fromDateFormat);

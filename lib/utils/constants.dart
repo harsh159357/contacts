@@ -15,6 +15,8 @@
  *
  */
 
+const String GOOGLE_PLACE_API_KEY = "REPLACE_IT_WITH_YOUR_OWN_API_KEY";
+
 //------------------------------------------------------------------------------
 class APIConstants {
   static const String _CONTACT_API_BASE_URL = "http://hafinse.pe.hu/contact/";
@@ -41,6 +43,8 @@ class APIConstants {
       _CONTACT_API_BASE_URL + "ReadDeletedContacts.php";
 
   static const String READ_LOGS = _CONTACT_API_BASE_URL + "ReadLogs.php";
+
+  static const String OCTET_STREAM_ENCODING = "application/octet-stream";
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +68,12 @@ class EventConstants {
   static const int READ_LOGS_SUCCESSFUL = 506;
   static const int NO_LOGS_FOUND = 507;
   static const int READ_LOGS_UN_SUCCESSFUL = 508;
+
+//------------------------------------------------------------------------------
+
+  static const int CONTACT_WAS_CREATED_SUCCESSFULLY = 509;
+  static const int UNABLE_TO_CREATE_CONTACT = 510;
+  static const int USER_HAS_NOT_PERFORMED_ANY_ACTION = 511;
 //------------------------------------------------------------------------------
 }
 
@@ -82,6 +92,7 @@ class SharedPreferenceKeys {}
 //------------------------------------------------------------------------------
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
+  static const String CREATING_CONTACT = "Creating...";
   static const String LOADING_DELETED_CONTACTS = "Contacts...";
   static const String LOADING_LOGS = "Logs...";
 }
@@ -131,6 +142,17 @@ class SnackBarText {
   static const String PLEASE_FILL_ADDRESS =
       "Please fill address within range od 4 to 1000 Characters";
 
+  static const String PLEASE_FILL_VALID_LATITUDE = "Please fill valid latitude";
+
+  static const String PLEASE_FILL_VALID_LONGITUDE =
+      "Please fill valid longitude";
+
+  static const String CONTACT_WAS_CREATED_SUCCESSFULLY =
+      "Contact was created successfully";
+  static const String UNABLE_TO_CREATE_CONTACT = "Unable to create Contact";
+  static const String USER_HAS_NOT_PERFORMED_ANY_ACTION =
+      "User has not performed any action";
+
 //------------------------------------------------------------------------------
 
   static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
@@ -157,6 +179,9 @@ class Texts {
   static const String PHONE = "Phone";
   static const String EMAIL = "Email";
   static const String ADDRESS = "Address";
+  static const String LATITUDE = "Latitude";
+  static const String LONGITUDE = "Longitude";
+  static const String PICK_A_PLACE = "Click Here to Pick a Place";
   static const YOU_HAVE_NOT_YET_PICKED_AN_IMAGE =
       "You have not yet picked an image.";
 }

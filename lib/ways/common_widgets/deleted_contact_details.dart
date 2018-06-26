@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import 'package:contacts/models/contact.dart';
-import 'package:contacts/ways/contact_avatar.dart';
+import 'package:contacts/models/deleted_contact.dart';
+import 'package:contacts/ways/common_widgets/deleted_contact_avatar.dart';
 import 'package:flutter/material.dart';
 
-class ContactDetails extends StatefulWidget {
-  final Contact contact;
+class DeletedContactDetails extends StatefulWidget {
+  final DeletedContact deletedContact;
 
-  ContactDetails(this.contact);
+  DeletedContactDetails(this.deletedContact);
 
   @override
-  createState() => new ContactDetailsPageState(contact);
+  createState() => new DeletedContactDetailsPageState(deletedContact);
 }
 
-class ContactDetailsPageState extends State<ContactDetails> {
+class DeletedContactDetailsPageState extends State<DeletedContactDetails> {
   final globalKey = new GlobalKey<ScaffoldState>();
 
   RectTween _createRectTween(Rect begin, Rect end) {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
   }
 
-  final Contact contact;
+  final DeletedContact deletedContact;
 
-  ContactDetailsPageState(this.contact);
+  DeletedContactDetailsPageState(this.deletedContact);
 
   @override
   Widget build(BuildContext context) {
@@ -51,22 +51,22 @@ class ContactDetailsPageState extends State<ContactDetails> {
         )),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(
-          contact.name,
+          deletedContact.name,
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: _contactDetails(),
+      body: _deletedContactDetails(),
     );
   }
 
-  Widget _contactDetails() {
+  Widget _deletedContactDetails() {
     return new Center(
       child: new SizedBox(
         child: new Hero(
           createRectTween: _createRectTween,
-          tag: contact.id,
-          child: new ContactAvatar(
-            contact: contact,
+          tag: deletedContact.id,
+          child: new DeletedContactAvatar(
+            deletedContact: deletedContact,
             onTap: () {
               Navigator.of(context).pop();
             },

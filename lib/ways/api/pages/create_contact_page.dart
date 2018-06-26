@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:contacts/ways/api/futures/api_futures.dart';
+import 'package:contacts/ways/common_widgets/google_place_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:image_picker/image_picker.dart';
@@ -38,19 +42,23 @@ class CreateContactPageState extends State<CreateContactPage> {
 
   File _imageFile;
 
-  TextEditingController nameController = new TextEditingController(text: "");
+  TextEditingController nameController =
+      new TextEditingController(text: "");
 
-  TextEditingController phoneController = new TextEditingController(text: "");
+  TextEditingController phoneController =
+      new TextEditingController(text: "");
 
-  TextEditingController emailController = new TextEditingController(text: "");
+  TextEditingController emailController =
+      new TextEditingController(text: "");
 
-  TextEditingController addressController = new TextEditingController(text: "");
+  TextEditingController addressController =
+      new TextEditingController(text: "");
 
-  TextEditingController latitudeController =
-      new TextEditingController(text: "28.1234567");
+  TextEditingController latController =
+      new TextEditingController(text: "");
 
-  TextEditingController longitudeController =
-      new TextEditingController(text: "40.1234567");
+  TextEditingController longController =
+      new TextEditingController(text: "");
 
   Widget createContactWidget = new Container();
 
@@ -63,13 +71,14 @@ class CreateContactPageState extends State<CreateContactPage> {
   Widget build(BuildContext context) {
     timeDilation = 1.0;
     createContactWidget = ListView(
+      reverse: true,
       children: <Widget>[
         new Center(
           child: new Container(
             margin: EdgeInsets.only(left: 30.0, right: 30.0),
             child: new Column(
               children: <Widget>[
-                _imageContainer(),
+                _contactImageContainer(),
                 _formContainer(),
               ],
             ),
@@ -81,6 +90,16 @@ class CreateContactPageState extends State<CreateContactPage> {
       key: globalKey,
       appBar: new AppBar(
         centerTitle: true,
+        leading: new GestureDetector(
+          onTap: () {
+            Navigator.pop(
+                context, EventConstants.USER_HAS_NOT_PERFORMED_ANY_ACTION);
+          },
+          child: new Icon(
+            Icons.arrow_back,
+            size: 30.0,
+          ),
+        ),
         textTheme: new TextTheme(
             title: new TextStyle(
           color: Colors.white,
@@ -88,31 +107,25 @@ class CreateContactPageState extends State<CreateContactPage> {
         )),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(Texts.CREATE_CONTACT),
+        actions: <Widget>[
+          new GestureDetector(
+            onTap: () {
+              _validateCreateContactForm();
+            },
+            child: Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: new Icon(
+                Icons.done,
+                size: 30.0,
+              ),
+            ),
+          )
+        ],
       ),
       body: new Stack(
         children: <Widget>[createContactWidget, progressDialog],
       ),
       backgroundColor: Colors.grey[150],
-      floatingActionButton: _floatingActionButton(),
-    );
-  }
-
-  Widget _floatingActionButton() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              _validateCreateContactForm();
-            },
-            heroTag: Texts.SAVE_CONTACT,
-            tooltip: Texts.SAVE_CONTACT,
-            child: const Icon(Icons.done),
-          ),
-        ),
-      ],
     );
   }
 
@@ -123,7 +136,7 @@ class CreateContactPageState extends State<CreateContactPage> {
     });
   }
 
-  Widget _imageContainer() {
+  Widget _contactImageContainer() {
     return new Container(
       height: 150.0,
       margin: EdgeInsets.only(top: 10.0),
@@ -203,9 +216,39 @@ class CreateContactPageState extends State<CreateContactPage> {
     );
   }
 
+  Widget _pickAPlace() {
+    return new GestureDetector(
+      onTap: () {
+        _navigateToPlaceSearch(context);
+      },
+      child: new Container(
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Flexible(
+              child: new Text(
+                Texts.PICK_A_PLACE,
+                style: new TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            new Flexible(
+              child: new Icon(
+                Icons.search,
+                color: Colors.blue[400],
+              ),
+            ),
+          ],
+        ),
+        margin: EdgeInsets.only(bottom: 10.0),
+      ),
+    );
+  }
+
   Widget _formContainer() {
     return new Container(
-      margin: EdgeInsets.only(top: 10.0),
+      margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
       child: new Form(
           child: new Theme(
               data: new ThemeData(primarySwatch: Colors.blue),
@@ -218,8 +261,24 @@ class CreateContactPageState extends State<CreateContactPage> {
                       TextInputType.phone, false),
                   _formField(emailController, Icons.email, Texts.EMAIL,
                       TextInputType.emailAddress, false),
+                  _pickAPlace(),
                   _formField(addressController, Icons.location_on,
                       Texts.ADDRESS, TextInputType.text, false),
+                  new Row(
+                    children: <Widget>[
+                      new Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: _formField(latController, Icons.my_location,
+                              Texts.LATITUDE, TextInputType.number, false),
+                        ),
+                      ),
+                      new Flexible(
+                        child: _formField(longController, Icons.my_location,
+                            Texts.LONGITUDE, TextInputType.number, false),
+                      )
+                    ],
+                  ),
                 ],
               ))),
     );
@@ -278,10 +337,55 @@ class CreateContactPageState extends State<CreateContactPage> {
       showSnackBar(SnackBarText.PLEASE_FILL_ADDRESS);
       return;
     }
-    showSnackBar("Validation Successful");
+
+    String latitude = latController.text;
+    if (!isValidLatitude(latitude)) {
+      showSnackBar(SnackBarText.PLEASE_FILL_VALID_LATITUDE);
+      return;
+    }
+
+    String longitude = longController.text;
+    if (!isValidLongitude(longitude)) {
+      showSnackBar(SnackBarText.PLEASE_FILL_VALID_LONGITUDE);
+      return;
+    }
+    FocusScope.of(context).requestFocus(new FocusNode());
+    Contact contactToBeCreated = new Contact();
+    contactToBeCreated.id = "";
+    contactToBeCreated.name = nameController.text;
+    contactToBeCreated.phone = phoneController.text;
+    contactToBeCreated.email = emailController.text;
+    contactToBeCreated.address = addressController.text;
+    contactToBeCreated.latitude = latController.text;
+    contactToBeCreated.longitude = longController.text;
+    List<int> contactImageBytes = _imageFile.readAsBytesSync();
+    contactToBeCreated.contactImage = base64Encode(contactImageBytes);
+    progressDialog.showProgressWithText(ProgressDialogTitles.CREATING_CONTACT);
+    createContact(contactToBeCreated);
   }
 
-  void createContact() async {}
+  void createContact(Contact contactToBeCreated) async {
+    EventObject contactObject = await saveContact(contactToBeCreated);
+    if (this.mounted) {
+      setState(() {
+        progressDialog.hideProgress();
+        switch (contactObject.id) {
+//------------------------------------------------------------------------------
+          case EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY:
+            Navigator.pop(
+                context, EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY);
+            break;
+          case EventConstants.UNABLE_TO_CREATE_CONTACT:
+            Navigator.pop(context, EventConstants.UNABLE_TO_CREATE_CONTACT);
+            break;
+//------------------------------------------------------------------------------
+          case EventConstants.NO_INTERNET_CONNECTION:
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
+        }
+      });
+    }
+  }
 
   void showSnackBar(String textToBeShown) {
     globalKey.currentState.showSnackBar(new SnackBar(
@@ -290,19 +394,49 @@ class CreateContactPageState extends State<CreateContactPage> {
   }
 
   bool isValidEmail(String email) {
-    String p =
+    String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-    RegExp regExp = new RegExp(p);
+    RegExp regExp = new RegExp(pattern);
 
     return regExp.hasMatch(email);
   }
 
   bool isValidPhone(String phone) {
-    String p = r'^[0-9]+$';
+    String pattern = r'^[0-9]+$';
 
-    RegExp regExp = new RegExp(p);
+    RegExp regExp = new RegExp(pattern);
 
     return regExp.hasMatch(phone);
+  }
+
+  bool isValidLatitude(String latitude) {
+    String pattern =
+        r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?[0-8]\d((\.)|\.\d{1,10})?)|(0*?90((\.)|\.0{1,10})?))$';
+
+    RegExp regExp = new RegExp(pattern);
+
+    return regExp.hasMatch(latitude);
+  }
+
+  bool isValidLongitude(String longitude) {
+    String pattern =
+        r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?\d\d((\.)|\.\d{1,10})?)|(0*?1[0-7]\d((\.)|\.\d{1,10})?)|(0*?180((\.)|\.0{1,10})?))$';
+
+    RegExp regExp = new RegExp(pattern);
+
+    return regExp.hasMatch(longitude);
+  }
+
+  void _navigateToPlaceSearch(BuildContext context) async {
+    Contact contact = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PlaceSearchPage()),
+    );
+    setState(() {
+      addressController.text = contact.address;
+      latController.text = contact.latitude;
+      longController.text = contact.longitude;
+    });
   }
 }
