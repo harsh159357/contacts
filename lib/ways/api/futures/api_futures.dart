@@ -155,6 +155,70 @@ Future<EventObject> saveContact(Contact contact) async {
 }
 
 //------------------------------------------------------------------------------
+Future<EventObject> updateContact(Contact contact) async {
+  try {
+    final encoding = APIConstants.OCTET_STREAM_ENCODING;
+    print(json.encode(contact.toJson()));
+    final response = await http.post(APIConstants.UPDATE_CONTACT,
+        body: json.encode(contact.toJson()),
+        encoding: Encoding.getByName(encoding));
+
+    if (response != null) {
+      if (response.statusCode == APIResponseCode.SC_OK) {
+        return new EventObject(
+            id: EventConstants.CONTACT_WAS_UPDATED_SUCCESSFULLY);
+      } else if (response.statusCode ==
+          APIResponseCode.SC_INTERNAL_SERVER_ERROR) {
+        return new EventObject(
+            id: EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
+      } else {
+        return new EventObject(id: EventConstants.UNABLE_TO_UPDATE_CONTACT);
+      }
+    } else {
+      return new EventObject();
+    }
+  } catch (e) {
+    print(e.toString());
+    return new EventObject();
+  }
+}
+
+//------------------------------------------------------------------------------
+Future<EventObject> removeContact(Contact contact) async {
+  try {
+    final encoding = APIConstants.OCTET_STREAM_ENCODING;
+    final json = '{"_id":"${contact.id}"}';
+
+    final response = await http.post(APIConstants.DELETE_CONTACT,
+        body: json /*json.encode(contact.toJson())*/,
+        encoding: Encoding.getByName(encoding));
+
+    if (response != null) {
+      if (response.statusCode == APIResponseCode.SC_OK) {
+        return new EventObject(
+            id: EventConstants.CONTACT_WAS_DELETED_SUCCESSFULLY);
+      } else if (response.statusCode == APIResponseCode.SC_BAD_REQUEST) {
+        return new EventObject(
+            id: EventConstants
+                .PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED);
+      } else if (response.statusCode ==
+          APIResponseCode.SC_INTERNAL_SERVER_ERROR) {
+        return new EventObject(
+            id: EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
+      } else {
+        return new EventObject(
+            id: EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
+      }
+    } else {
+      return new EventObject();
+    }
+  } catch (e) {
+    print(e.toString());
+    return new EventObject();
+  }
+}
+
+//------------------------------------------------------------------------------
 String convertDateFormat(
     String fromDateFormat, String toDateFormat, String toBeConverted) {
   DateFormat fdf = new DateFormat(fromDateFormat);

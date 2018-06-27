@@ -20,6 +20,7 @@ import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
+import 'package:contacts/ways/api/pages/edit_contact_page.dart';
 import 'package:contacts/ways/common_widgets/contact_avatar.dart';
 import 'package:contacts/ways/common_widgets/contact_details.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class ContactPageState extends State<ContactPage> {
       const Interval(0.0, 0.75, curve: Curves.fastOutSlowIn);
 
   List<Contact> contactList;
+  List<Dismissible> dismissible;
 
   ContactPageState({this.contactList});
 
@@ -97,40 +99,110 @@ class ContactPageState extends State<ContactPage> {
   }
 
   Widget _buildContactRow(Contact contact) {
-    return new GestureDetector(
-      onTap: () {
-        _heroAnimation(contact);
-      },
-      child: new Card(
-        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-        child: new Container(
-          child: new Column(
-            children: <Widget>[
-              new Row(
-                children: <Widget>[
-                  contactAvatar(contact),
-                  contactDetails(contact)
-                ],
-              ),
-/*
-            new Container(
-              margin: EdgeInsets.only(top: 10.0),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  actionContainer(
-                      Icons.visibility, Colors.blue[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.edit, Colors.blueGrey[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.delete, Colors.black, Actions.VIEW_CONTACT),
-                ],
-              ),
-            )
-*/
-            ],
+    return new Dismissible(
+      key: Key(contact.id),
+      child: new GestureDetector(
+        onTap: () {
+          _heroAnimation(contact);
+        },
+        child: new Card(
+          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child: new Container(
+            child: new Column(
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    contactAvatar(contact),
+                    contactDetails(contact)
+                  ],
+                ),
+              ],
+            ),
+            margin: EdgeInsets.all(10.0),
           ),
-          margin: EdgeInsets.all(10.0),
+        ),
+      ),
+      onDismissed: (direction) {
+        setState(() {
+          if (direction == DismissDirection.endToStart) {
+            progressDialog
+                .showProgressWithText(ProgressDialogTitles.DELETING_CONTACT);
+            deleteContact(contact);
+            contactList.remove(contact);
+          } else {
+            _navigateToEditContactPage(context, contact);
+            contactList.remove(contact);
+          }
+        });
+      },
+      direction: DismissDirection.horizontal,
+      background: dismissContainerEdit(),
+      secondaryBackground: dismissContainerDelete(),
+    );
+  }
+
+  void _navigateToEditContactPage(BuildContext context, Contact contact) async {
+    int contactUpdateStatus = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => new EditContactPage(contact)),
+    );
+    setState(() {
+      switch (contactUpdateStatus) {
+        case EventConstants.CONTACT_WAS_UPDATED_SUCCESSFULLY:
+          reloadContacts();
+          showSnackBar(SnackBarText.CONTACT_WAS_UPDATED_SUCCESSFULLY);
+          break;
+        case EventConstants.UNABLE_TO_UPDATE_CONTACT:
+          contactList.add(contact);
+          showSnackBar(SnackBarText.UNABLE_TO_UPDATE_CONTACT);
+          break;
+        case EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
+          contactList.add(contact);
+          showSnackBar(
+              SnackBarText.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
+          break;
+        case EventConstants.USER_HAS_NOT_PERFORMED_EDIT_ACTION:
+          contactList.add(contact);
+          showSnackBar(SnackBarText.USER_HAS_NOT_PERFORMED_EDIT_ACTION);
+          break;
+        default:
+          contactList.add(contact);
+          break;
+      }
+    });
+  }
+
+  Widget dismissContainerEdit() {
+    return new Card(
+      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+      child: new Container(
+        alignment: Alignment.centerLeft,
+        color: Colors.green[400],
+        child: new Container(
+          padding: EdgeInsets.only(left: 20.0),
+          child: new Icon(
+            Icons.edit,
+            size: 40.0,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget dismissContainerDelete() {
+    return new Card(
+      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+      child: new Container(
+        alignment: Alignment.centerRight,
+        color: Colors.red[400],
+        child: new Container(
+          padding: EdgeInsets.only(right: 20.0),
+          child: new Icon(
+            Icons.delete,
+            size: 40.0,
+            color: Colors.white,
+          ),
         ),
       ),
     );
@@ -174,30 +246,6 @@ class ContactPageState extends State<ContactPage> {
       ),
       margin: EdgeInsets.only(bottom: 10.0),
     );
-  }
-
-  Widget actionContainer(IconData icon, Color color, String action) {
-    return new Flexible(
-        flex: 1,
-        child: new GestureDetector(
-          child: new Icon(
-            icon,
-            size: 30.0,
-            color: color,
-          ),
-          onTap: () {
-            setState(() {
-              switch (action) {
-                case Actions.VIEW_CONTACT:
-                  break;
-                case Actions.EDIT_OR_UPDATE_CONTACT:
-                  break;
-                case Actions.DELETE_CONTACT:
-                  break;
-              }
-            });
-          },
-        ));
   }
 
   void _heroAnimation(Contact contact) {
@@ -247,6 +295,37 @@ class ContactPageState extends State<ContactPage> {
           case EventConstants.NO_INTERNET_CONNECTION:
             contactListWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
+        }
+      });
+    }
+  }
+
+  void deleteContact(Contact contact) async {
+    EventObject eventObject = await removeContact(contact);
+    if (this.mounted) {
+      setState(() {
+        progressDialog.hideProgress();
+        switch (eventObject.id) {
+//------------------------------------------------------------------------------
+          case EventConstants.CONTACT_WAS_DELETED_SUCCESSFULLY:
+            showSnackBar(SnackBarText.CONTACT_WAS_DELETED_SUCCESSFULLY);
+            break;
+          case EventConstants
+              .PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED:
+            contactList.add(contact);
+            showSnackBar(SnackBarText
+                .PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED);
+            break;
+          case EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
+            contactList.add(contact);
+            showSnackBar(
+                SnackBarText.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
+            break;
+//------------------------------------------------------------------------------
+          case EventConstants.NO_INTERNET_CONNECTION:
+            contactList.add(contact);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
             break;
         }

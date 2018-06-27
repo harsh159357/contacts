@@ -15,6 +15,8 @@
  *
  */
 
+//------------------------------------------------------------------------------
+
 const String GOOGLE_PLACE_API_KEY = "REPLACE_IT_WITH_YOUR_OWN_API_KEY";
 
 //------------------------------------------------------------------------------
@@ -79,6 +81,19 @@ class EventConstants {
 
   static const int SEARCH_CONTACTS_SUCCESSFUL = 512;
   static const int NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY = 513;
+
+//------------------------------------------------------------------------------
+
+  static const int CONTACT_WAS_DELETED_SUCCESSFULLY = 514;
+  static const int PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED = 515;
+  static const int NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE = 516;
+
+//------------------------------------------------------------------------------
+
+  static const int CONTACT_WAS_UPDATED_SUCCESSFULLY = 517;
+  static const int UNABLE_TO_UPDATE_CONTACT = 518;
+  static const int USER_HAS_NOT_PERFORMED_EDIT_ACTION = 519;
+
 //------------------------------------------------------------------------------
 }
 
@@ -97,8 +112,10 @@ class SharedPreferenceKeys {}
 //------------------------------------------------------------------------------
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
+  static const String DELETING_CONTACT = "Deleting...";
   static const String SEARCHING_CONTACTS = "Searching...";
   static const String CREATING_CONTACT = "Creating...";
+  static const String EDITING_CONTACT = "Editing...";
   static const String LOADING_DELETED_CONTACTS = "Contacts...";
   static const String LOADING_LOGS = "Logs...";
 }
@@ -146,6 +163,23 @@ class SnackBarText {
 
 //------------------------------------------------------------------------------
 
+  static const String CONTACT_WAS_DELETED_SUCCESSFULLY =
+      "Contact was Deleted Succesfully";
+  static const String PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED =
+      "Please provide the id of the contact to be deleted";
+  static const String NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE =
+      "No contact with provided id exist in Database";
+
+//------------------------------------------------------------------------------
+
+  static const String CONTACT_WAS_UPDATED_SUCCESSFULLY =
+      "Contact was Updated Succesfully";
+  static const String UNABLE_TO_UPDATE_CONTACT = "Unable to update Contact";
+  static const String USER_HAS_NOT_PERFORMED_EDIT_ACTION =
+      "User has not performed edit action";
+
+//------------------------------------------------------------------------------
+
   static const String PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA =
       "Please pick an image from Gallery/Camera";
 
@@ -181,6 +215,8 @@ class SnackBarText {
 class Texts {
   static const String APP_NAME = "Contacts";
   static const String WAYS = "Ways";
+  static const String DELETE_CONTACT = "Delete Contact";
+  static const String EDIT_CONTACT = "Edit Contact";
   static const String API = "API";
   static const String CUSTOM = "Custom";
   static const String CONTACT_DETAILS = "Contact Details";

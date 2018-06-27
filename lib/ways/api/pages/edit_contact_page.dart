@@ -27,42 +27,60 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:image_picker/image_picker.dart';
 
-class CreateContactPage extends StatefulWidget {
+class EditContactPage extends StatefulWidget {
+  Contact contact;
+
+  EditContactPage(this.contact);
+
   @override
-  createState() => new CreateContactPageState();
+  createState() => new EditContactPageState(contact);
 }
 
-class CreateContactPageState extends State<CreateContactPage> {
+class EditContactPageState extends State<EditContactPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
       ProgressDialogTitles.LOADING_CONTACTS, false);
 
+  Contact contact;
+
   File _imageFile;
 
-  TextEditingController nameController = new TextEditingController(text: "");
+  TextEditingController nameController;
 
-  TextEditingController phoneController = new TextEditingController(text: "");
+  TextEditingController phoneController;
 
-  TextEditingController emailController = new TextEditingController(text: "");
+  TextEditingController emailController;
 
-  TextEditingController addressController = new TextEditingController(text: "");
+  TextEditingController addressController;
 
-  TextEditingController latController = new TextEditingController(text: "");
+  TextEditingController latController;
 
-  TextEditingController longController = new TextEditingController(text: "");
+  TextEditingController longController;
 
-  Widget createContactWidget = new Container();
+  Widget editContactWidget = new Container();
+
+  String contactImage;
+  int validCount = 0;
+
+  EditContactPageState(this.contact);
 
   @override
   void initState() {
+    contactImage = contact.contactImage;
+    nameController = new TextEditingController(text: contact.name + "");
+    phoneController = new TextEditingController(text: contact.phone + "");
+    emailController = new TextEditingController(text: contact.email + "");
+    addressController = new TextEditingController(text: contact.address + "");
+    latController = new TextEditingController(text: contact.latitude + "");
+    longController = new TextEditingController(text: contact.longitude + "");
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     timeDilation = 1.0;
-    createContactWidget = ListView(
+    editContactWidget = ListView(
       reverse: true,
       children: <Widget>[
         new Center(
@@ -85,7 +103,7 @@ class CreateContactPageState extends State<CreateContactPage> {
         leading: new GestureDetector(
           onTap: () {
             Navigator.pop(
-                context, EventConstants.USER_HAS_NOT_PERFORMED_ANY_ACTION);
+                context, EventConstants.USER_HAS_NOT_PERFORMED_EDIT_ACTION);
           },
           child: new Icon(
             Icons.arrow_back,
@@ -98,11 +116,11 @@ class CreateContactPageState extends State<CreateContactPage> {
           fontSize: 22.0,
         )),
         iconTheme: new IconThemeData(color: Colors.white),
-        title: new Text(Texts.CREATE_CONTACT),
+        title: new Text(Texts.EDIT_CONTACT),
         actions: <Widget>[
           new GestureDetector(
             onTap: () {
-              _validateCreateContactForm();
+              _validateEditContactForm();
             },
             child: Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -115,13 +133,17 @@ class CreateContactPageState extends State<CreateContactPage> {
         ],
       ),
       body: new Stack(
-        children: <Widget>[createContactWidget, progressDialog],
+        children: <Widget>[editContactWidget, progressDialog],
       ),
       backgroundColor: Colors.grey[150],
     );
   }
 
   void _pickImage(ImageSource source) async {
+    setState(() {
+      ++validCount;
+      contactImage = null;
+    });
     var imageFile = await ImagePicker.pickImage(source: source);
     setState(() {
       _imageFile = imageFile;
@@ -168,14 +190,16 @@ class CreateContactPageState extends State<CreateContactPage> {
   Widget _imagePicked() {
     return new Flexible(
       child: _imageFile == null
-          ? new Text(
-              Texts.YOU_HAVE_NOT_YET_PICKED_AN_IMAGE,
-              style: new TextStyle(
-                color: Colors.blueGrey[400],
-                fontSize: 18.0,
-              ),
-              textAlign: TextAlign.center,
-            )
+          ? (contactImage != null
+              ? new Image.memory(base64Decode(contactImage))
+              : new Text(
+                  Texts.YOU_HAVE_NOT_YET_PICKED_AN_IMAGE,
+                  style: new TextStyle(
+                    color: Colors.blueGrey[400],
+                    fontSize: 18.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ))
           : new Image.file(
               _imageFile,
               fit: BoxFit.cover,
@@ -293,8 +317,8 @@ class CreateContactPageState extends State<CreateContactPage> {
         margin: EdgeInsets.only(bottom: 10.0));
   }
 
-  void _validateCreateContactForm() {
-    if (_imageFile == null) {
+  void _validateEditContactForm() {
+    if (_imageFile == null && validCount > 0) {
       showSnackBar(
           SnackBarText.PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA);
       return;
@@ -341,33 +365,41 @@ class CreateContactPageState extends State<CreateContactPage> {
       return;
     }
     FocusScope.of(context).requestFocus(new FocusNode());
-    Contact contactToBeCreated = new Contact();
-    contactToBeCreated.id = "";
-    contactToBeCreated.name = nameController.text;
-    contactToBeCreated.phone = phoneController.text;
-    contactToBeCreated.email = emailController.text;
-    contactToBeCreated.address = addressController.text;
-    contactToBeCreated.latitude = latController.text;
-    contactToBeCreated.longitude = longController.text;
-    List<int> contactImageBytes = _imageFile.readAsBytesSync();
-    contactToBeCreated.contactImage = base64Encode(contactImageBytes);
-    progressDialog.showProgressWithText(ProgressDialogTitles.CREATING_CONTACT);
-    createContact(contactToBeCreated);
+    Contact contactToBeEdited = new Contact();
+    contactToBeEdited.id = contact.id;
+    contactToBeEdited.name = nameController.text;
+    contactToBeEdited.phone = phoneController.text;
+    contactToBeEdited.email = emailController.text;
+    contactToBeEdited.address = addressController.text;
+    contactToBeEdited.latitude = latController.text;
+    contactToBeEdited.longitude = longController.text;
+    if (validCount == 0) {
+      contactToBeEdited.contactImage = contactImage;
+    } else {
+      List<int> contactImageBytes = _imageFile.readAsBytesSync();
+      contactToBeEdited.contactImage = base64Encode(contactImageBytes);
+    }
+    progressDialog.showProgressWithText(ProgressDialogTitles.EDITING_CONTACT);
+    editContact(contactToBeEdited);
   }
 
-  void createContact(Contact contactToBeCreated) async {
-    EventObject contactObject = await saveContact(contactToBeCreated);
+  void editContact(Contact contactToBeEdited) async {
+    EventObject contactObject = await updateContact(contactToBeEdited);
     if (this.mounted) {
       setState(() {
         progressDialog.hideProgress();
         switch (contactObject.id) {
 //------------------------------------------------------------------------------
-          case EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY:
+          case EventConstants.CONTACT_WAS_UPDATED_SUCCESSFULLY:
             Navigator.pop(
-                context, EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY);
+                context, EventConstants.CONTACT_WAS_UPDATED_SUCCESSFULLY);
             break;
-          case EventConstants.UNABLE_TO_CREATE_CONTACT:
-            Navigator.pop(context, EventConstants.UNABLE_TO_CREATE_CONTACT);
+          case EventConstants.UNABLE_TO_UPDATE_CONTACT:
+            Navigator.pop(context, EventConstants.UNABLE_TO_UPDATE_CONTACT);
+            break;
+          case EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
+            Navigator.pop(context,
+                EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
             break;
 //------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
