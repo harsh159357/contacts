@@ -42,23 +42,17 @@ class CreateContactPageState extends State<CreateContactPage> {
 
   File _imageFile;
 
-  TextEditingController nameController =
-      new TextEditingController(text: "");
+  TextEditingController nameController = new TextEditingController(text: "");
 
-  TextEditingController phoneController =
-      new TextEditingController(text: "");
+  TextEditingController phoneController = new TextEditingController(text: "");
 
-  TextEditingController emailController =
-      new TextEditingController(text: "");
+  TextEditingController emailController = new TextEditingController(text: "");
 
-  TextEditingController addressController =
-      new TextEditingController(text: "");
+  TextEditingController addressController = new TextEditingController(text: "");
 
-  TextEditingController latController =
-      new TextEditingController(text: "");
+  TextEditingController latController = new TextEditingController(text: "");
 
-  TextEditingController longController =
-      new TextEditingController(text: "");
+  TextEditingController longController = new TextEditingController(text: "");
 
   Widget createContactWidget = new Container();
 
@@ -256,26 +250,26 @@ class CreateContactPageState extends State<CreateContactPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   _formField(nameController, Icons.face, Texts.NAME,
-                      TextInputType.text, false),
+                      TextInputType.text),
                   _formField(phoneController, Icons.phone, Texts.PHONE,
-                      TextInputType.phone, false),
+                      TextInputType.phone),
                   _formField(emailController, Icons.email, Texts.EMAIL,
-                      TextInputType.emailAddress, false),
+                      TextInputType.emailAddress),
                   _pickAPlace(),
                   _formField(addressController, Icons.location_on,
-                      Texts.ADDRESS, TextInputType.text, false),
+                      Texts.ADDRESS, TextInputType.text),
                   new Row(
                     children: <Widget>[
                       new Flexible(
                         child: Padding(
                           padding: EdgeInsets.only(right: 10.0),
                           child: _formField(latController, Icons.my_location,
-                              Texts.LATITUDE, TextInputType.number, false),
+                              Texts.LATITUDE, TextInputType.number),
                         ),
                       ),
                       new Flexible(
                         child: _formField(longController, Icons.my_location,
-                            Texts.LONGITUDE, TextInputType.number, false),
+                            Texts.LONGITUDE, TextInputType.number),
                       )
                     ],
                   ),
@@ -285,7 +279,7 @@ class CreateContactPageState extends State<CreateContactPage> {
   }
 
   Widget _formField(TextEditingController textEditingController, IconData icon,
-      String text, TextInputType textInputType, bool obscureText) {
+      String text, TextInputType textInputType) {
     return new Container(
         child: new TextFormField(
           controller: textEditingController,
@@ -297,7 +291,6 @@ class CreateContactPageState extends State<CreateContactPage> {
               labelText: text,
               labelStyle: TextStyle(fontSize: 18.0)),
           keyboardType: textInputType,
-          obscureText: obscureText,
         ),
         margin: EdgeInsets.only(bottom: 10.0));
   }
@@ -434,9 +427,11 @@ class CreateContactPageState extends State<CreateContactPage> {
       MaterialPageRoute(builder: (context) => PlaceSearchPage()),
     );
     setState(() {
-      addressController.text = contact.address;
-      latController.text = contact.latitude;
-      longController.text = contact.longitude;
+      if (contact != null) {
+        addressController.text = contact.address;
+        latController.text = contact.latitude;
+        longController.text = contact.longitude;
+      }
     });
   }
 }

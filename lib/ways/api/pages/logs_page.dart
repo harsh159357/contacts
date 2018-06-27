@@ -155,7 +155,7 @@ class LogsPageState extends State<LogsPage> {
             break;
 //------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
-            logsPageWidget = new NoContentFound(
+            logsPageWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
             break;

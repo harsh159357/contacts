@@ -50,6 +50,32 @@ Future<EventObject> getContacts() async {
 }
 
 //------------------------------------------------------------------------------
+Future<EventObject> searchContactsInRemoteDatabase(String searchQuery) async {
+  try {
+    final response = await http.get(APIConstants.SEARCH_CONTACT + searchQuery);
+    if (response != null) {
+      print(response.statusCode);
+      if (response.statusCode == APIResponseCode.SC_OK) {
+        final responseJson = json.decode(response.body);
+        List<Contact> searchedContactList =
+            await Contact.fromContactJson(responseJson);
+        return new EventObject(
+            id: EventConstants.SEARCH_CONTACTS_SUCCESSFUL,
+            object: searchedContactList);
+      } else {
+        return new EventObject(
+            id: EventConstants.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY);
+      }
+    } else {
+      return new EventObject();
+    }
+  } catch (e) {
+    print(e.toString());
+    return new EventObject();
+  }
+}
+
+//------------------------------------------------------------------------------
 Future<EventObject> getDeletedContacts() async {
   try {
     final response = await http.get(APIConstants.READ_DELETED_CONTACTS);

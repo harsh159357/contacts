@@ -26,6 +26,7 @@ import 'package:contacts/ways/api/pages/contacts_page.dart';
 import 'package:contacts/ways/api/pages/create_contact_page.dart';
 import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
 import 'package:contacts/ways/api/pages/logs_page.dart';
+import 'package:contacts/ways/api/pages/search_contacts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -80,14 +81,34 @@ class APIHomePageState extends State<APIHomePage> {
     );
   }
 
-  FloatingActionButton _floatingActionButton() {
-    return new FloatingActionButton(
-      onPressed: () {
-        _navigateToCreateContactPage(context);
-      },
-      child: new Icon(
-        Icons.add,
-      ),
+  Widget _floatingActionButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: new FloatingActionButton(
+            onPressed: () {
+              navigateToPage(new SearchContactsPage());
+            },
+            heroTag: DrawerTitles.SEARCH_CONTACTS,
+            tooltip: DrawerTitles.SEARCH_CONTACTS,
+            child: new Icon(
+              Icons.search,
+            ),
+          ),
+        ),
+        new FloatingActionButton(
+          onPressed: () {
+            _navigateToCreateContactPage(context);
+          },
+          child: new Icon(
+            Icons.add,
+          ),
+          heroTag: DrawerTitles.CREATE_CONTACT,
+          tooltip: DrawerTitles.CREATE_CONTACT,
+        ),
+      ],
     );
   }
 
@@ -125,10 +146,15 @@ class APIHomePageState extends State<APIHomePage> {
       new SimpleItem(
           leadingIconData: Icons.account_circle, title: DrawerTitles.CONTACTS),
       new SimpleItem(
+          leadingIconData: Icons.add, title: DrawerTitles.CREATE_CONTACT),
+      new SimpleItem(
           leadingIconData: Icons.delete, title: DrawerTitles.DELETED_CONTACTS),
       new SimpleItem(
           leadingIconData: Icons.search, title: DrawerTitles.SEARCH_CONTACTS),
       new SimpleItem(leadingIconData: Icons.list, title: DrawerTitles.LOGS),
+      new SimpleItem(
+          leadingIconData: Icons.subdirectory_arrow_left,
+          title: DrawerTitles.GO_BACK),
     ];
     return new ListView.builder(
         itemBuilder: (BuildContext context, int index) {
@@ -218,6 +244,9 @@ class APIHomePageState extends State<APIHomePage> {
         } else {
           title = whatToDo;
           switch (title) {
+            case DrawerTitles.CREATE_CONTACT:
+              _navigateToCreateContactPage(context);
+              break;
             case DrawerTitles.CONTACTS:
               progressDialog
                   .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
@@ -228,10 +257,16 @@ class APIHomePageState extends State<APIHomePage> {
                   ProgressDialogTitles.LOADING_DELETED_CONTACTS);
               loadDeletedContacts();
               break;
+            case DrawerTitles.SEARCH_CONTACTS:
+              navigateToPage(new SearchContactsPage());
+              break;
             case DrawerTitles.LOGS:
               progressDialog
                   .showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
               loadLogs();
+              break;
+            case DrawerTitles.GO_BACK:
+              Navigator.pop(context);
               break;
           }
         }
@@ -306,7 +341,7 @@ class APIHomePageState extends State<APIHomePage> {
             break;
 //------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
-            apiHomeWidget = new NoContentFound(
+            apiHomeWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
         }

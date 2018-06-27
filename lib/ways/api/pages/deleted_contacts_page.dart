@@ -205,7 +205,7 @@ class DeletedContactsPageState extends State<DeletedContactsPage> {
             break;
 //------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
-            deletedContactsWidget = new NoContentFound(
+            deletedContactsWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
 
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);

@@ -25,22 +25,20 @@ import 'package:contacts/ways/common_widgets/contact_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-class ContactPage extends StatefulWidget {
-  List<Contact> contactList;
-  ContactPageState _contactPageState;
+class SearchContactsPage extends StatefulWidget {
+  SearchContactsPageState _searchContactPageState;
 
-  ContactPage({this.contactList});
+  SearchContactsPage();
 
   @override
-  createState() =>
-      _contactPageState = new ContactPageState(contactList: contactList);
+  createState() => _searchContactPageState = new SearchContactsPageState();
 
-  void reloadContactList() {
-    _contactPageState.reloadContacts();
+  void resetSearchContactsPage() {
+    _searchContactPageState.resetSearchContacts();
   }
 }
 
-class ContactPageState extends State<ContactPage> {
+class SearchContactsPageState extends State<SearchContactsPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
@@ -50,14 +48,17 @@ class ContactPageState extends State<ContactPage> {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
   }
 
+  TextEditingController searchController = new TextEditingController(text: "");
+
   static const opacityCurve =
       const Interval(0.0, 0.75, curve: Curves.fastOutSlowIn);
 
-  List<Contact> contactList;
+  List<Contact> contactList = new List();
 
-  ContactPageState({this.contactList});
+  SearchContactsPageState();
 
   Widget contactListWidget;
+  Widget searchBar;
 
   @override
   void initState() {
@@ -68,18 +69,62 @@ class ContactPageState extends State<ContactPage> {
   Widget build(BuildContext context) {
     timeDilation = 3.0;
     return new Scaffold(
+      appBar: new AppBar(
+        centerTitle: true,
+        textTheme: new TextTheme(
+            title: new TextStyle(
+          color: Colors.white,
+          fontSize: 22.0,
+        )),
+        iconTheme: new IconThemeData(color: Colors.white),
+        title: new TextFormField(
+          controller: searchController,
+          style: new TextStyle(color: Colors.white, fontSize: 20.0),
+          onFieldSubmitted: (text) {
+            searchThis(text);
+          },
+        ),
+        actions: <Widget>[
+          new GestureDetector(
+            child: new Container(
+              child: new Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.only(right: 10.0),
+            ),
+            onTap: () {
+              searchThis(searchController.text);
+            },
+          )
+        ],
+      ),
       key: globalKey,
-      body: loadList(),
+      body: loadSearchPage(),
       backgroundColor: Colors.grey[150],
     );
   }
 
-  Widget loadList() {
-    if (contactList != null) {
-      contactListWidget = _buildContactList();
+  void searchThis(String search) {
+    if (searchController.text != "") {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      progressDialog.showProgress();
+      searchContacts(searchController.text);
     } else {
-      contactListWidget =
-          NoContentFound(Texts.NO_CONTACTS, Icons.account_circle);
+      showSnackBar(SnackBarText.PLEASE_FILL_SOMETHING_IN_SEARCH_FIElD);
+    }
+  }
+
+  Widget loadSearchPage() {
+    if (contactList != null) {
+      if (contactList.isNotEmpty) {
+        contactListWidget = new Container(
+            margin: const EdgeInsets.all(16.0), child: _buildContactList());
+      } else {
+        contactListWidget = new Container(
+            margin: const EdgeInsets.all(16.0),
+            child: NoContentFound(Texts.NO_CONTACTS, Icons.account_circle));
+      }
     }
     return new Stack(
       children: <Widget>[contactListWidget, progressDialog],
@@ -88,7 +133,6 @@ class ContactPageState extends State<ContactPage> {
 
   Widget _buildContactList() {
     return new ListView.builder(
-      padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, i) {
         return _buildContactRow(contactList[i]);
       },
@@ -218,35 +262,32 @@ class ContactPageState extends State<ContactPage> {
     );
   }
 
-  void reloadContacts() {
+  void resetSearchContacts() {
     setState(() {
-      progressDialog
-          .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
-      loadContacts();
+      searchController.text = "";
+      contactList = new List();
     });
   }
 
-  void loadContacts() async {
-    EventObject eventObject = await getContacts();
+  void searchContacts(String searchQuery) async {
+    EventObject eventObject = await searchContactsInRemoteDatabase(searchQuery);
     if (this.mounted) {
       setState(() {
         progressDialog.hideProgress();
-        contactList = eventObject.object;
         switch (eventObject.id) {
 //------------------------------------------------------------------------------
-          case EventConstants.READ_CONTACTS_SUCCESSFUL:
-            showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
+          case EventConstants.SEARCH_CONTACTS_SUCCESSFUL:
+            contactList = eventObject.object;
+            showSnackBar(SnackBarText.CONTACTS_SEARCHED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_CONTACTS);
-            break;
-          case EventConstants.NO_CONTACTS_FOUND:
-            showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
+          case EventConstants.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY:
+            contactList = new List();
+            showSnackBar(SnackBarText.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY +
+                searchQuery);
             break;
 //------------------------------------------------------------------------------
           case EventConstants.NO_INTERNET_CONNECTION:
-            contactListWidget = NoContentFound(
-                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+            contactList = new List();
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
             break;
         }

@@ -74,6 +74,11 @@ class EventConstants {
   static const int CONTACT_WAS_CREATED_SUCCESSFULLY = 509;
   static const int UNABLE_TO_CREATE_CONTACT = 510;
   static const int USER_HAS_NOT_PERFORMED_ANY_ACTION = 511;
+
+//------------------------------------------------------------------------------
+
+  static const int SEARCH_CONTACTS_SUCCESSFUL = 512;
+  static const int NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY = 513;
 //------------------------------------------------------------------------------
 }
 
@@ -92,6 +97,7 @@ class SharedPreferenceKeys {}
 //------------------------------------------------------------------------------
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
+  static const String SEARCHING_CONTACTS = "Searching...";
   static const String CREATING_CONTACT = "Creating...";
   static const String LOADING_DELETED_CONTACTS = "Contacts...";
   static const String LOADING_LOGS = "Logs...";
@@ -125,6 +131,21 @@ class SnackBarText {
 
 //------------------------------------------------------------------------------
 
+  static const String CONTACTS_SEARCHED_SUCCESSFULLY =
+      "Contacts Searched Successfully";
+  static const String NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY =
+      "No Contact Found for Search Query ";
+
+//------------------------------------------------------------------------------
+
+  static const String CONTACT_WAS_CREATED_SUCCESSFULLY =
+      "Contact was created successfully";
+  static const String UNABLE_TO_CREATE_CONTACT = "Unable to create Contact";
+  static const String USER_HAS_NOT_PERFORMED_ANY_ACTION =
+      "User has not performed any action";
+
+//------------------------------------------------------------------------------
+
   static const String PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA =
       "Please pick an image from Gallery/Camera";
 
@@ -147,15 +168,13 @@ class SnackBarText {
   static const String PLEASE_FILL_VALID_LONGITUDE =
       "Please fill valid longitude";
 
-  static const String CONTACT_WAS_CREATED_SUCCESSFULLY =
-      "Contact was created successfully";
-  static const String UNABLE_TO_CREATE_CONTACT = "Unable to create Contact";
-  static const String USER_HAS_NOT_PERFORMED_ANY_ACTION =
-      "User has not performed any action";
+  static const String PLEASE_FILL_SOMETHING_IN_SEARCH_FIElD =
+      "Please fill something in search field";
 
 //------------------------------------------------------------------------------
 
   static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
+//------------------------------------------------------------------------------
 }
 
 //------------------------------------------------------------------------------
@@ -182,6 +201,7 @@ class Texts {
   static const String LATITUDE = "Latitude";
   static const String LONGITUDE = "Longitude";
   static const String PICK_A_PLACE = "Click Here to Pick a Place";
+  static const String TYPE_SOMETHING_HERE = "Type Something here";
   static const YOU_HAVE_NOT_YET_PICKED_AN_IMAGE =
       "You have not yet picked an image.";
 }
@@ -189,9 +209,11 @@ class Texts {
 //------------------------------------------------------------------------------
 class DrawerTitles {
   static const String CONTACTS = "Contacts";
+  static const String CREATE_CONTACT = "Create Contact";
   static const String DELETED_CONTACTS = "Deleted Contacts";
   static const String SEARCH_CONTACTS = "Search Contacts";
   static const String LOGS = "Logs";
+  static const String GO_BACK = "Go Back";
 }
 
 //------------------------------------------------------------------------------
