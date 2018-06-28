@@ -21,6 +21,7 @@ import 'package:contacts/customviews/progress_dialog.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
+import 'package:contacts/utils/functions.dart';
 import 'package:contacts/ways/api/futures/api_futures.dart';
 import 'package:contacts/ways/common_widgets/google_place_search.dart';
 import 'package:flutter/material.dart';
@@ -224,6 +225,7 @@ class CreateContactPageState extends State<CreateContactPage> {
                 style: new TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
+              fit: FlexFit.tight,
             ),
             new Flexible(
               child: new Icon(
@@ -382,41 +384,6 @@ class CreateContactPageState extends State<CreateContactPage> {
     globalKey.currentState.showSnackBar(new SnackBar(
       content: new Text(textToBeShown),
     ));
-  }
-
-  bool isValidEmail(String email) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-
-    RegExp regExp = new RegExp(pattern);
-
-    return regExp.hasMatch(email);
-  }
-
-  bool isValidPhone(String phone) {
-    String pattern = r'^[0-9]+$';
-
-    RegExp regExp = new RegExp(pattern);
-
-    return regExp.hasMatch(phone);
-  }
-
-  bool isValidLatitude(String latitude) {
-    String pattern =
-        r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?[0-8]\d((\.)|\.\d{1,10})?)|(0*?90((\.)|\.0{1,10})?))$';
-
-    RegExp regExp = new RegExp(pattern);
-
-    return regExp.hasMatch(latitude);
-  }
-
-  bool isValidLongitude(String longitude) {
-    String pattern =
-        r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?\d\d((\.)|\.\d{1,10})?)|(0*?1[0-7]\d((\.)|\.\d{1,10})?)|(0*?180((\.)|\.0{1,10})?))$';
-
-    RegExp regExp = new RegExp(pattern);
-
-    return regExp.hasMatch(longitude);
   }
 
   void _navigateToPlaceSearch(BuildContext context) async {

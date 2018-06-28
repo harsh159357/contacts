@@ -236,7 +236,7 @@ class Texts {
   static const String ADDRESS = "Address";
   static const String LATITUDE = "Latitude";
   static const String LONGITUDE = "Longitude";
-  static const String PICK_A_PLACE = "Click Here to Pick a Place";
+  static const String PICK_A_PLACE = "Pick a Place";
   static const String TYPE_SOMETHING_HERE = "Type Something here";
   static const YOU_HAVE_NOT_YET_PICKED_AN_IMAGE =
       "You have not yet picked an image.";
@@ -258,5 +258,19 @@ class Actions {
   static const String CREATE_CONTACT = "View";
   static const String DELETE_CONTACT = "Delete";
   static const String EDIT_OR_UPDATE_CONTACT = "Edit";
+}
+
+//------------------------------------------------------------------------------
+class RegularExpressionsPatterns {
+  static const String EMAIL_VALIDATION =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+  static const String PHONE_VALIDATION = r'^[0-9]+$';
+
+  static const String LATITUDE_PATTERN =
+      r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?[0-8]\d((\.)|\.\d{1,10})?)|(0*?90((\.)|\.0{1,10})?))$';
+
+  static const String LONGITUDE_PATTERN =
+      r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?\d\d((\.)|\.\d{1,10})?)|(0*?1[0-7]\d((\.)|\.\d{1,10})?)|(0*?180((\.)|\.0{1,10})?))$';
 }
 //------------------------------------------------------------------------------

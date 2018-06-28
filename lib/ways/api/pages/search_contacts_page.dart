@@ -156,22 +156,6 @@ class SearchContactsPageState extends State<SearchContactsPage> {
                   contactDetails(contact)
                 ],
               ),
-/*
-            new Container(
-              margin: EdgeInsets.only(top: 10.0),
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  actionContainer(
-                      Icons.visibility, Colors.blue[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.edit, Colors.blueGrey[400], Actions.VIEW_CONTACT),
-                  actionContainer(
-                      Icons.delete, Colors.black, Actions.VIEW_CONTACT),
-                ],
-              ),
-            )
-*/
             ],
           ),
           margin: EdgeInsets.all(10.0),
@@ -218,30 +202,6 @@ class SearchContactsPageState extends State<SearchContactsPage> {
       ),
       margin: EdgeInsets.only(bottom: 10.0),
     );
-  }
-
-  Widget actionContainer(IconData icon, Color color, String action) {
-    return new Flexible(
-        flex: 1,
-        child: new GestureDetector(
-          child: new Icon(
-            icon,
-            size: 30.0,
-            color: color,
-          ),
-          onTap: () {
-            setState(() {
-              switch (action) {
-                case Actions.VIEW_CONTACT:
-                  break;
-                case Actions.EDIT_OR_UPDATE_CONTACT:
-                  break;
-                case Actions.DELETE_CONTACT:
-                  break;
-              }
-            });
-          },
-        ));
   }
 
   void _heroAnimation(Contact contact) {

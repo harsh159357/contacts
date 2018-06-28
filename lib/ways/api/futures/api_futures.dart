@@ -23,7 +23,6 @@ import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/models/log.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 //------------------------------------------------------------------------------
 Future<EventObject> getContacts() async {
@@ -54,7 +53,6 @@ Future<EventObject> searchContactsInRemoteDatabase(String searchQuery) async {
   try {
     final response = await http.get(APIConstants.SEARCH_CONTACT + searchQuery);
     if (response != null) {
-      print(response.statusCode);
       if (response.statusCode == APIResponseCode.SC_OK) {
         final responseJson = json.decode(response.body);
         List<Contact> searchedContactList =
@@ -158,7 +156,6 @@ Future<EventObject> saveContact(Contact contact) async {
 Future<EventObject> updateContact(Contact contact) async {
   try {
     final encoding = APIConstants.OCTET_STREAM_ENCODING;
-    print(json.encode(contact.toJson()));
     final response = await http.post(APIConstants.UPDATE_CONTACT,
         body: json.encode(contact.toJson()),
         encoding: Encoding.getByName(encoding));
@@ -216,22 +213,6 @@ Future<EventObject> removeContact(Contact contact) async {
     print(e.toString());
     return new EventObject();
   }
-}
-
-//------------------------------------------------------------------------------
-String convertDateFormat(
-    String fromDateFormat, String toDateFormat, String toBeConverted) {
-  DateFormat fdf = new DateFormat(fromDateFormat);
-  DateFormat tdf = new DateFormat(toDateFormat);
-  DateTime dateTime = fdf.parse(toBeConverted);
-  return tdf.format(dateTime);
-}
-
-//------------------------------------------------------------------------------
-int giveTimeStamp(String dateFormat, String toBeConverted) {
-  DateFormat df = new DateFormat(dateFormat);
-  DateTime dateTime = df.parse(toBeConverted);
-  return dateTime.millisecondsSinceEpoch;
 }
 
 //------------------------------------------------------------------------------
