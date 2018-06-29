@@ -16,6 +16,7 @@
 
 import 'dart:async';
 
+import 'package:contacts/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'log.g.dart';
@@ -41,4 +42,22 @@ class Log extends Object with _$LogSerializerMixin {
   }
 
   factory Log.fromJson(Map<String, dynamic> json) => _$LogFromJson(json);
+
+  Map toMap() {
+    Map<String, dynamic> contactMap = <String, dynamic>{
+      LogsTable.COLUMN_TIMESTAMP: column_timestamp,
+      LogsTable.COLUMN_DATE: column_date,
+      LogsTable.COLUMN_TRANSACTION: column_transaction,
+    };
+
+    return contactMap;
+  }
+
+  static Log fromMap(Map map) {
+    return new Log(
+      column_timestamp: map[LogsTable.COLUMN_TIMESTAMP],
+      column_date: map[LogsTable.COLUMN_DATE],
+      column_transaction: map[LogsTable.COLUMN_TRANSACTION],
+    );
+  }
 }

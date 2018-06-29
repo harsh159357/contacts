@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `contact` (
   `longitude` text NOT NULL,
   `contact_image` longblob NOT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
 --

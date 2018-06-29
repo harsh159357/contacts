@@ -10,9 +10,10 @@ dependencies:
   shared_preferences: ^0.4.2
   json_annotation: ^0.2.4
   cupertino_icons: ^0.1.2
+  path_provider: ^0.4.1
   url_launcher: ^3.0.2
   image_picker: ^0.4.5
-  sqflite: ^0.10.0
+  sqflite: ^0.11.0
   http: ^0.11.3+16
   intl: ^0.15.6
 

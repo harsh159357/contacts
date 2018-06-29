@@ -240,6 +240,13 @@ class Texts {
   static const String TYPE_SOMETHING_HERE = "Type Something here";
   static const YOU_HAVE_NOT_YET_PICKED_AN_IMAGE =
       "You have not yet picked an image.";
+  static const String CONTACT_STORED_IN_DELETED_CONTACTS_TABLE =
+      "Contact Stored in Deleted Contacts Table";
+  static const String UNABLE_TO_STORE_CONTACT_IN_DELETED_CONTACT_TABLE =
+      "Unable to Store  Contact in Deleted Contacts Table";
+  static const String LOGS_STORED_IN_LOGS_TABLE = "Logs Stored in Logs Table";
+  static const String UNABLE_TO_STORE_LOGS_IN_LOG_TABLE =
+      "Unable to Store  Logs in Logs Table";
 }
 
 //------------------------------------------------------------------------------
@@ -272,5 +279,110 @@ class RegularExpressionsPatterns {
 
   static const String LONGITUDE_PATTERN =
       r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?\d\d((\.)|\.\d{1,10})?)|(0*?1[0-7]\d((\.)|\.\d{1,10})?)|(0*?180((\.)|\.0{1,10})?))$';
+}
+//------------------------------------------------------------------------------
+
+const String DATABASE_NAME = "contacts.db";
+
+class ContactTable {
+  static String TABLE_NAME = "Contact";
+  static String ID = "_id";
+  static String NAME = "name";
+  static String PHONE = "phone";
+  static String EMAIL = "email";
+  static String ADDRESS = "address";
+  static String LATITUDE = "latitude";
+  static String LONGITUDE = "longitude";
+  static String CONTACT_IMAGE = "contact_image";
+}
+//------------------------------------------------------------------------------
+
+class DeletedContactsTable {
+  static String TABLE_NAME = "DeletedContacts";
+  static String ID = "_id";
+  static String NAME = "name";
+  static String PHONE = "phone";
+  static String EMAIL = "email";
+  static String ADDRESS = "address";
+  static String LATITUDE = "latitude";
+  static String LONGITUDE = "longitude";
+  static String CONTACT_IMAGE = "contact_image";
+}
+//------------------------------------------------------------------------------
+
+class LogsTable {
+  static String TABLE_NAME = "Logs";
+  static String COLUMN_TRANSACTION = "column_transaction";
+  static String COLUMN_TIMESTAMP = "column_timestamp";
+  static String COLUMN_DATE = "column_date";
+}
+//------------------------------------------------------------------------------
+
+class CreateTableQueries {
+  static String CREATE_CONTACT_TABLE = "CREATE TABLE " +
+      ContactTable.TABLE_NAME +
+      "(" +
+      ContactTable.ID +
+      " INTEGER PRIMARY KEY AUTOINCREMENT," +
+      ContactTable.NAME +
+      " TEXT NOT NULL," +
+      ContactTable.PHONE +
+      " TEXT NOT NULL," +
+      ContactTable.EMAIL +
+      " TEXT NOT NULL," +
+      ContactTable.ADDRESS +
+      " TEXT NOT NULL," +
+      ContactTable.LATITUDE +
+      " TEXT NOT NULL," +
+      ContactTable.LONGITUDE +
+      " TEXT NOT NULL," +
+      ContactTable.CONTACT_IMAGE +
+      " TEXT NOT NULL);";
+
+  static String CREATE_DELTED_CONTACTS_TABLE = "CREATE TABLE " +
+      DeletedContactsTable.TABLE_NAME +
+      "(" +
+      DeletedContactsTable.ID +
+      " INTEGER NOT NULL," +
+      DeletedContactsTable.NAME +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.PHONE +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.EMAIL +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.ADDRESS +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.LATITUDE +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.LONGITUDE +
+      " TEXT NOT NULL," +
+      DeletedContactsTable.CONTACT_IMAGE +
+      " TEXT NOT NULL);";
+
+  static String CREATE_LOG_TABLE = "CREATE TABLE " +
+      LogsTable.TABLE_NAME +
+      "(" +
+      LogsTable.COLUMN_TIMESTAMP +
+      " TEXT NOT NULL," +
+      LogsTable.COLUMN_TRANSACTION +
+      " TEXT NOT NULL," +
+      LogsTable.COLUMN_DATE +
+      " TEXT NOT NULL);";
+}
+//------------------------------------------------------------------------------
+
+class LogTableTransactions {
+  static const String READING_CONTACTS =
+      "Reading All the Contacts Available In Database.";
+  static const String CREATING_CONTACT =
+      "A New Contact is Being Inserted in Contact Table.";
+  static const String READING_DELETED_CONTACTS =
+      "Reading all the Deleted Contacts from Database.";
+  static const String CREATING_DELETED_CONTACT =
+      "Creating a Contact in Deleted Contacts Table.";
+  static const String UPDATING_CONTACT = "Updating a Contact in Database.";
+  static const String DELETING_CONTACT = "Deleting a Contact from Database.";
+  static const String SEARCHING_CONTACT = "Searching a contact in database.";
+  static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
 }
 //------------------------------------------------------------------------------

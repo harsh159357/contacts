@@ -16,6 +16,7 @@
 
 import 'dart:async';
 
+import 'package:contacts/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'contact.g.dart';
@@ -60,4 +61,31 @@ class Contact extends Object with _$ContactSerializerMixin {
 
   factory Contact.fromJson(Map<String, dynamic> json) =>
       _$ContactFromJson(json);
+
+  Map toMap() {
+    Map<String, dynamic> contactMap = <String, dynamic>{
+      ContactTable.NAME: name,
+      ContactTable.PHONE: phone,
+      ContactTable.EMAIL: email,
+      ContactTable.ADDRESS: address,
+      ContactTable.LATITUDE: latitude,
+      ContactTable.LONGITUDE: longitude,
+      ContactTable.CONTACT_IMAGE: contactImage,
+    };
+
+    return contactMap;
+  }
+
+  static Contact fromMap(Map map) {
+    return new Contact(
+      id: map[ContactTable.ID].toString(),
+      name: map[ContactTable.NAME],
+      phone: map[ContactTable.PHONE],
+      email: map[ContactTable.EMAIL],
+      address: map[ContactTable.ADDRESS],
+      latitude: map[ContactTable.LATITUDE],
+      longitude: map[ContactTable.LONGITUDE],
+      contactImage: map[ContactTable.CONTACT_IMAGE],
+    );
+  }
 }

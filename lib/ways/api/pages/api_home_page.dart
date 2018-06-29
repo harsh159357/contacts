@@ -27,6 +27,7 @@ import 'package:contacts/ways/api/pages/create_contact_page.dart';
 import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
 import 'package:contacts/ways/api/pages/logs_page.dart';
 import 'package:contacts/ways/api/pages/search_contacts_page.dart';
+import 'package:contacts/ways/common_widgets/navigation_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -365,19 +366,4 @@ class APIHomePageState extends State<APIHomePage> {
       });
     }
   }
-}
-
-abstract class NavigationItem {}
-
-class HeaderItem implements NavigationItem {
-  GestureDetector gestureDetector;
-
-  HeaderItem(this.gestureDetector);
-}
-
-class SimpleItem implements NavigationItem {
-  SimpleItem({this.title, this.leadingIconData, this.trailingIconData});
-
-  final String title;
-  final IconData leadingIconData, trailingIconData;
 }

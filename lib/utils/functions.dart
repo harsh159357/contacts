@@ -60,4 +60,8 @@ int giveTimeStamp(String dateFormat, String toBeConverted) {
   return dateTime.millisecondsSinceEpoch;
 }
 
+String formatTimeStamp(DateTime timeStamp,String dateFormat) {
+  return new DateFormat(dateFormat).format(timeStamp);
+}
+
 //------------------------------------------------------------------------------

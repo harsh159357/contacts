@@ -16,6 +16,7 @@
 
 import 'dart:async';
 
+import 'package:contacts/utils/constants.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'deleted_contact.g.dart';
@@ -61,4 +62,32 @@ class DeletedContact extends Object with _$DeletedContactSerializerMixin {
 
   factory DeletedContact.fromJson(Map<String, dynamic> json) =>
       _$DeletedContactFromJson(json);
+
+  Map toMap() {
+    Map<String, dynamic> contactMap = <String, dynamic>{
+      DeletedContactsTable.ID: int.parse(id),
+      DeletedContactsTable.NAME: name,
+      DeletedContactsTable.PHONE: phone,
+      DeletedContactsTable.EMAIL: email,
+      DeletedContactsTable.ADDRESS: address,
+      DeletedContactsTable.LATITUDE: latitude,
+      DeletedContactsTable.LONGITUDE: longitude,
+      DeletedContactsTable.CONTACT_IMAGE: contactImage,
+    };
+
+    return contactMap;
+  }
+
+  static DeletedContact fromMap(Map map) {
+    return new DeletedContact(
+      id: map[DeletedContactsTable.ID].toString(),
+      name: map[DeletedContactsTable.NAME],
+      phone: map[DeletedContactsTable.PHONE],
+      email: map[DeletedContactsTable.EMAIL],
+      address: map[DeletedContactsTable.ADDRESS],
+      latitude: map[DeletedContactsTable.LATITUDE],
+      longitude: map[DeletedContactsTable.LONGITUDE],
+      contactImage: map[DeletedContactsTable.CONTACT_IMAGE],
+    );
+  }
 }
