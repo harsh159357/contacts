@@ -15,13 +15,12 @@
  *
  */
 
+import 'package:contacts/pages/dashboard_page.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/ways/api/pages/api_home_page.dart';
-import 'package:contacts/ways/custom/pages/custom_home_page.dart';
-import 'package:contacts/ways/preferences/pages/preferences_home_page.dart';
-import 'package:contacts/ways/sqflite/pages/sqflite_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+
+String selectedWay = Ways.API;
 
 class WaysPage extends StatefulWidget {
   @override
@@ -44,7 +43,7 @@ class WaysPageState extends State<WaysPage> {
           fontSize: 26.0,
         )),
         iconTheme: new IconThemeData(color: Colors.white),
-        title: new Text(Texts.WAYS),
+        title: new Text(Ways.WAYS),
       ),
       body: _waysPage(),
     );
@@ -63,8 +62,8 @@ class WaysPageState extends State<WaysPage> {
             new Container(
               child: new Row(
                 children: <Widget>[
-                  _flexContainer(Icons.description, Texts.API),
-                  _flexContainer(Icons.center_focus_weak, Texts.CUSTOM),
+                  _flexContainer(Icons.description, Ways.API),
+                  _flexContainer(Icons.center_focus_weak, Ways.CUSTOM),
                 ],
               ),
               margin: EdgeInsets.only(bottom: 40.0),
@@ -72,8 +71,8 @@ class WaysPageState extends State<WaysPage> {
             new Container(
                 child: new Row(
               children: <Widget>[
-                _flexContainer(Icons.tune, Texts.PREFERENCES),
-                _flexContainer(Icons.save, Texts.SQFLITE),
+                _flexContainer(Icons.tune, Ways.PREFERENCES),
+                _flexContainer(Icons.save, Ways.SQFLITE),
               ],
             )),
           ],
@@ -107,26 +106,10 @@ class WaysPageState extends State<WaysPage> {
             ],
           ),
           onTap: () {
-            navigateTo(title);
+            selectedWay = title;
+            navigateToPage(new DashBoardPage());
           },
         ));
-  }
-
-  void navigateTo(String title) {
-    switch (title) {
-      case Texts.API:
-        navigateToPage(new APIHomePage());
-        break;
-      case Texts.CUSTOM:
-        navigateToPage(new CustomHomePage());
-        break;
-      case Texts.PREFERENCES:
-        navigateToPage(new PreferencesHomePage());
-        break;
-      case Texts.SQFLITE:
-        navigateToPage(new SqfliteHomePage());
-        break;
-    }
   }
 
   void navigateToPage(StatefulWidget statefulWidget) {

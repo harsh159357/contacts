@@ -12,36 +12,35 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
 import 'dart:async';
 
-import 'package:contacts/customviews/no_content_found.dart';
-import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/common_widgets/no_content_found.dart';
+import 'package:contacts/common_widgets/progress_dialog.dart';
+import 'package:contacts/futures/common.dart';
 import 'package:contacts/models/base/event_object.dart';
+import 'package:contacts/pages/contacts_page.dart';
+import 'package:contacts/pages/create_contact_page.dart';
+import 'package:contacts/pages/deleted_contacts_page.dart';
+import 'package:contacts/pages/logs_page.dart';
+import 'package:contacts/pages/navigation_item.dart';
+import 'package:contacts/pages/search_contacts_page.dart';
+import 'package:contacts/pages/ways_page.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/ways/api/futures/api_futures.dart';
-import 'package:contacts/ways/api/pages/contacts_page.dart';
-import 'package:contacts/ways/api/pages/create_contact_page.dart';
-import 'package:contacts/ways/api/pages/deleted_contacts_page.dart';
-import 'package:contacts/ways/api/pages/logs_page.dart';
-import 'package:contacts/ways/api/pages/search_contacts_page.dart';
-import 'package:contacts/ways/common_widgets/navigation_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
-class APIHomePage extends StatefulWidget {
+class DashBoardPage extends StatefulWidget {
   @override
-  createState() => new APIHomePageState();
+  createState() => new DashBoardPageState();
 }
 
-class APIHomePageState extends State<APIHomePage> {
+class DashBoardPageState extends State<DashBoardPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
       ProgressDialogTitles.LOADING_CONTACTS, true);
-  Widget apiHomeWidget = new Container();
-  static const String TAPPED_ON_HEADER = "Tapped On Header";
+  Widget dashBoardWidget = new Container();
   String title = DrawerTitles.CONTACTS;
 
   @override
@@ -78,7 +77,7 @@ class APIHomePageState extends State<APIHomePage> {
 
   Widget _apiHomePage() {
     return new Stack(
-      children: <Widget>[apiHomeWidget, progressDialog],
+      children: <Widget>[dashBoardWidget, progressDialog],
     );
   }
 
@@ -120,20 +119,18 @@ class APIHomePageState extends State<APIHomePage> {
     );
     setState(() {
       switch (contactCreationStatus) {
-        case EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY:
+        case Events.CONTACT_WAS_CREATED_SUCCESSFULLY:
           showSnackBar(SnackBarText.CONTACT_WAS_CREATED_SUCCESSFULLY);
           break;
-        case EventConstants.UNABLE_TO_CREATE_CONTACT:
+        case Events.UNABLE_TO_CREATE_CONTACT:
           showSnackBar(SnackBarText.UNABLE_TO_CREATE_CONTACT);
           break;
-        case EventConstants.USER_HAS_NOT_PERFORMED_ANY_ACTION:
+        case Events.USER_HAS_NOT_CREATED_ANY_CONTACT:
           showSnackBar(SnackBarText.USER_HAS_NOT_PERFORMED_ANY_ACTION);
           break;
       }
     });
   }
-
-//------------------------------------------------------------------------------
 
   List<NavigationItem> navigationData;
 
@@ -143,7 +140,7 @@ class APIHomePageState extends State<APIHomePage> {
 
   Widget _navigationData() {
     navigationData = <NavigationItem>[
-      new HeaderItem(_drawerHeader()),
+      new HeaderItem(_getHeaderItem()),
       new SimpleItem(
           leadingIconData: Icons.account_circle, title: DrawerTitles.CONTACTS),
       new SimpleItem(
@@ -169,10 +166,25 @@ class APIHomePageState extends State<APIHomePage> {
         itemCount: navigationData.length);
   }
 
-  Widget _drawerHeader() {
+  Widget _getHeaderItem() {
+    switch (selectedWay) {
+      case Ways.API:
+        return _drawerHeader(Icons.description, Ways.API);
+      case Ways.SQFLITE:
+        return _drawerHeader(Icons.save, Ways.SQFLITE);
+      case Ways.PREFERENCES:
+        return _drawerHeader(Icons.tune, Ways.PREFERENCES);
+      case Ways.SQFLITE:
+        return _drawerHeader(Icons.center_focus_weak, Ways.CUSTOM);
+      default:
+        return _drawerHeader(Icons.description, Ways.API);
+    }
+  }
+
+  Widget _drawerHeader(IconData icon, String way) {
     return new GestureDetector(
       onTap: () {
-        handleNavigationDrawerClicks(TAPPED_ON_HEADER);
+        handleNavigationDrawerClicks(DrawerTitles.TAPPED_ON_HEADER);
       },
       child: new DrawerHeader(
         child: new Column(
@@ -182,13 +194,13 @@ class APIHomePageState extends State<APIHomePage> {
             new Column(
               children: <Widget>[
                 new Icon(
-                  Icons.description,
+                  icon,
                   size: 75.0,
                   color: Colors.white,
                 ),
                 new Container(
                   child: new Text(
-                    Texts.API,
+                    way,
                     style: new TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.normal,
@@ -228,18 +240,18 @@ class APIHomePageState extends State<APIHomePage> {
   void handleNavigationDrawerClicks(String whatToDo) {
     setState(() {
       Navigator.pop(context);
-      if (whatToDo != TAPPED_ON_HEADER) {
-        Type type = apiHomeWidget.runtimeType;
+      if (whatToDo != DrawerTitles.TAPPED_ON_HEADER) {
+        Type type = dashBoardWidget.runtimeType;
         if (title == whatToDo) {
           if (type == ContactPage) {
-            ContactPage contactPage = apiHomeWidget as ContactPage;
+            ContactPage contactPage = dashBoardWidget as ContactPage;
             contactPage.reloadContactList();
           } else if (type == DeletedContactsPage) {
             DeletedContactsPage deletedContactsPage =
-                apiHomeWidget as DeletedContactsPage;
+                dashBoardWidget as DeletedContactsPage;
             deletedContactsPage.reloadDeletedContacts();
           } else if (type == LogsPage) {
-            LogsPage logsPage = apiHomeWidget as LogsPage;
+            LogsPage logsPage = dashBoardWidget as LogsPage;
             logsPage.reloadLogs();
           }
         } else {
@@ -272,12 +284,24 @@ class APIHomePageState extends State<APIHomePage> {
           }
         }
       } else {
-        showSnackBar(SnackBarText.TAPPED_ON_API_HEADER);
+        switch (selectedWay) {
+          case Ways.API:
+            showSnackBar(SnackBarText.TAPPED_ON_API_HEADER);
+            break;
+          case Ways.SQFLITE:
+            showSnackBar(SnackBarText.TAPPED_ON_SQFLITE_HEADER);
+            break;
+          case Ways.PREFERENCES:
+            showSnackBar(SnackBarText.TAPPED_ON_PREFERENCES_HEADER);
+            break;
+          case Ways.CUSTOM:
+            showSnackBar(SnackBarText.TAPPED_ON_CUSTOM_HEADER);
+            break;
+        }
       }
     });
   }
 
-//------------------------------------------------------------------------------
   void loadContacts() async {
     EventObject eventObjectContacts = await getContacts();
     eventsCapturing(eventObjectContacts);
@@ -293,56 +317,41 @@ class APIHomePageState extends State<APIHomePage> {
     eventsCapturing(eventObjectLogs);
   }
 
-//------------------------------------------------------------------------------
-
   void eventsCapturing(EventObject eventObject) {
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
+        progressDialog.hide();
         switch (eventObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.READ_CONTACTS_SUCCESSFUL:
-            apiHomeWidget = new ContactPage(contactList: eventObject.object);
+          case Events.READ_CONTACTS_SUCCESSFUL:
+            dashBoardWidget = new ContactPage(contactList: eventObject.object);
             showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
-            apiHomeWidget = new ContactPage();
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_CONTACTS);
-            break;
-          case EventConstants.NO_CONTACTS_FOUND:
-            apiHomeWidget = new ContactPage();
+          case Events.NO_CONTACTS_FOUND:
+            dashBoardWidget = new ContactPage();
             showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
             break;
-//------------------------------------------------------------------------------
-          case EventConstants.READ_DELETED_CONTACTS_SUCCESSFUL:
-            apiHomeWidget =
+
+          case Events.READ_LOGS_SUCCESSFUL:
+            dashBoardWidget = new LogsPage(logs: eventObject.object);
+            showSnackBar(SnackBarText.LOGS_LOADED_SUCCESSFULLY);
+            break;
+          case Events.NO_LOGS_FOUND:
+            dashBoardWidget = new LogsPage();
+            showSnackBar(SnackBarText.NO_LOGS_FOUND);
+            break;
+
+          case Events.READ_DELETED_CONTACTS_SUCCESSFUL:
+            dashBoardWidget =
                 new DeletedContactsPage(deletedContacts: eventObject.object);
             showSnackBar(SnackBarText.DELETED_CONTACTS_LOADED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
-            apiHomeWidget = new DeletedContactsPage();
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_DELETED_CONTACTS);
-            break;
-          case EventConstants.NO_DELETED_CONTACTS_FOUND:
-            apiHomeWidget = new DeletedContactsPage();
+          case Events.NO_DELETED_CONTACTS_FOUND:
+            dashBoardWidget = new DeletedContactsPage();
             showSnackBar(SnackBarText.NO_DELETED_CONTACTS_FOUND);
             break;
-//------------------------------------------------------------------------------
-          case EventConstants.READ_LOGS_SUCCESSFUL:
-            apiHomeWidget = new LogsPage(logs: eventObject.object);
-            showSnackBar(SnackBarText.LOGS_LOADED_SUCCESSFULLY);
-            break;
-          case EventConstants.READ_LOGS_SUCCESSFUL:
-            apiHomeWidget = new LogsPage();
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_LOGS);
-            break;
-          case EventConstants.NO_LOGS_FOUND:
-            apiHomeWidget = new LogsPage();
-            showSnackBar(SnackBarText.NO_LOGS_FOUND);
-            break;
-//------------------------------------------------------------------------------
-          case EventConstants.NO_INTERNET_CONNECTION:
-            apiHomeWidget = NoContentFound(
+
+          case Events.NO_INTERNET_CONNECTION:
+            dashBoardWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
         }

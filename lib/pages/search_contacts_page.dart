@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import 'package:contacts/customviews/no_content_found.dart';
-import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/common_widgets/avatar.dart';
+import 'package:contacts/common_widgets/no_content_found.dart';
+import 'package:contacts/common_widgets/progress_dialog.dart';
+import 'package:contacts/futures/common.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
+import 'package:contacts/pages/contact_details.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/ways/api/futures/api_futures.dart';
-import 'package:contacts/ways/common_widgets/contact_avatar.dart';
-import 'package:contacts/ways/common_widgets/contact_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -42,7 +42,7 @@ class SearchContactsPageState extends State<SearchContactsPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
-      ProgressDialogTitles.LOADING_CONTACTS, false);
+      ProgressDialogTitles.SEARCHING_CONTACTS, false);
 
   RectTween _createRectTween(Rect begin, Rect end) {
     return new MaterialRectCenterArcTween(begin: begin, end: end);
@@ -108,7 +108,7 @@ class SearchContactsPageState extends State<SearchContactsPage> {
   void searchThis(String search) {
     if (searchController.text != "") {
       FocusScope.of(context).requestFocus(new FocusNode());
-      progressDialog.showProgress();
+      progressDialog.show();
       searchContacts(searchController.text);
     } else {
       showSnackBar(SnackBarText.PLEASE_FILL_SOMETHING_IN_SEARCH_FIElD);
@@ -167,8 +167,8 @@ class SearchContactsPageState extends State<SearchContactsPage> {
   Widget contactAvatar(Contact contact) {
     return new Hero(
       tag: contact.id,
-      child: new ContactAvatar(
-        contact: contact,
+      child: new Avatar(
+        contactImage: contact.contactImage,
       ),
       createRectTween: _createRectTween,
     );
@@ -230,23 +230,22 @@ class SearchContactsPageState extends State<SearchContactsPage> {
   }
 
   void searchContacts(String searchQuery) async {
-    EventObject eventObject = await searchContactsInRemoteDatabase(searchQuery);
+    EventObject eventObject = await searchContactsAvailable(searchQuery);
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
+        progressDialog.hide();
         switch (eventObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.SEARCH_CONTACTS_SUCCESSFUL:
+          case Events.SEARCH_CONTACTS_SUCCESSFUL:
             contactList = eventObject.object;
             showSnackBar(SnackBarText.CONTACTS_SEARCHED_SUCCESSFULLY);
             break;
-          case EventConstants.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY:
+          case Events.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY:
             contactList = new List();
             showSnackBar(SnackBarText.NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY +
                 searchQuery);
             break;
-//------------------------------------------------------------------------------
-          case EventConstants.NO_INTERNET_CONNECTION:
+
+          case Events.NO_INTERNET_CONNECTION:
             contactList = new List();
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
             break;

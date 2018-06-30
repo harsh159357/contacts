@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import 'package:contacts/common_widgets/avatar.dart';
 import 'package:contacts/models/deleted_contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/utils/functions.dart';
-import 'package:contacts/ways/common_widgets/deleted_contact_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,8 +69,8 @@ class DeletedContactDetailsPageState extends State<DeletedContactDetails> {
           child: new Hero(
             createRectTween: _createRectTween,
             tag: deletedContact.id,
-            child: new DeletedContactAvatar(
-              deletedContact: deletedContact,
+            child: new Avatar(
+              contactImage: deletedContact.contactImage,
               onTap: () {
                 Navigator.of(context).pop();
               },

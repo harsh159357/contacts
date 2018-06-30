@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import 'package:contacts/customviews/no_content_found.dart';
-import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/common_widgets/no_content_found.dart';
+import 'package:contacts/common_widgets/progress_dialog.dart';
+import 'package:contacts/futures/common.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/log.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/ways/sqflite/database/contacts_database_with_futures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -64,7 +64,7 @@ class LogsPageState extends State<LogsPage> {
   }
 
   Widget loadList() {
-    if (logs != null) {
+    if (logs != null && logs.isNotEmpty) {
       logsPageWidget = _buildLogsList();
     } else {
       logsPageWidget = NoContentFound(Texts.NO_LOGS, Icons.list);
@@ -131,7 +131,7 @@ class LogsPageState extends State<LogsPage> {
 
   void reloadLogs() {
     setState(() {
-      progressDialog.showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
+      progressDialog.show();
       loadLogs();
     });
   }
@@ -140,20 +140,22 @@ class LogsPageState extends State<LogsPage> {
     EventObject eventObject = await getLogs();
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
-        logs = eventObject.object;
+        progressDialog.hide();
         switch (eventObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.READ_LOGS_SUCCESSFUL:
+          case Events.READ_LOGS_SUCCESSFUL:
+            logs = eventObject.object;
             showSnackBar(SnackBarText.LOGS_LOADED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_LOGS_SUCCESSFUL:
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_LOGS);
-            break;
-          case EventConstants.NO_LOGS_FOUND:
+          case Events.NO_LOGS_FOUND:
+            logs = eventObject.object;
             showSnackBar(SnackBarText.NO_LOGS_FOUND);
             break;
-//------------------------------------------------------------------------------
+
+          case Events.NO_INTERNET_CONNECTION:
+            logsPageWidget = NoContentFound(
+                SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
         }
       });
     }

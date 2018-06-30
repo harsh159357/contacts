@@ -16,6 +16,7 @@
  */
 
 import 'package:contacts/pages/splash_page.dart';
+import 'package:contacts/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(new ContactsApp());
@@ -25,7 +26,7 @@ class ContactsApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Contacts',
+      title: DrawerTitles.CONTACTS,
       theme: new ThemeData(
         primarySwatch: Colors.blue,
       ),

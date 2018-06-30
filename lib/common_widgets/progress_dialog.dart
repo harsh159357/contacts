@@ -43,12 +43,12 @@ class ProgressDialog extends StatefulWidget {
       text: this.text,
       opacity: this.opacity);
 
-  void hideProgress() {
-    progressDialogState.hideProgress();
+  void hide() {
+    progressDialogState.hide();
   }
 
-  void showProgress() {
-    progressDialogState.showProgress();
+  void show() {
+    progressDialogState.show();
   }
 
   void showProgressWithText(String title) {
@@ -136,13 +136,13 @@ class ProgressDialogState extends State<ProgressDialog> {
         valueColor: new AlwaysStoppedAnimation(color));
   }
 
-  void hideProgress() {
+  void hide() {
     setState(() {
       opacity = false;
     });
   }
 
-  void showProgress() {
+  void show() {
     setState(() {
       opacity = true;
     });

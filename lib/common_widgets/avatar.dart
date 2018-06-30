@@ -16,14 +16,13 @@
 
 import 'dart:convert';
 
-import 'package:contacts/models/deleted_contact.dart';
 import 'package:flutter/material.dart';
 
-class DeletedContactAvatar extends StatelessWidget {
-  DeletedContactAvatar({Key key, this.deletedContact, this.color, this.onTap})
+class Avatar extends StatelessWidget {
+  Avatar({Key key, this.contactImage, this.color, this.onTap})
       : super(key: key);
 
-  final DeletedContact deletedContact;
+  final String contactImage;
   final Color color;
   final VoidCallback onTap;
 
@@ -32,7 +31,7 @@ class DeletedContactAvatar extends StatelessWidget {
       child: new InkWell(
         onTap: onTap,
         child: new Image.memory(
-          base64.decode(deletedContact.contactImage),
+          base64.decode(contactImage),
           height: 100.0,
           width: 100.0,
           fit: BoxFit.fill,

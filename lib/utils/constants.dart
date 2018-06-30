@@ -15,11 +15,10 @@
  *
  */
 
-//------------------------------------------------------------------------------
+const String DATABASE_NAME = "contacts.db";
 
 const String GOOGLE_PLACE_API_KEY = "REPLACE_IT_WITH_YOUR_OWN_API_KEY";
 
-//------------------------------------------------------------------------------
 class APIConstants {
   static const String _CONTACT_API_BASE_URL = "http://hafinse.pe.hu/contact/";
 
@@ -49,55 +48,6 @@ class APIConstants {
   static const String OCTET_STREAM_ENCODING = "application/octet-stream";
 }
 
-//------------------------------------------------------------------------------
-class EventConstants {
-  static const int NO_INTERNET_CONNECTION = 0;
-
-//------------------------------------------------------------------------------
-
-  static const int READ_CONTACTS_SUCCESSFUL = 500;
-  static const int NO_CONTACTS_FOUND = 501;
-  static const int READ_CONTACTS_UN_SUCCESSFUL = 502;
-
-//------------------------------------------------------------------------------
-
-  static const int READ_DELETED_CONTACTS_SUCCESSFUL = 503;
-  static const int NO_DELETED_CONTACTS_FOUND = 504;
-  static const int READ_DELETED_CONTACTS_UN_SUCCESSFUL = 505;
-
-//------------------------------------------------------------------------------
-
-  static const int READ_LOGS_SUCCESSFUL = 506;
-  static const int NO_LOGS_FOUND = 507;
-  static const int READ_LOGS_UN_SUCCESSFUL = 508;
-
-//------------------------------------------------------------------------------
-
-  static const int CONTACT_WAS_CREATED_SUCCESSFULLY = 509;
-  static const int UNABLE_TO_CREATE_CONTACT = 510;
-  static const int USER_HAS_NOT_PERFORMED_ANY_ACTION = 511;
-
-//------------------------------------------------------------------------------
-
-  static const int SEARCH_CONTACTS_SUCCESSFUL = 512;
-  static const int NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY = 513;
-
-//------------------------------------------------------------------------------
-
-  static const int CONTACT_WAS_DELETED_SUCCESSFULLY = 514;
-  static const int PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED = 515;
-  static const int NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE = 516;
-
-//------------------------------------------------------------------------------
-
-  static const int CONTACT_WAS_UPDATED_SUCCESSFULLY = 517;
-  static const int UNABLE_TO_UPDATE_CONTACT = 518;
-  static const int USER_HAS_NOT_PERFORMED_EDIT_ACTION = 519;
-
-//------------------------------------------------------------------------------
-}
-
-//------------------------------------------------------------------------------
 class APIResponseCode {
   static const int SC_OK = 200;
   static const int SC_CREATED = 201;
@@ -105,11 +55,43 @@ class APIResponseCode {
   static const int SC_NOT_FOUND = 404;
   static const int SC_INTERNAL_SERVER_ERROR = 500;
 }
-//------------------------------------------------------------------------------
 
-class SharedPreferenceKeys {}
+class Events {
+  static const int NO_INTERNET_CONNECTION = 0;
 
-//------------------------------------------------------------------------------
+  static const int READ_CONTACTS_SUCCESSFUL = 500;
+  static const int NO_CONTACTS_FOUND = 501;
+
+  static const int READ_LOGS_SUCCESSFUL = 502;
+  static const int NO_LOGS_FOUND = 503;
+
+  static const int READ_DELETED_CONTACTS_SUCCESSFUL = 504;
+  static const int NO_DELETED_CONTACTS_FOUND = 505;
+
+  static const int CONTACT_WAS_CREATED_SUCCESSFULLY = 506;
+  static const int UNABLE_TO_CREATE_CONTACT = 507;
+  static const int USER_HAS_NOT_CREATED_ANY_CONTACT = 508;
+
+  static const int CONTACT_WAS_DELETED_SUCCESSFULLY = 509;
+  static const int PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED = 510;
+  static const int NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE = 511;
+  static const int UNABLE_TO_DELETE_CONTACT = 512;
+
+  static const int CONTACT_WAS_UPDATED_SUCCESSFULLY = 513;
+  static const int UNABLE_TO_UPDATE_CONTACT = 514;
+  static const int USER_HAS_NOT_PERFORMED_UPDATE_ACTION = 515;
+
+  static const int SEARCH_CONTACTS_SUCCESSFUL = 516;
+  static const int NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY = 517;
+}
+
+class SharedPreferenceKeys {
+  static const String AUTO_INCREMENT = "Auto Increment";
+  static const String CONTACTS = "Contacts";
+  static const String DELETED_CONTACTS = "Deleted Contacts";
+  static const String LOGS = "LOGS";
+}
+
 class ProgressDialogTitles {
   static const String LOADING_CONTACTS = "Contacts...";
   static const String DELETING_CONTACT = "Deleting...";
@@ -120,40 +102,31 @@ class ProgressDialogTitles {
   static const String LOADING_LOGS = "Logs...";
 }
 
-//------------------------------------------------------------------------------
 class SnackBarText {
   static const String TAPPED_ON_API_HEADER =
       "Contacts App Implemented Using Rest APIS";
-
-//------------------------------------------------------------------------------
+  static const String TAPPED_ON_SQFLITE_HEADER =
+      "Contacts App Implemented Using SQFLITE";
+  static const String TAPPED_ON_CUSTOM_HEADER =
+      "Contacts App Implemented Using Custom";
+  static const String TAPPED_ON_PREFERENCES_HEADER =
+      "Contacts App Implemented Using Preferences";
 
   static const String CONTACTS_LOADED_SUCCESSFULLY =
       "Contacts Loaded Successfully";
-  static const String UNABLE_TO_LOAD_CONTACTS = "Unable to Load Contacts";
   static const String NO_CONTACTS_FOUND = "No Contacts Found";
 
-//------------------------------------------------------------------------------
+  static const String LOGS_LOADED_SUCCESSFULLY = "Logs Loaded Successfully";
+  static const String NO_LOGS_FOUND = "No Logs Found";
 
   static const String DELETED_CONTACTS_LOADED_SUCCESSFULLY =
       "Deleted Contacts Loaded Successfully";
   static const String NO_DELETED_CONTACTS_FOUND = "No Deleted Contacts Found";
-  static const String UNABLE_TO_LOAD_DELETED_CONTACTS =
-      "Unable to Load Deleted Contacts";
-
-//------------------------------------------------------------------------------
-
-  static const String LOGS_LOADED_SUCCESSFULLY = "Logs Loaded Successfully";
-  static const String NO_LOGS_FOUND = "No Logs Found";
-  static const String UNABLE_TO_LOAD_LOGS = "Unable to Load Logs";
-
-//------------------------------------------------------------------------------
 
   static const String CONTACTS_SEARCHED_SUCCESSFULLY =
       "Contacts Searched Successfully";
   static const String NO_CONTACT_FOUND_FOR_YOUR_SEARCH_QUERY =
       "No Contact Found for Search Query ";
-
-//------------------------------------------------------------------------------
 
   static const String CONTACT_WAS_CREATED_SUCCESSFULLY =
       "Contact was created successfully";
@@ -161,24 +134,18 @@ class SnackBarText {
   static const String USER_HAS_NOT_PERFORMED_ANY_ACTION =
       "User has not performed any action";
 
-//------------------------------------------------------------------------------
-
   static const String CONTACT_WAS_DELETED_SUCCESSFULLY =
       "Contact was Deleted Succesfully";
   static const String PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED =
       "Please provide the id of the contact to be deleted";
   static const String NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE =
-      "No contact with provided id exist in Database";
-
-//------------------------------------------------------------------------------
+      "No contact with provided id exist in Prferences";
 
   static const String CONTACT_WAS_UPDATED_SUCCESSFULLY =
       "Contact was Updated Succesfully";
   static const String UNABLE_TO_UPDATE_CONTACT = "Unable to update Contact";
   static const String USER_HAS_NOT_PERFORMED_EDIT_ACTION =
       "User has not performed edit action";
-
-//------------------------------------------------------------------------------
 
   static const String PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA =
       "Please pick an image from Gallery/Camera";
@@ -205,24 +172,23 @@ class SnackBarText {
   static const String PLEASE_FILL_SOMETHING_IN_SEARCH_FIElD =
       "Please fill something in search field";
 
-//------------------------------------------------------------------------------
-
   static const String NO_INTERNET_CONNECTION = "!! No Internet Connection !!";
-//------------------------------------------------------------------------------
 }
 
-//------------------------------------------------------------------------------
-class Texts {
-  static const String APP_NAME = "Contacts";
+class Ways {
   static const String WAYS = "Ways";
-  static const String DELETE_CONTACT = "Delete Contact";
-  static const String EDIT_CONTACT = "Edit Contact";
   static const String API = "API";
   static const String CUSTOM = "Custom";
-  static const String CONTACT_DETAILS = "Contact Details";
-  static const String PREFERENCES = "Preferences";
-  static const String CREATE_CONTACT = "Create Contact";
   static const String SQFLITE = "Sqflite";
+  static const String PREFERENCES = "Preferences";
+}
+
+class Texts {
+  static const String APP_NAME = "Contacts";
+  static const String DELETE_CONTACT = "Delete Contact";
+  static const String EDIT_CONTACT = "Edit Contact";
+  static const String CONTACT_DETAILS = "Contact Details";
+  static const String CREATE_CONTACT = "Create Contact";
   static const String NO_CONTACTS = "No Contacts";
   static const String NO_DELETED_CONTACTS = "No Deleted Contacts";
   static const String NO_LOGS = "No Logs";
@@ -249,8 +215,8 @@ class Texts {
       "Unable to Store  Logs in Logs Table";
 }
 
-//------------------------------------------------------------------------------
 class DrawerTitles {
+  static const String TAPPED_ON_HEADER = "Tapped On Header";
   static const String CONTACTS = "Contacts";
   static const String CREATE_CONTACT = "Create Contact";
   static const String DELETED_CONTACTS = "Deleted Contacts";
@@ -259,15 +225,6 @@ class DrawerTitles {
   static const String GO_BACK = "Go Back";
 }
 
-//------------------------------------------------------------------------------
-class Actions {
-  static const String VIEW_CONTACT = "View";
-  static const String CREATE_CONTACT = "View";
-  static const String DELETE_CONTACT = "Delete";
-  static const String EDIT_OR_UPDATE_CONTACT = "Edit";
-}
-
-//------------------------------------------------------------------------------
 class RegularExpressionsPatterns {
   static const String EMAIL_VALIDATION =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -280,9 +237,6 @@ class RegularExpressionsPatterns {
   static const String LONGITUDE_PATTERN =
       r'^(\+|-)?((\d((\.)|\.\d{1,10})?)|(0*?\d\d((\.)|\.\d{1,10})?)|(0*?1[0-7]\d((\.)|\.\d{1,10})?)|(0*?180((\.)|\.0{1,10})?))$';
 }
-//------------------------------------------------------------------------------
-
-const String DATABASE_NAME = "contacts.db";
 
 class ContactTable {
   static String TABLE_NAME = "Contact";
@@ -295,7 +249,6 @@ class ContactTable {
   static String LONGITUDE = "longitude";
   static String CONTACT_IMAGE = "contact_image";
 }
-//------------------------------------------------------------------------------
 
 class DeletedContactsTable {
   static String TABLE_NAME = "DeletedContacts";
@@ -308,7 +261,6 @@ class DeletedContactsTable {
   static String LONGITUDE = "longitude";
   static String CONTACT_IMAGE = "contact_image";
 }
-//------------------------------------------------------------------------------
 
 class LogsTable {
   static String TABLE_NAME = "Logs";
@@ -316,7 +268,6 @@ class LogsTable {
   static String COLUMN_TIMESTAMP = "column_timestamp";
   static String COLUMN_DATE = "column_date";
 }
-//------------------------------------------------------------------------------
 
 class CreateTableQueries {
   static String CREATE_CONTACT_TABLE = "CREATE TABLE " +
@@ -339,7 +290,7 @@ class CreateTableQueries {
       ContactTable.CONTACT_IMAGE +
       " TEXT NOT NULL);";
 
-  static String CREATE_DELTED_CONTACTS_TABLE = "CREATE TABLE " +
+  static String CREATE_DELETED_CONTACTS_TABLE = "CREATE TABLE " +
       DeletedContactsTable.TABLE_NAME +
       "(" +
       DeletedContactsTable.ID +
@@ -369,7 +320,6 @@ class CreateTableQueries {
       LogsTable.COLUMN_DATE +
       " TEXT NOT NULL);";
 }
-//------------------------------------------------------------------------------
 
 class LogTableTransactions {
   static const String READING_CONTACTS =
@@ -382,7 +332,21 @@ class LogTableTransactions {
       "Creating a Contact in Deleted Contacts Table.";
   static const String UPDATING_CONTACT = "Updating a Contact in Database.";
   static const String DELETING_CONTACT = "Deleting a Contact from Database.";
-  static const String SEARCHING_CONTACT = "Searching a contact in database.";
+  static const String SEARCHING_CONTACT = "Searching a contact in Database.";
   static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
 }
-//------------------------------------------------------------------------------
+
+class LogPreferenceTransactions {
+  static const String READING_CONTACTS =
+      "Reading All the Contacts Available In Prferences.";
+  static const String CREATING_CONTACT =
+      "A New Contact is Being Inserted in Contacts Preference.";
+  static const String READING_DELETED_CONTACTS =
+      "Reading all the Deleted Contacts from Preferences.";
+  static const String CREATING_DELETED_CONTACT =
+      "Creating a Contact in Deleted Contacts Prferences.";
+  static const String UPDATING_CONTACT = "Updating a Contact in Prferences.";
+  static const String DELETING_CONTACT = "Deleting a Contact from Prferences.";
+  static const String SEARCHING_CONTACT = "Searching a contact in Prferences.";
+  static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
+}

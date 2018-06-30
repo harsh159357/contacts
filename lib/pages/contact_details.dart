@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import 'package:contacts/common_widgets/avatar.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/utils/functions.dart';
-import 'package:contacts/ways/common_widgets/contact_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,8 +69,8 @@ class ContactDetailsPageState extends State<ContactDetails> {
           child: new Hero(
             createRectTween: _createRectTween,
             tag: contact.id,
-            child: new ContactAvatar(
-              contact: contact,
+            child: new Avatar(
+              contactImage: contact.contactImage,
               onTap: () {
                 Navigator.of(context).pop();
               },

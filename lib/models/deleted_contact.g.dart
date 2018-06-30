@@ -8,7 +8,7 @@ part of 'deleted_contact.dart';
 
 DeletedContact _$DeletedContactFromJson(Map<String, dynamic> json) =>
     new DeletedContact(
-        id: json['id'] as String,
+        id: json['_id'] as String,
         name: json['name'] as String,
         phone: json['phone'] as String,
         email: json['email'] as String,
@@ -35,7 +35,7 @@ abstract class _$DeletedContactSerializerMixin {
   String get contactImage;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
+        '_id': id,
         'name': name,
         'phone': phone,
         'email': email,

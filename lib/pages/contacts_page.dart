@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import 'package:contacts/customviews/no_content_found.dart';
-import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/common_widgets/avatar.dart';
+import 'package:contacts/common_widgets/no_content_found.dart';
+import 'package:contacts/common_widgets/progress_dialog.dart';
+import 'package:contacts/futures/common.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
+import 'package:contacts/pages/contact_details.dart';
+import 'package:contacts/pages/edit_contact_page.dart';
 import 'package:contacts/utils/constants.dart';
-import 'package:contacts/ways/common_widgets/contact_avatar.dart';
-import 'package:contacts/ways/common_widgets/contact_details.dart';
-import 'package:contacts/ways/sqflite/database/contacts_database_with_futures.dart';
-import 'package:contacts/ways/sqflite/pages/edit_contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
@@ -62,11 +62,6 @@ class ContactPageState extends State<ContactPage> {
   Widget contactListWidget;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     timeDilation = 3.0;
     return new Scaffold(
@@ -77,7 +72,7 @@ class ContactPageState extends State<ContactPage> {
   }
 
   Widget loadList() {
-    if (contactList != null) {
+    if (contactList != null && contactList.isNotEmpty) {
       contactListWidget = _buildContactList();
     } else {
       contactListWidget =
@@ -148,20 +143,20 @@ class ContactPageState extends State<ContactPage> {
     );
     setState(() {
       switch (contactUpdateStatus) {
-        case EventConstants.CONTACT_WAS_UPDATED_SUCCESSFULLY:
+        case Events.CONTACT_WAS_UPDATED_SUCCESSFULLY:
           reloadContacts();
           showSnackBar(SnackBarText.CONTACT_WAS_UPDATED_SUCCESSFULLY);
           break;
-        case EventConstants.UNABLE_TO_UPDATE_CONTACT:
+        case Events.UNABLE_TO_UPDATE_CONTACT:
           contactList.add(contact);
           showSnackBar(SnackBarText.UNABLE_TO_UPDATE_CONTACT);
           break;
-        case EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
+        case Events.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
           contactList.add(contact);
           showSnackBar(
               SnackBarText.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
           break;
-        case EventConstants.USER_HAS_NOT_PERFORMED_EDIT_ACTION:
+        case Events.USER_HAS_NOT_PERFORMED_UPDATE_ACTION:
           contactList.add(contact);
           showSnackBar(SnackBarText.USER_HAS_NOT_PERFORMED_EDIT_ACTION);
           break;
@@ -211,8 +206,8 @@ class ContactPageState extends State<ContactPage> {
   Widget contactAvatar(Contact contact) {
     return new Hero(
       tag: contact.id,
-      child: new ContactAvatar(
-        contact: contact,
+      child: new Avatar(
+        contactImage: contact.contactImage,
       ),
       createRectTween: _createRectTween,
     );
@@ -278,21 +273,19 @@ class ContactPageState extends State<ContactPage> {
     EventObject eventObject = await getContacts();
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
-        contactList = eventObject.object;
+        progressDialog.hide();
         switch (eventObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.READ_CONTACTS_SUCCESSFUL:
+          case Events.READ_CONTACTS_SUCCESSFUL:
+            contactList = eventObject.object;
             showSnackBar(SnackBarText.CONTACTS_LOADED_SUCCESSFULLY);
             break;
-          case EventConstants.READ_CONTACTS_UN_SUCCESSFUL:
-            showSnackBar(SnackBarText.UNABLE_TO_LOAD_CONTACTS);
-            break;
-          case EventConstants.NO_CONTACTS_FOUND:
+
+          case Events.NO_CONTACTS_FOUND:
+            contactList = eventObject.object;
             showSnackBar(SnackBarText.NO_CONTACTS_FOUND);
             break;
-//------------------------------------------------------------------------------
-          case EventConstants.NO_INTERNET_CONNECTION:
+
+          case Events.NO_INTERNET_CONNECTION:
             contactListWidget = NoContentFound(
                 SnackBarText.NO_INTERNET_CONNECTION, Icons.signal_wifi_off);
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
@@ -306,24 +299,28 @@ class ContactPageState extends State<ContactPage> {
     EventObject eventObject = await removeContact(contact);
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
+        progressDialog.hide();
         switch (eventObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.CONTACT_WAS_DELETED_SUCCESSFULLY:
+          case Events.CONTACT_WAS_DELETED_SUCCESSFULLY:
             showSnackBar(SnackBarText.CONTACT_WAS_DELETED_SUCCESSFULLY);
             break;
-          case EventConstants
-              .PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED:
+
+          case Events.PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED:
             contactList.add(contact);
             showSnackBar(SnackBarText
                 .PLEASE_PROVIDE_THE_ID_OF_THE_CONTACT_TO_BE_DELETED);
             break;
-          case EventConstants.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
+
+          case Events.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE:
             contactList.add(contact);
             showSnackBar(
                 SnackBarText.NO_CONTACT_WITH_PROVIDED_ID_EXIST_IN_DATABASE);
             break;
-//------------------------------------------------------------------------------
+
+          case Events.NO_INTERNET_CONNECTION:
+            contactList.add(contact);
+            showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
+            break;
         }
       });
     }

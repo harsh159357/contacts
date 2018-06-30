@@ -17,13 +17,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:contacts/customviews/progress_dialog.dart';
+import 'package:contacts/common_widgets/progress_dialog.dart';
 import 'package:contacts/models/base/event_object.dart';
 import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:contacts/utils/functions.dart';
-import 'package:contacts/ways/api/futures/api_futures.dart';
-import 'package:contacts/ways/common_widgets/google_place_search.dart';
+import 'package:contacts/futures/common.dart';
+import 'package:contacts/pages/google_place_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:image_picker/image_picker.dart';
@@ -37,7 +37,7 @@ class CreateContactPageState extends State<CreateContactPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
-      ProgressDialogTitles.LOADING_CONTACTS, false);
+      ProgressDialogTitles.CREATING_CONTACT, false);
 
   File _imageFile;
 
@@ -85,8 +85,7 @@ class CreateContactPageState extends State<CreateContactPage> {
         centerTitle: true,
         leading: new GestureDetector(
           onTap: () {
-            Navigator.pop(
-                context, EventConstants.USER_HAS_NOT_PERFORMED_ANY_ACTION);
+            Navigator.pop(context, Events.USER_HAS_NOT_CREATED_ANY_CONTACT);
           },
           child: new Icon(
             Icons.arrow_back,
@@ -353,7 +352,7 @@ class CreateContactPageState extends State<CreateContactPage> {
     contactToBeCreated.longitude = longController.text;
     List<int> contactImageBytes = _imageFile.readAsBytesSync();
     contactToBeCreated.contactImage = base64Encode(contactImageBytes);
-    progressDialog.showProgressWithText(ProgressDialogTitles.CREATING_CONTACT);
+    progressDialog.show();
     createContact(contactToBeCreated);
   }
 
@@ -361,18 +360,16 @@ class CreateContactPageState extends State<CreateContactPage> {
     EventObject contactObject = await saveContact(contactToBeCreated);
     if (this.mounted) {
       setState(() {
-        progressDialog.hideProgress();
+        progressDialog.hide();
         switch (contactObject.id) {
-//------------------------------------------------------------------------------
-          case EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY:
-            Navigator.pop(
-                context, EventConstants.CONTACT_WAS_CREATED_SUCCESSFULLY);
+          case Events.CONTACT_WAS_CREATED_SUCCESSFULLY:
+            Navigator.pop(context, Events.CONTACT_WAS_CREATED_SUCCESSFULLY);
             break;
-          case EventConstants.UNABLE_TO_CREATE_CONTACT:
-            Navigator.pop(context, EventConstants.UNABLE_TO_CREATE_CONTACT);
+          case Events.UNABLE_TO_CREATE_CONTACT:
+            Navigator.pop(context, Events.UNABLE_TO_CREATE_CONTACT);
             break;
-//------------------------------------------------------------------------------
-          case EventConstants.NO_INTERNET_CONNECTION:
+
+          case Events.NO_INTERNET_CONNECTION:
             showSnackBar(SnackBarText.NO_INTERNET_CONNECTION);
             break;
         }
