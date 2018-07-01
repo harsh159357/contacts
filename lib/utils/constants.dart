@@ -332,7 +332,7 @@ class LogTableTransactions {
       "Creating a Contact in Deleted Contacts Table.";
   static const String UPDATING_CONTACT = "Updating a Contact in Database.";
   static const String DELETING_CONTACT = "Deleting a Contact from Database.";
-  static const String SEARCHING_CONTACT = "Searching a contact in Database.";
+  static const String SEARCHING_CONTACT = "Searching a Contact in Database.";
   static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
 }
 
@@ -347,6 +347,21 @@ class LogPreferenceTransactions {
       "Creating a Contact in Deleted Contacts Prferences.";
   static const String UPDATING_CONTACT = "Updating a Contact in Prferences.";
   static const String DELETING_CONTACT = "Deleting a Contact from Prferences.";
-  static const String SEARCHING_CONTACT = "Searching a contact in Prferences.";
+  static const String SEARCHING_CONTACT = "Searching a Contact in Prferences.";
+  static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
+}
+
+class LogCustomTransactions {
+  static const String READING_CONTACTS =
+      "Reading All the Contacts Available.";
+  static const String CREATING_CONTACT =
+      "A New Contact is Being Inserted.";
+  static const String READING_DELETED_CONTACTS =
+      "Reading all the Deleted Contacts.";
+  static const String CREATING_DELETED_CONTACT =
+      "Creating a Contact in Deleted Contacts.";
+  static const String UPDATING_CONTACT = "Updating a Contact.";
+  static const String DELETING_CONTACT = "Deleting a Contact.";
+  static const String SEARCHING_CONTACT = "Searching a Contact.";
   static const String DATE_FORMAT = "MM/dd/yyyy kk:mm:s a";
 }

@@ -17,6 +17,7 @@
 import 'dart:async';
 
 import 'package:contacts/futures/api.dart';
+import 'package:contacts/futures/custom.dart';
 import 'package:contacts/futures/database.dart';
 import 'package:contacts/futures/preferences.dart';
 import 'package:contacts/models/base/event_object.dart';
@@ -30,14 +31,14 @@ Future<EventObject> getContacts() async {
     case Ways.API:
       eventObject = await getContactsUsingRestAPI();
       break;
-    case Ways.SQFLITE:
-      eventObject = await getContactsUsingDB();
+    case Ways.CUSTOM:
+      eventObject = await getContactsUsingCustom();
       break;
     case Ways.PREFERENCES:
       eventObject = await getContactsUsingPrefs();
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await getContactsUsingDB();
       break;
   }
   return eventObject;
@@ -49,14 +50,14 @@ Future<EventObject> getLogs() async {
     case Ways.API:
       eventObject = await getLogsUsingRestAPI();
       break;
-    case Ways.SQFLITE:
-      eventObject = await getLogsUsingDB();
+    case Ways.CUSTOM:
+      eventObject = await getLogsUsingCustom();
       break;
     case Ways.PREFERENCES:
       eventObject = await getLogsUsingPrefs();
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await getLogsUsingDB();
       break;
   }
   return eventObject;
@@ -68,14 +69,14 @@ Future<EventObject> getDeletedContacts() async {
     case Ways.API:
       eventObject = await getDeletedContactsUsingRestAPI();
       break;
-    case Ways.SQFLITE:
-      eventObject = await getDeletedContactsUsingDB();
+    case Ways.CUSTOM:
+      eventObject = await getDeletedContactsUsingCustom();
       break;
     case Ways.PREFERENCES:
       eventObject = await getDeletedContactsUsingPrefs();
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await getDeletedContactsUsingDB();
       break;
   }
   return eventObject;
@@ -87,14 +88,14 @@ Future<EventObject> saveContact(Contact contact) async {
     case Ways.API:
       eventObject = await saveContactUsingRestAPI(contact);
       break;
-    case Ways.SQFLITE:
-      eventObject = await saveContactUsingDB(contact);
+    case Ways.CUSTOM:
+      eventObject = await saveContactUsingCustom(contact);
       break;
     case Ways.PREFERENCES:
       eventObject = await saveContactUsingPrefs(contact);
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await saveContactUsingDB(contact);
       break;
   }
   return eventObject;
@@ -106,14 +107,14 @@ Future<EventObject> removeContact(Contact contact) async {
     case Ways.API:
       eventObject = await removeContactUsingRestAPI(contact);
       break;
-    case Ways.SQFLITE:
-      eventObject = await removeContactUsingDB(contact);
+    case Ways.CUSTOM:
+      eventObject = await removeContactUsingCustom(contact);
       break;
     case Ways.PREFERENCES:
       eventObject = await removeContactUsingPrefs(contact);
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await removeContactUsingDB(contact);
       break;
   }
   return eventObject;
@@ -125,14 +126,14 @@ Future<EventObject> updateContact(Contact contact) async {
     case Ways.API:
       eventObject = await updateContactUsingRestAPI(contact);
       break;
-    case Ways.SQFLITE:
-      eventObject = await updateContactUsingDB(contact);
+    case Ways.CUSTOM:
+      eventObject = await updateContactUsingCustom(contact);
       break;
     case Ways.PREFERENCES:
       eventObject = await updateContactUsingPrefs(contact);
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await updateContactUsingDB(contact);
       break;
   }
   return eventObject;
@@ -144,14 +145,14 @@ Future<EventObject> searchContactsAvailable(String searchQuery) async {
     case Ways.API:
       eventObject = await searchContactsUsingRestAPI(searchQuery);
       break;
-    case Ways.SQFLITE:
-      eventObject = await searchContactsUsingDB(searchQuery);
+    case Ways.CUSTOM:
+      eventObject = await searchContactUsingCustom(searchQuery);
       break;
     case Ways.PREFERENCES:
       eventObject = await searchContactUsingPrefs(searchQuery);
       break;
-    case Ways.CUSTOM:
-      eventObject = new EventObject();
+    case Ways.SQFLITE:
+      eventObject = await searchContactsUsingDB(searchQuery);
       break;
   }
   return eventObject;

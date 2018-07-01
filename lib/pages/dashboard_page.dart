@@ -170,12 +170,12 @@ class DashBoardPageState extends State<DashBoardPage> {
     switch (selectedWay) {
       case Ways.API:
         return _drawerHeader(Icons.description, Ways.API);
-      case Ways.SQFLITE:
-        return _drawerHeader(Icons.save, Ways.SQFLITE);
+      case Ways.CUSTOM:
+        return _drawerHeader(Icons.center_focus_weak, Ways.CUSTOM);
       case Ways.PREFERENCES:
         return _drawerHeader(Icons.tune, Ways.PREFERENCES);
       case Ways.SQFLITE:
-        return _drawerHeader(Icons.center_focus_weak, Ways.CUSTOM);
+        return _drawerHeader(Icons.save, Ways.SQFLITE);
       default:
         return _drawerHeader(Icons.description, Ways.API);
     }
@@ -288,14 +288,14 @@ class DashBoardPageState extends State<DashBoardPage> {
           case Ways.API:
             showSnackBar(SnackBarText.TAPPED_ON_API_HEADER);
             break;
-          case Ways.SQFLITE:
-            showSnackBar(SnackBarText.TAPPED_ON_SQFLITE_HEADER);
+          case Ways.CUSTOM:
+            showSnackBar(SnackBarText.TAPPED_ON_CUSTOM_HEADER);
             break;
           case Ways.PREFERENCES:
             showSnackBar(SnackBarText.TAPPED_ON_PREFERENCES_HEADER);
             break;
-          case Ways.CUSTOM:
-            showSnackBar(SnackBarText.TAPPED_ON_CUSTOM_HEADER);
+          case Ways.SQFLITE:
+            showSnackBar(SnackBarText.TAPPED_ON_SQFLITE_HEADER);
             break;
         }
       }
