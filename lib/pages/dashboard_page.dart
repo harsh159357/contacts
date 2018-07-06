@@ -120,6 +120,7 @@ class DashBoardPageState extends State<DashBoardPage> {
     setState(() {
       switch (contactCreationStatus) {
         case Events.CONTACT_WAS_CREATED_SUCCESSFULLY:
+          handleNavigationDrawerClicks(DrawerTitles.CONTACTS, false);
           showSnackBar(SnackBarText.CONTACT_WAS_CREATED_SUCCESSFULLY);
           break;
         case Events.UNABLE_TO_CREATE_CONTACT:
@@ -143,12 +144,16 @@ class DashBoardPageState extends State<DashBoardPage> {
       new HeaderItem(_getHeaderItem()),
       new SimpleItem(
           leadingIconData: Icons.account_circle, title: DrawerTitles.CONTACTS),
+/*
       new SimpleItem(
           leadingIconData: Icons.add, title: DrawerTitles.CREATE_CONTACT),
+*/
       new SimpleItem(
           leadingIconData: Icons.delete, title: DrawerTitles.DELETED_CONTACTS),
+/*
       new SimpleItem(
           leadingIconData: Icons.search, title: DrawerTitles.SEARCH_CONTACTS),
+*/
       new SimpleItem(leadingIconData: Icons.list, title: DrawerTitles.LOGS),
       new SimpleItem(
           leadingIconData: Icons.subdirectory_arrow_left,
@@ -184,7 +189,7 @@ class DashBoardPageState extends State<DashBoardPage> {
   Widget _drawerHeader(IconData icon, String way) {
     return new GestureDetector(
       onTap: () {
-        handleNavigationDrawerClicks(DrawerTitles.TAPPED_ON_HEADER);
+        handleNavigationDrawerClicks(DrawerTitles.TAPPED_ON_HEADER, true);
       },
       child: new DrawerHeader(
         child: new Column(
@@ -221,7 +226,7 @@ class DashBoardPageState extends State<DashBoardPage> {
   Widget _simpleItem(SimpleItem simpleItem) {
     return new ListTile(
         onTap: () {
-          handleNavigationDrawerClicks(simpleItem.title);
+          handleNavigationDrawerClicks(simpleItem.title, true);
         },
         leading: new Icon(
           simpleItem.leadingIconData,
@@ -237,9 +242,11 @@ class DashBoardPageState extends State<DashBoardPage> {
         ));
   }
 
-  void handleNavigationDrawerClicks(String whatToDo) {
+  void handleNavigationDrawerClicks(String whatToDo, bool closeDrawer) {
     setState(() {
-      Navigator.pop(context);
+      if (closeDrawer) {
+        Navigator.pop(context);
+      }
       if (whatToDo != DrawerTitles.TAPPED_ON_HEADER) {
         Type type = dashBoardWidget.runtimeType;
         if (title == whatToDo) {
@@ -257,9 +264,11 @@ class DashBoardPageState extends State<DashBoardPage> {
         } else {
           title = whatToDo;
           switch (title) {
+/*
             case DrawerTitles.CREATE_CONTACT:
               _navigateToCreateContactPage(context);
               break;
+*/
             case DrawerTitles.CONTACTS:
               progressDialog
                   .showProgressWithText(ProgressDialogTitles.LOADING_CONTACTS);
@@ -270,9 +279,11 @@ class DashBoardPageState extends State<DashBoardPage> {
                   ProgressDialogTitles.LOADING_DELETED_CONTACTS);
               loadDeletedContacts();
               break;
+/*
             case DrawerTitles.SEARCH_CONTACTS:
               navigateToPage(new SearchContactsPage());
               break;
+*/
             case DrawerTitles.LOGS:
               progressDialog
                   .showProgressWithText(ProgressDialogTitles.LOADING_LOGS);
