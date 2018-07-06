@@ -1,0 +1,4 @@
+# https://www.dartlang.org/guides/language/analysis-options
+analyzer:
+  language:
+    enableSuperMixins: true
