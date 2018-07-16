@@ -306,7 +306,7 @@ class DashBoardPageState extends State<DashBoardPage> {
             showSnackBar(SnackBarText.TAPPED_ON_PREFERENCES_HEADER);
             break;
           case Ways.SQFLITE:
-            showSnackBar(SnackBarText.TAPPED_ON_SQFLITE_HEADER);
+            showSnackBar(SnackBarText.TAPPED_ON_SQF_LITE_HEADER);
             break;
         }
       }

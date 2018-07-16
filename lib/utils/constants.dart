@@ -105,7 +105,7 @@ class ProgressDialogTitles {
 class SnackBarText {
   static const String TAPPED_ON_API_HEADER =
       "Contacts App Implemented Using Rest APIS";
-  static const String TAPPED_ON_SQFLITE_HEADER =
+  static const String TAPPED_ON_SQF_LITE_HEADER =
       "Contacts App Implemented Using SQFLITE";
   static const String TAPPED_ON_CUSTOM_HEADER =
       "Contacts App Implemented Using Custom";
@@ -150,11 +150,11 @@ class SnackBarText {
   static const String PLEASE_PICK_AN_IMAGE_EITHER_FROM_GALLERY_OR_CAMERA =
       "Please pick an image from Gallery/Camera";
 
-  static const String PLEASE_FILL_NAME =
-      "Please fill name within range of 4 to 15 Characters";
+  static const String PLEASE_FILL_VALID_NAME =
+      "Please fill name within range of 4 to 20 Characters";
 
   static const String PLEASE_FILL_PHONE_NO =
-      "Please fill phone no within range od 4 to 15 digits";
+      "Please fill phone no within range of 7 to 20 digits";
 
   static const String PLEASE_FILL_VALID_PHONE_NO = "Please fill valid phone no";
 
@@ -162,7 +162,7 @@ class SnackBarText {
       "Please fill valid email address";
 
   static const String PLEASE_FILL_ADDRESS =
-      "Please fill address within range od 4 to 1000 Characters";
+      "Please fill address within range of 4 to 1000 Characters";
 
   static const String PLEASE_FILL_VALID_LATITUDE = "Please fill valid latitude";
 

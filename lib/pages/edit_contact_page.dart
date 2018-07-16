@@ -326,8 +326,8 @@ class EditContactPageState extends State<EditContactPage> {
     }
 
     String name = nameController.text;
-    if (name.length < 3 || name.length > 15) {
-      showSnackBar(SnackBarText.PLEASE_FILL_NAME);
+    if (name.length < 3 || name.length > 20) {
+      showSnackBar(SnackBarText.PLEASE_FILL_VALID_NAME);
       return;
     }
 
@@ -337,7 +337,7 @@ class EditContactPageState extends State<EditContactPage> {
       return;
     }
 
-    if (phone.length < 3 || phone.length > 15) {
+    if (phone.length < 6 || phone.length > 20) {
       showSnackBar(SnackBarText.PLEASE_FILL_PHONE_NO);
       return;
     }
