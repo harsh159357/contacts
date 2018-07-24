@@ -9,7 +9,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 ## App Demonstrating the use of Flutter and PHP.
 
 * App Logo Created Using [Material Design Icons](https://materialdesignicons.com/)
-* For Hosting used [Hostinger](https://www.hostinger.in/)
+* For Hosting used [Hostinger](http://www.hostg.xyz/aff_c?offer_id=6&aff_id=1710)
 
 ## Built With
 
