@@ -1,6 +1,6 @@
-# Contacts (In 4 Ways[API, Custom, Preferences and Sqflite])
+# Contacts
 
-[App in Action](https://youtu.be/yj1XKuq9TIQ)
+* [App in Action In 4 Ways(API, Custom, Preferences and Sqflite)](https://youtu.be/yj1XKuq9TIQ)
 
 ## App Demonstrating the use of Flutter and PHP.
 
@@ -16,7 +16,7 @@
 <div id="images" style="#images {
     white-space: nowrap;
 }">
-<img src="screenshots/App_In_App_Drawer.png" alt="Contacts App In App Drawer" width="150" height="250">
+<img src="screenshots/App_In_App_Drawer.jpg" alt="Contacts App In App Drawer" width="150" height="250">
 <img src="screenshots/App_Logo.jpg" alt="App Logo" width="150" height="250">
 <img src="screenshots/Ways_Available.jpg" alt="Ways Available in The App" width="150" height="250">
 <img src="screenshots/Contacts.jpg" alt="Contacts" width="150" height="250">
