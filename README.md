@@ -170,7 +170,7 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 
 ### Project Maintained By
 
-# Harsh Sharma
+# [Harsh Sharma](https://github.com/harsh159357/)
 
 Android Developer
 
