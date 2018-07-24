@@ -1,5 +1,9 @@
 # Contacts
 
+A flutter project with Implementation of a Contacts app in 4 ways (API, Custom, Preferences and Sqflite).
+It consist some common operations like create, edit , search and view operations on Contacts.
+Contacts in this project are not linked with the contacts stored in your Smart phone.
+
 * [App in Action In 4 Ways(API, Custom, Preferences and Sqflite)](https://youtu.be/yj1XKuq9TIQ)
 
 ## App Demonstrating the use of Flutter and PHP.
@@ -64,13 +68,41 @@
 
 ### Not Interested in doing above steps just clone this repo and use it as it is already hosted on Free Web Host Hostinger [hafinse](https://hafinse.pe.hu)
 
+## Things you can learn through this project -
+1. Hero Animation from a Contact List Item to Contact Detail.
+2. Google Place Search.
+3. Right Swipe to Edit a Contact and Right Swipe to Delete a Contact.
+4. Regular Expressions.
+5. Form validations.
+6. Multiple Floating Action Button on Single Page.
+7. Starting a Page for Result.
+8. Conversion from Base64 String to Image and Image to Base64 String.
+9. Image Picking from Gallery and Camera.
+10. Call Intent Launching from Contact Details.
+11. Mail Intent Launching from Contact Details.
+12. Map Intent Launching from Contact Details
+13. Store and Retrieve values from APIs.
+14. Store and Retrieve values from Shared Preference.
+15. Store and Retrieve values from SQLite Database.
+16. Store and Retrieve values from temporary Objects.
+17. Navigation Drawer.
+18. Navigation Drawer with Multiple Type Of Views.
+19. Navigation Between Pages.
+20. Performing Operations in Background Thread.
+21. Background Operations Chaining.
+22. Integration of Rest APIs.
+23. Creation of REST APIs in PHP
+24. Serialization and DesSerialization of JSON.
+25. ProgressDialogs and SnackBar.
+26. Custom Progress Dialog & Custom Views.
+
 ## Features Implemented
 * App is Working on Android and Ios Platforms.
-* App Implemented in 4 Ways For all the Operations Available in the App
-   -> API = Integrate REST APIs Created In PHP [Postman Collection Link for REST APIs](https://www.getpostman.com/collections/73c185782197c548c18a)
-   -> Custom =  Used Classes and Objects
-   -> Preferences = Used Shared Preferences
-   -> Sqflite = Used Sqlite Database
+* App Implemented in 4 Ways For all the Operations Available in the App <br/>
+   -> API = Integrate REST APIs Created In PHP [Postman Collection Link for REST APIs](https://www.getpostman.com/collections/73c185782197c548c18a)<br/>
+   -> Custom =  Used Classes and Objects<br/>
+   -> Preferences = Used Shared Preferences<br/>
+   -> Sqflite = Used Sqlite Database<br/>
 * Rest APIs in PHP
 * Splash
 * Navigation Drawer
@@ -85,39 +117,7 @@
 * Hero Animation
 * Google Place Search
 
-
-## Things you can learn through this project -
-* Hero Animation from a Contact List Item to Contact Detail.
-* Google Place Search.
-* Right Swipe to Edit a Contact and Right Swipe to Delete a Contact.
-* Regular Expressions.
-* Form validations.
-* Multiple Floating Action Button on Single Page.
-* Starting a Page for Result.
-* Conversion from Base64 String to Image and Image to Base64 String.
-* Image Picking from Gallery and Camera.
-* Call Intent Launching from Contact Details.
-* Mail Intent Launching from Contact Details.
-* Map Intent Launching from Contact Details
-* Store and Retrieve values from APIs.
-* Store and Retrieve values from Shared Preference.
-* Store and Retrieve values from SQLite Database.
-* Store and Retrieve values from temporary Objects.
-* Navigation Drawer.
-* Navigation Drawer with Multiple Type Of Views.
-* Navigation Between Pages.
-* Performing Operations in Background Thread.
-* Background Operations Chaining.
-* Integration of Rest APIs.
-* Creation of REST APIs in PHP
-* Serialization and DesSerialization of JSON.
-* ProgressDialogs and SnackBar.
-* Custom Progress Dialog & Custom Views.
-
-
 #### Spread Some :heart:
-
-[![GitHub stars](https://img.shields.io/github/stars/aritraroy/ultimate-android-reference.svg?style=social&label=Star)](https://github.com/harsh159357/contacts) [![GitHub forks](https://img.shields.io/github/forks/aritraroy/ultimate-android-reference.svg?style=social&label=Fork)](https://github.com/harsh159357/flutter_client_php_backend/fork) [![GitHub watchers](https://img.shields.io/github/watchers/aritraroy/ultimate-android-reference.svg?style=social&label=Watch)](https://github.com/harsh159357/flutter_client_php_backend)[![GitHub followers](https://img.shields.io/github/followers/aritraroy.svg?style=social&label=Follow)](https://github.com/harsh159357/)
 
 [![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://opensource.org/licenses/Apache-2.0)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/harsh159357/contacts/blob/master/License.txt)
@@ -155,6 +155,18 @@ If you found this project useful, then please consider giving it a :star: on Git
 ### Last But not Least
 There are still some things which are pending in this project make a pull request to improve this project or suggest an idea
 to improve this project further by raising issues.
+
+# Pull Requests
+
+I welcome and encourage all pull requests. It usually will take me within 24-48 hours to respond to any issue or request. Here are some basic rules to follow to ensure timely addition of your request:
+
+1.  Match coding style (braces, spacing, etc.) This is best achieved using `Reformat Code` feature of Android Studio `CMD`+`Option`+`L` on Mac and `CTRL` + `ALT` + `L` on Linux + Windows .
+2.  If its a feature, bugfix, or anything please only change code to what you specify.
+3.  Please keep PR titles easy to read and descriptive of changes, this will make them easier to merge :)
+4.  Pull requests _must_ be made against `develop` branch. Any other branch (unless specified by the maintainers) will get rejected.
+5.  Check for existing [issues](https://github.com/iampawan/FlutterWithFirebase/issues) first, before filing an issue.
+6.  Make sure you follow the set standard as all other projects in this repo do
+7.  Have fun!
 
 ### Project Maintained By
 
