@@ -71,7 +71,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 ## Things you can learn through this project -
 1. Hero Animation from a Contact List Item to Contact Detail.
 2. Google Place Search.
-3. Right Swipe to Edit a Contact and Right Swipe to Delete a Contact.
+3. Right Swipe to Edit a Contact and Left Swipe to Delete a Contact.
 4. Regular Expressions.
 5. Form validations.
 6. Multiple Floating Action Button on Single Page.
@@ -124,7 +124,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 
 Check out the repo make a pull request, raise issues and give a star if it's helpful.
 
-### Its Android CounterPart [Click Here](https://github.com/harsh159357/contacts)
+### My Previous Flutter Project [Click Here](https://github.com/harsh159357/flutter_client_php_backend)
 
 ### If you are aware of [Postman](https://www.getpostman.com/) you can use [Postman Collection](https://www.getpostman.com/collections/73c185782197c548c18a) for Rest API used in this repo
 
