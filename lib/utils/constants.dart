@@ -20,7 +20,7 @@ const String DATABASE_NAME = "contacts.db";
 const String GOOGLE_PLACE_API_KEY = "REPLACE_IT_WITH_YOUR_OWN_API_KEY";
 
 class APIConstants {
-  static const String _CONTACT_API_BASE_URL = "http://hafinse.pe.hu/contact/";
+  static const String _CONTACT_API_BASE_URL = "https://hafinse.000webhostapp.com/contact/";
 
   static const String READ_CONTACTS =
       _CONTACT_API_BASE_URL + "ReadContacts.php";

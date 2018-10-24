@@ -9,7 +9,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 ## App Demonstrating the use of Flutter and PHP.
 
 * App Logo Created Using [Material Design Icons](https://materialdesignicons.com/)
-* For Hosting used [Hostinger](http://www.hostg.xyz/aff_c?offer_id=6&aff_id=1710)
+* For Hosting used [000webhost](https://www.000webhost.com/)
 
 ## Built With
 
@@ -20,30 +20,30 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 <div id="images" style="#images {
     white-space: nowrap;
 }">
-<img src="screenshots/App_In_App_Drawer.jpg" alt="Contacts App In App Drawer" width="150" height="250">
-<img src="screenshots/App_Logo.jpg" alt="App Logo" width="150" height="250">
-<img src="screenshots/Ways_Available.jpg" alt="Ways Available in The App" width="150" height="250">
-<img src="screenshots/Contacts.jpg" alt="Contacts" width="150" height="250">
+<img src="screenshots/App_In_App_Drawer.jpg" alt="Contacts App In App Drawer" width="200" height="300">
+<img src="screenshots/App_Logo.jpg" alt="App Logo" width="200" height="300">
+<img src="screenshots/Ways_Available.jpg" alt="Ways Available in The App" width="200" height="300">
+<img src="screenshots/Contacts.jpg" alt="Contacts" width="200" height="300">
 </div>
 <br/>
 
 <div id="images" style="#images {
     white-space: nowrap;
 }">
-<img src="screenshots/Logs.jpg" alt="Logs" width="150" height="250">
-<img src="screenshots/Navigation_Drawer.jpg" alt="Navigation Drawer" width="150" height="250">
-<img src="screenshots/Contact_Details.jpg" alt="Contact Details" width="150" height="250">
-<img src="screenshots/Deleted_Contacts.jpg" alt="Deleted Contacts" width="150" height="250">
+<img src="screenshots/Logs.jpg" alt="Logs" width="200" height="300">
+<img src="screenshots/Navigation_Drawer.jpg" alt="Navigation Drawer" width="200" height="300">
+<img src="screenshots/Contact_Details.jpg" alt="Contact Details" width="200" height="300">
+<img src="screenshots/Deleted_Contacts.jpg" alt="Deleted Contacts" width="200" height="300">
 </div>
 <br/>
 
 <div id="images" style="#images {
     white-space: nowrap;
 }">
-<img src="screenshots/Edit_Contact.jpg" alt="Edit Contact" width="150" height="250">
-<img src="screenshots/Search_Contacts_With_Search_Query.jpg" alt="Search Contacts With Search Query" width="150" height="250">
-<img src="screenshots/Create_Contact.jpg" alt="Create Contact" width="150" height="250">
-<img src="screenshots/Google_Place_Search.jpg" alt="Google Place Search" width="150" height="250">
+<img src="screenshots/Edit_Contact.jpg" alt="Edit Contact" width="200" height="300">
+<img src="screenshots/Search_Contacts_With_Search_Query.jpg" alt="Search Contacts With Search Query" width="200" height="300">
+<img src="screenshots/Create_Contact.jpg" alt="Create Contact" width="200" height="300">
+<img src="screenshots/Google_Place_Search.jpg" alt="Google Place Search" width="200" height="300">
 </div>
 <br/>
 
@@ -53,7 +53,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 * Create Tables inside your database using [contacts.sql](https://github.com/harsh159357/contacts/blob/master/phpbackend/contacts.sql)
 * If you are using your own website with the steps mentioned above edit the following constant inside [constants.dart](https://github.com/harsh159357/contacts/blob/master/lib/utils/constants.dart)
 
-  static const String _CONTACT_API_BASE_URL = "http://hafinse.pe.hu/contact/";
+  static const String _CONTACT_API_BASE_URL = "https://hafinse.000webhostapp.com/contact/";
 
 * Make sure to edit [DatabaseConnection.php](https://github.com/harsh159357/contacts/blob/master/phpbackend/config/DatabaseConnection.php) and change following things  If you are using the files available in phpbackend-
 
@@ -66,7 +66,7 @@ Contacts in this project are not linked with the contacts stored in your Smart p
   const String GOOGLE_PLACE_API_KEY = "REPLACE_IT_WITH_YOUR_OWN_API_KEY";
 
 
-### Not Interested in doing above steps just clone this repo and use it as it is already hosted on Free Web Host Hostinger [hafinse](https://hafinse.pe.hu)
+### Not Interested in doing above steps just clone this repo and use it as it is already hosted on Free Web Host 000webhost [hafinse](https://hafinse.000webhostapp.com/contact/)
 
 ## Things you can learn through this project -
 1. Hero Animation from a Contact List Item to Contact Detail.
