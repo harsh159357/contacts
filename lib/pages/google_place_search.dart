@@ -24,7 +24,7 @@ import 'package:flutter_google_places_autocomplete/flutter_google_places_autocom
 
 const kGoogleApiKey = GOOGLE_PLACE_API_KEY;
 
-GoogleMapsPlaces _places = new GoogleMapsPlaces(kGoogleApiKey);
+GoogleMapsPlaces _places = new GoogleMapsPlaces(apiKey:kGoogleApiKey);
 
 final placeSearchPageKey = new GlobalKey<ScaffoldState>();
 
