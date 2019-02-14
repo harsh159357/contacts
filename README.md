@@ -132,6 +132,7 @@ Check out the repo make a pull request, raise issues and give a star if it's hel
 
 * https://randomuser.me/ for Contact Avatars used in the project.
 * https://flutter.io/
+* https://pub.dartlang.org/packages/flutter_google_places/versions/0.1.4+1
 * https://pub.dartlang.org/packages/flutter_launcher_icons
 * https://pub.dartlang.org/packages/shared_preferences
 * https://pub.dartlang.org/packages/http

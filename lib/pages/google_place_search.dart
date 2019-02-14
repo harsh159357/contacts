@@ -20,7 +20,8 @@ import 'package:contacts/models/contact.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter_google_places_autocomplete/flutter_google_places_autocomplete.dart';
+import "package:google_maps_webservice/places.dart";
+import "package:flutter_google_places/flutter_google_places.dart";
 
 const kGoogleApiKey = GOOGLE_PLACE_API_KEY;
 
@@ -45,7 +46,7 @@ Future<Null> displayPrediction(Prediction p, ScaffoldState scaffold) async {
   }
 }
 
-class PlaceSearchPage extends GooglePlacesAutocompleteWidget {
+class PlaceSearchPage extends PlacesAutocompleteWidget {
   PlaceSearchPage()
       : super(
           apiKey: kGoogleApiKey,
@@ -56,12 +57,12 @@ class PlaceSearchPage extends GooglePlacesAutocompleteWidget {
   _PlaceSearchPageState createState() => new _PlaceSearchPageState();
 }
 
-class _PlaceSearchPageState extends GooglePlacesAutocompleteState {
+class _PlaceSearchPageState extends PlacesAutocompleteState {
   @override
   Widget build(BuildContext context) {
     timeDilation = 1.0;
     final appBar = new AppBar(title: new AppBarPlacesAutoCompleteTextField());
-    final body = new GooglePlacesAutocompleteResult(onTap: (p) {
+    final body = new PlacesAutocompleteResult(onTap: (p) {
       displayPrediction(p, placeSearchPageKey.currentState);
     });
     return new Scaffold(key: placeSearchPageKey, appBar: appBar, body: body);
