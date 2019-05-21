@@ -117,12 +117,6 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 * Hero Animation
 * Google Place Search
 
-#### Spread Some :heart:
-
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)](https://opensource.org/licenses/Apache-2.0)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/harsh159357/contacts/blob/master/License.txt)
-
-Check out the repo make a pull request, raise issues and give a star if it's helpful.
 
 ### My Previous Flutter Project [Click Here](https://github.com/harsh159357/flutter_client_php_backend)
 
