@@ -172,13 +172,13 @@ I welcome and encourage all pull requests. It usually will take me within 24-48 
 
 ### Project Maintained By
 
-# [Harsh Sharma](https://github.com/harsh159357/)
+# [Harsh Sharma](http://bit.ly/githarsh)
 
 Android Developer
 
-<a href="https://stackoverflow.com/users/5159205/harsh-sharma"><img src="https://github.com/aritraroy/social-icons/blob/master/stackoverflow-icon.png?raw=true" width="60"></a>
-<a href="https://www.linkedin.com/in/harsh159357/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
-<a href="https://www.facebook.com/HARSH159357"><img src="https://github.com/aritraroy/social-icons/blob/master/facebook-icon.png?raw=true" width="60"></a>
+<a href="http://bit.ly/stackharsh"><img src="https://github.com/aritraroy/social-icons/blob/master/stackoverflow-icon.png?raw=true" width="60"></a>
+<a href="http://bit.ly/lnkdharsh"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
+<a href="http://bit.ly/harshfb"><img src="https://github.com/aritraroy/social-icons/blob/master/facebook-icon.png?raw=true" width="60"></a>
 
 License
 -------
