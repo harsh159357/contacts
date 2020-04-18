@@ -11,6 +11,8 @@ Contacts in this project are not linked with the contacts stored in your Smart p
 * App Logo Created Using [Material Design Icons](https://materialdesignicons.com/)
 * For Hosting used [000webhost](https://www.000webhost.com/)
 
+##### Note if REST APIs used in the app are not working and you are getting following error https://imgur.com/a/AcbW5uh Then you have to use your own hosting(website) to test Contacts App API section.
+
 ## Built With
 
 * [Flutter](https://flutter.io) - Cross Platform App Development Framework
