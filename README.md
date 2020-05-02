@@ -1,5 +1,7 @@
 # Contacts
 
+### App features will no longer work as https://hafinse.000webhostapp.com/ is deleted by the free hosting due to high usage. Do not create any issue related to that. If you are facing in problem in setting up feel free to mail me at harsh159357@gmail.com
+
 A flutter project with Implementation of a Contacts app in 4 ways (API, Custom, Preferences and Sqflite).
 It consist some common operations like create, edit , search and view operations on Contacts.
 Contacts in this project are not linked with the contacts stored in your Smart phone.
