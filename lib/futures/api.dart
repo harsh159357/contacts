@@ -26,7 +26,7 @@ import 'package:http/http.dart' as http;
 
 Future<EventObject> getContactsUsingRestAPI() async {
   try {
-    final response = await http.get(APIConstants.READ_CONTACTS);
+    final response = await http.get(Uri.parse(APIConstants.READ_CONTACTS));
     if (response != null) {
       if (response.statusCode == APIResponseCode.SC_OK) {
         final responseJson = json.decode(response.body);
@@ -47,7 +47,7 @@ Future<EventObject> getContactsUsingRestAPI() async {
 
 Future<EventObject> getLogsUsingRestAPI() async {
   try {
-    final response = await http.get(APIConstants.READ_LOGS);
+    final response = await http.get(Uri.parse(APIConstants.READ_LOGS));
     if (response != null) {
       if (response.statusCode == APIResponseCode.SC_OK) {
         final responseJson = json.decode(response.body);
@@ -67,7 +67,7 @@ Future<EventObject> getLogsUsingRestAPI() async {
 
 Future<EventObject> getDeletedContactsUsingRestAPI() async {
   try {
-    final response = await http.get(APIConstants.READ_DELETED_CONTACTS);
+    final response = await http.get(Uri.parse(APIConstants.READ_DELETED_CONTACTS));
     if (response != null) {
       if (response.statusCode == APIResponseCode.SC_OK) {
         final responseJson = json.decode(response.body);
@@ -92,7 +92,7 @@ Future<EventObject> saveContactUsingRestAPI(Contact contact) async {
   try {
     final encoding = APIConstants.OCTET_STREAM_ENCODING;
 
-    final response = await http.post(APIConstants.CREATE_CONTACT,
+    final response = await http.post(Uri.parse(APIConstants.CREATE_CONTACT),
         body: json.encode(contact.toJson()),
         encoding: Encoding.getByName(encoding));
 
@@ -116,7 +116,7 @@ Future<EventObject> removeContactUsingRestAPI(Contact contact) async {
     final encoding = APIConstants.OCTET_STREAM_ENCODING;
     final json = '{"_id":"${contact.id}"}';
 
-    final response = await http.post(APIConstants.DELETE_CONTACT,
+    final response = await http.post(Uri.parse(APIConstants.DELETE_CONTACT),
         body: json /*json.encode(contact.toJson())*/,
         encoding: Encoding.getByName(encoding));
 
@@ -145,7 +145,7 @@ Future<EventObject> removeContactUsingRestAPI(Contact contact) async {
 Future<EventObject> updateContactUsingRestAPI(Contact contact) async {
   try {
     final encoding = APIConstants.OCTET_STREAM_ENCODING;
-    final response = await http.post(APIConstants.UPDATE_CONTACT,
+    final response = await http.post(Uri.parse(APIConstants.UPDATE_CONTACT),
         body: json.encode(contact.toJson()),
         encoding: Encoding.getByName(encoding));
 
@@ -170,7 +170,7 @@ Future<EventObject> updateContactUsingRestAPI(Contact contact) async {
 
 Future<EventObject> searchContactsUsingRestAPI(String searchQuery) async {
   try {
-    final response = await http.get(APIConstants.SEARCH_CONTACT + searchQuery);
+    final response = await http.get(Uri.parse(APIConstants.SEARCH_CONTACT + searchQuery));
     if (response != null) {
       if (response.statusCode == APIResponseCode.SC_OK) {
         final responseJson = json.decode(response.body);

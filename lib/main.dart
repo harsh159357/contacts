@@ -16,6 +16,7 @@
  */
 
 import 'package:contacts/pages/splash_page.dart';
+import 'package:contacts/pages/ways_page.dart';
 import 'package:contacts/utils/constants.dart';
 import 'package:flutter/material.dart';
 

@@ -29,12 +29,15 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage>
     with SingleTickerProviderStateMixin {
+/*
   Animation<double> logoAnimation, appNameAnimation;
   AnimationController logoAnimationController, appNameAnimationController;
 
   static final tweenLogo = new Tween(begin: 0.0, end: 200.0);
   static final tweenAppName = new Tween(begin: 0.0, end: 50.0);
+*/
 
+/*
   @override
   initState() {
     super.initState();
@@ -58,6 +61,7 @@ class SplashPageState extends State<SplashPage>
     logoAnimationController.forward();
     appNameAnimationController.forward();
   }
+*/
 
   final globalKey = new GlobalKey<ScaffoldState>();
 
@@ -84,7 +88,7 @@ class SplashPageState extends State<SplashPage>
                 new Container(
                     child: new Icon(
                   Icons.contacts,
-                  size: logoAnimation.value,
+                  size: 200/*logoAnimation.value*/,
                   color: Colors.blue[400],
                 )),
                 new Container(
@@ -93,7 +97,7 @@ class SplashPageState extends State<SplashPage>
                     Texts.APP_NAME,
                     style: new TextStyle(
                         color: Colors.blueGrey[400],
-                        fontSize: appNameAnimation.value),
+                        fontSize: 50/*appNameAnimation.value*/),
                   ),
                 ),
               ],
@@ -111,9 +115,11 @@ class SplashPageState extends State<SplashPage>
     }
   }
 
+/*
   @override
   dispose() {
     logoAnimationController.dispose();
     super.dispose();
   }
+*/
 }

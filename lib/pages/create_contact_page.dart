@@ -35,11 +35,12 @@ class CreateContactPage extends StatefulWidget {
 
 class CreateContactPageState extends State<CreateContactPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
+  final ImagePicker _picker = ImagePicker();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
       ProgressDialogTitles.CREATING_CONTACT, false);
 
-  File _imageFile;
+  XFile _imageFile;
 
   TextEditingController nameController = new TextEditingController(text: "");
 
@@ -92,11 +93,10 @@ class CreateContactPageState extends State<CreateContactPage> {
             size: 30.0,
           ),
         ),
-        textTheme: new TextTheme(
-            title: new TextStyle(
+        titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 22.0,
-        )),
+        ),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(Texts.CREATE_CONTACT),
         actions: <Widget>[
@@ -122,7 +122,7 @@ class CreateContactPageState extends State<CreateContactPage> {
   }
 
   void _pickImage(ImageSource source) async {
-    var imageFile = await ImagePicker.pickImage(source: source);
+    var imageFile = await _picker.pickImage(source: source);
     setState(() {
       _imageFile = imageFile;
     });
@@ -177,7 +177,7 @@ class CreateContactPageState extends State<CreateContactPage> {
               textAlign: TextAlign.center,
             )
           : new Image.file(
-              _imageFile,
+              File(_imageFile.path),
               fit: BoxFit.cover,
             ),
       fit: FlexFit.tight,
@@ -350,7 +350,7 @@ class CreateContactPageState extends State<CreateContactPage> {
     contactToBeCreated.address = addressController.text;
     contactToBeCreated.latitude = latController.text;
     contactToBeCreated.longitude = longController.text;
-    List<int> contactImageBytes = _imageFile.readAsBytesSync();
+    List<int> contactImageBytes = File(_imageFile.path).readAsBytesSync();
     contactToBeCreated.contactImage = base64Encode(contactImageBytes);
     progressDialog.show();
     createContact(contactToBeCreated);

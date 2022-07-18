@@ -47,11 +47,10 @@ class DeletedContactDetailsPageState extends State<DeletedContactDetails> {
       key: globalKey,
       appBar: new AppBar(
         centerTitle: true,
-        textTheme: new TextTheme(
-            title: new TextStyle(
+        titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 22.0,
-        )),
+        ),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(
           Texts.CONTACT_DETAILS,

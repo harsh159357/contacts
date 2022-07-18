@@ -39,13 +39,14 @@ class EditContactPage extends StatefulWidget {
 
 class EditContactPageState extends State<EditContactPage> {
   static final globalKey = new GlobalKey<ScaffoldState>();
+  final ImagePicker _picker = ImagePicker();
 
   ProgressDialog progressDialog = ProgressDialog.getProgressDialog(
       ProgressDialogTitles.EDITING_CONTACT, false);
 
   Contact contact;
 
-  File _imageFile;
+  XFile _imageFile;
 
   TextEditingController nameController;
 
@@ -110,11 +111,10 @@ class EditContactPageState extends State<EditContactPage> {
             size: 30.0,
           ),
         ),
-        textTheme: new TextTheme(
-            title: new TextStyle(
+        titleTextStyle: TextStyle(
           color: Colors.white,
           fontSize: 22.0,
-        )),
+        ),
         iconTheme: new IconThemeData(color: Colors.white),
         title: new Text(Texts.EDIT_CONTACT),
         actions: <Widget>[
@@ -144,7 +144,7 @@ class EditContactPageState extends State<EditContactPage> {
       ++validCount;
       contactImage = null;
     });
-    var imageFile = await ImagePicker.pickImage(source: source);
+    var imageFile = await _picker.pickImage(source: source);
     setState(() {
       _imageFile = imageFile;
     });
@@ -201,7 +201,7 @@ class EditContactPageState extends State<EditContactPage> {
                   textAlign: TextAlign.center,
                 ))
           : new Image.file(
-              _imageFile,
+              File(_imageFile.path),
               fit: BoxFit.cover,
             ),
       fit: FlexFit.tight,
@@ -377,7 +377,7 @@ class EditContactPageState extends State<EditContactPage> {
     if (validCount == 0) {
       contactToBeEdited.contactImage = contactImage;
     } else {
-      List<int> contactImageBytes = _imageFile.readAsBytesSync();
+      List<int> contactImageBytes = File(_imageFile.path).readAsBytesSync();
       contactToBeEdited.contactImage = base64Encode(contactImageBytes);
     }
     progressDialog.show();
